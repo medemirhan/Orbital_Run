@@ -263,3 +263,10 @@ void CViewPlayingScreen::UpdateIndicatorsView(FP32 game_level, INT32S indicator_
 	this->TxtScore.setOrigin(txt_score_rect.left + txt_score_rect.width / 2.0f, txt_score_rect.top + txt_score_rect.height / 2.0f);
 	this->TxtScore.setPosition(sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f - 220.0f));
 }
+
+void CViewPlayingScreen::UpdateEntityDrawings(const std::vector<INT32S>& idx)
+{
+	for (INT32S i = 0; i < idx.size(); i++) {
+		this->EntityDrawings.erase(this->EntityDrawings.begin() + idx[i] - i);
+	}
+}

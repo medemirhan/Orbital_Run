@@ -178,7 +178,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			break;
 		}
 
-		model.UpdateEntityList(model.EntityList, view.EntityDrawings);
+		std::vector<INT32S> idx = model.UpdateEntityList();
+		view.UpdateEntityDrawings(idx);
 		for (INT32S i = 0; i < model.EntityList.size(); i++) {
 			view.EntityDrawings[i].setPosition(model.EntityList[i]->GetPositionX(), model.EntityList[i]->GetPositionY());
 			view.EntityDrawings[i].setOrigin(view.EntityDrawings[i].getLocalBounds().width / 2.0f, view.EntityDrawings[i].getLocalBounds().height / 2.0f);

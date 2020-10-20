@@ -30,9 +30,7 @@ public:
 	CModel(CConfigurationData& config_data);
 	~CModel();
 	void GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTITY_TYPES entity_type);
-	/*UpdateEntityList ikiye ayrýlsýn UpdateEntityList ve UpdateEntityDrawings þeklinde*/
-	/*UpdateEntityList model classýnda, UpdateEntityDrawings view classýnda iþlem yapsýn*/
-	void UpdateEntityList(std::vector<std::shared_ptr<CEntity>>& p_entity_list, std::vector<sf::Sprite>& p_entity_drawings);
+	std::vector<INT32S> UpdateEntityList();
 	std::vector<std::shared_ptr<CEntity>>& GetSleepingMonsters();
 	std::vector<std::shared_ptr<CEntity>> GetEntityList();
 	E_STATES GetGameState();

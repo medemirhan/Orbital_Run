@@ -98,14 +98,16 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
     }
 }
 
-void CModel::UpdateEntityList(std::vector<std::shared_ptr<CEntity>>& p_entity_list, std::vector<sf::Sprite>& p_entity_drawings)
+std::vector<INT32S> CModel::UpdateEntityList()
 {
-    for (INT32S i = 0; i < p_entity_list.size(); i++) {
-        if (!(p_entity_list[i]->GetIsAlive())) {
-            p_entity_list.erase(p_entity_list.begin() + i);
-            p_entity_drawings.erase(p_entity_drawings.begin() + i);
+    std::vector<INT32S> idx;
+    for (INT32S i = 0; i < this->EntityList.size(); i++) {
+        if (!(this->EntityList[i]->GetIsAlive())) {
+            this->EntityList.erase(this->EntityList.begin() + i);
+            idx.push_back(i);
         }
     }
+    return idx;
 }
 
 std::vector<std::shared_ptr<CEntity>>& CModel::GetSleepingMonsters()
