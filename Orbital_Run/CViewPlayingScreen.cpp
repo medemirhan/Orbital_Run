@@ -192,6 +192,7 @@ void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_c
 void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, std::vector<std::shared_ptr<CEntity>>& p_entity_list, E_STATES& game_state, INT32S num_orbits)
 {
 	//m.lock();
+	//app.setActive(true);
 	app.clear();
 	app.draw(this->BackgroundSprite);
 	for (INT32S i = 0; i < num_orbits; i++) {

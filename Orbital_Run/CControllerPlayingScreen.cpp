@@ -192,12 +192,12 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 
 		view.UpdateIndicatorsView(model.GameLevel, indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		//std::mutex m;
 		view.PrintScreen(app, model.EntityList, model.GameState, num_orbits);
-		//app.setActive(false);
-		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, this, std::ref(m), std::ref(app), std::ref(updated_config_data), std::ref(game_state), std::ref(num_orbits));
-		//thread_print_screen.join();
 
+		//std::mutex m;
+		//app.setActive(false);
+		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, view, std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits);
+		//thread_print_screen.join();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_SLEEP_TIME_MSEC));
 	}
