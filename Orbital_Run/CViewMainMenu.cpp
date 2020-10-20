@@ -88,3 +88,113 @@ void CViewMainMenu::UpdateTextColors()
 		this->MenuOptionExit.setFillColor(sf::Color(255, 0, 0));
 	}
 }
+
+void CViewMainMenu::SetTexture(sf::Texture texture)
+{
+	this->Texture = texture;
+}
+
+void CViewMainMenu::SetGameLogoTexture(sf::Texture texture)
+{
+	this->GameLogoTexture = texture;
+}
+
+void CViewMainMenu::SetBackgroundTexture(sf::Texture texture)
+{
+	this->BackgroundTexture = texture;
+}
+
+void CViewMainMenu::SetSprite(sf::Sprite sprite)
+{
+	this->Sprite = sprite;
+}
+
+void CViewMainMenu::SetGameLogo(sf::Sprite sprite)
+{
+	this->GameLogo = sprite;
+}
+
+void CViewMainMenu::SetBackgroundSprite(sf::Sprite sprite)
+{
+	this->BackgroundSprite = sprite;
+}
+
+void CViewMainMenu::SetFont(sf::Font font)
+{
+	this->Font = font;
+}
+
+void CViewMainMenu::SetHeader(sf::Text text)
+{
+	this->Header = text;
+}
+
+void CViewMainMenu::SetMenuOptionStartGame(sf::Text text)
+{
+	this->MenuOptionStartGame = text;
+}
+
+void CViewMainMenu::SetMenuOptionConfigMenu(sf::Text text)
+{
+	this->MenuOptionConfigMenu = text;
+}
+
+void CViewMainMenu::SetMenuOptionExit(sf::Text text)
+{
+	this->MenuOptionExit = text;
+}
+
+sf::Texture CViewMainMenu::GetTexture() const
+{
+	return this->Texture;
+}
+
+sf::Texture CViewMainMenu::GetGameLogoTexture() const
+{
+	return this->GameLogoTexture;
+}
+
+sf::Texture CViewMainMenu::GetBackgroundTexture() const
+{
+	return this->BackgroundTexture;
+}
+
+sf::Sprite CViewMainMenu::GetSprite() const
+{
+	return this->Sprite;
+}
+
+sf::Sprite CViewMainMenu::GetGameLogo() const
+{
+	return this->GameLogo;
+}
+
+sf::Sprite CViewMainMenu::GetBackgroundSprite() const
+{
+	return this->BackgroundSprite;
+}
+
+sf::Font CViewMainMenu::GetFont() const
+{
+	return this->Font;
+}
+
+sf::Text CViewMainMenu::GetHeader() const
+{
+	return this->Header;
+}
+
+sf::Text CViewMainMenu::GetMenuOptionStartGame() const
+{
+	return this->MenuOptionStartGame;
+}
+
+sf::Text CViewMainMenu::GetMenuOptionConfigMenu() const
+{
+	return this->MenuOptionConfigMenu;
+}
+
+sf::Text CViewMainMenu::GetMenuOptionExit() const
+{
+	return this->MenuOptionExit;
+}

@@ -31,7 +31,26 @@ public:
 	~CModel();
 	void GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTITY_TYPES entity_type);
 	std::vector<INT32S> UpdateEntityList();
+
+	void SetGameState(E_STATES state);
+	void SetGameLevel(FP32 level);
+	void SetNumOrbits(INT32S num_orbits);
+	void SetNumMonsters(INT32S num_monsters);
+	void SetVOrbitron(FP32 v_orbitron);
+	void SetVMonster(FP32 v_monster);
+	void SetEntityList(const std::vector<std::shared_ptr<CEntity>> p_entity_list);
+	void SetRocketsOnOrbits(const std::vector<std::shared_ptr<CEntity>> p_rockets_on_orbits);
+	void SetRocketFiringAngles(const std::vector<FP32>& angles);
+	void SetSleepingMonsters(const std::vector<std::shared_ptr<CEntity>> p_sleeping_monster);
+
+	E_STATES GetGameState() const;
+	FP32 GetGameLevel() const;
+	INT32S GetNumOrbits() const;
+	INT32S GetNumMonsters() const;
+	FP32 GetVOrbitron() const;
+	FP32 GetVMonster() const;
+	std::vector<std::shared_ptr<CEntity>> GetEntityList() const;
+	std::vector<std::shared_ptr<CEntity>> GetRocketsOnOrbits() const;
+	std::vector<FP32> GetRocketFiringAngles() const;
 	std::vector<std::shared_ptr<CEntity>>& GetSleepingMonsters();
-	std::vector<std::shared_ptr<CEntity>> GetEntityList();
-	E_STATES GetGameState();
 };

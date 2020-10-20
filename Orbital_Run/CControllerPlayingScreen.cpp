@@ -19,8 +19,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	sf::Clock interrupt_clock;
 	CConfigurationData updated_config_data(&config_data);
 	CTimer timer;
-	INT32S num_orbits = updated_config_data.GetNumOrbits();
-	INT32S num_monsters = updated_config_data.GetNumMonsters();
+	INT32S num_orbits = updated_config_data.GetOrbitNumber();
+	INT32S num_monsters = updated_config_data.GetMonsterNumber();
 	INT32S num_active_life = 0;
 
 	std::vector<std::vector<std::shared_ptr<CEntity>>> collision_list;
@@ -39,13 +39,13 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT);
 	sf::Clock clock_rocketright;
 
-	for (INT32S i = 0; i < updated_config_data.ConstantBombAdditionCount; i++) {
+	for (INT32S i = 0; i < updated_config_data.ConstantBombAdditionNumber; i++) {
 		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB);
 	}
 	sf::Clock clock_bomb_addition;
 	sf::Clock clock_bomb_removal;
 
-	for (INT32S i = 0; i < updated_config_data.ConstantLifeCount; i++) {
+	for (INT32S i = 0; i < updated_config_data.ConstantLifeNumber; i++) {
 		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE);
 		num_active_life++;
 	}
@@ -95,12 +95,12 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				}
 			}
 
-			if (num_active_life < updated_config_data.ConstantLifeCount) {
-				for (INT32S i = 0; i < updated_config_data.ConstantLifeCount - num_active_life; i++) {
+			if (num_active_life < updated_config_data.ConstantLifeNumber) {
+				for (INT32S i = 0; i < updated_config_data.ConstantLifeNumber - num_active_life; i++) {
 					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE);
 					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				}
-				num_active_life = updated_config_data.ConstantLifeCount;
+				num_active_life = updated_config_data.ConstantLifeNumber;
 			}else {
 
 			}
@@ -117,7 +117,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 
 			timer.SetElapsedTimeBombAddition(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
 			if (timer.GetElapsedTimeBombAddition().asSeconds() > updated_config_data.BombAdditionIntervalSec) {
-				for (INT32S i = 0; i < updated_config_data.ConstantBombAdditionCount; i++) {
+				for (INT32S i = 0; i < updated_config_data.ConstantBombAdditionNumber; i++) {
 					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB);
 					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				}
@@ -132,7 +132,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			if (timer.GetElapsedTimeBombRemoval().asSeconds() > updated_config_data.BombRemovalIntervalSec) {
 				INT32S bomb_removed = 0;
 				for (INT32S i = 0; i < model.EntityList.size(); i++) {
-					if (model.EntityList[i]->GetEntityType() == ENTITY_TYPES_BOMB && bomb_removed < updated_config_data.ConstantBombAdditionCount) {
+					if (model.EntityList[i]->GetEntityType() == ENTITY_TYPES_BOMB && bomb_removed < updated_config_data.ConstantBombAdditionNumber) {
 						//bombanýn biri remove edilmeden önce orbitronla çarpýþýp yokolduysa, bu bombanýn yerine henüz removal
 						//süresi gelmemiþ bir bomba remove edilmiþ oluyor!
 						model.EntityList.erase(model.EntityList.begin() + i);
@@ -303,10 +303,10 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 		case sf::Keyboard::M:
 			if (model.GameState == STATES_GAME_PAUSED || model.GameState == STATES_LOST_LIFE || model.GameState == STATES_GAME_OVER) {
 				CConfigurationData* p_default_config = new CConfigurationData;
-				config_data.SetNumOrbits(p_default_config->GetNumOrbits());
-				config_data.SetNumMonsters(p_default_config->GetNumMonsters());
-				config_data.SetVOrbitron(p_default_config->GetVOrbitron());
-				config_data.SetVMonster(p_default_config->GetVMonster());
+				config_data.SetOrbitNumber(p_default_config->GetOrbitNumber());
+				config_data.SetMonsterNumber(p_default_config->GetMonsterNumber());
+				config_data.SetOrbitronVelocity(p_default_config->GetOrbitronVelocity());
+				config_data.SetMonsterVelocity(p_default_config->GetMonsterVelocity());
 				delete p_default_config;
 				change_screen = true;
 				return 0;

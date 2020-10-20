@@ -9,8 +9,8 @@
 	<param name="OrbitronInitialLife" value="3"/>
 	<param name="OrbitNumber" value="7"/>
 	<param name="MonsterNumber" value="10"/>
-	<param name="ConstantLifeCount" value="3"/>
-	<param name="ConstantBombAdditionCount" value="6"/>
+	<param name="ConstantLifeNumber" value="3"/>
+	<param name="ConstantBombAdditionNumber" value="6"/>
 	<param name="RocketRightIntervalSec" value="10"/>
 	<param name="BombAdditionIntervalSec" value="15"/>
 	<param name="BombRemovalIntervalSec" value="20"/>

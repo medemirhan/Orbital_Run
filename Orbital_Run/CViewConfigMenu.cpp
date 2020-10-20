@@ -232,3 +232,183 @@ void CViewConfigMenu::UpdateTextColors()
 		break;
 	}
 }
+
+void CViewConfigMenu::SetCurrentSelection(INT32S selection)
+{
+	this->CurrentSelection = selection;
+}
+
+void CViewConfigMenu::SetWaitingEntry(BOOLEAN waiting_entry)
+{
+	this->WaitingEntry = waiting_entry;
+}
+
+void CViewConfigMenu::SetPlayerInput(sf::String input)
+{
+	this->PlayerInput = input;
+}
+
+void CViewConfigMenu::SetTxtNumOrbits(sf::Text txt)
+{
+	this->TxtNumOrbits = txt;
+}
+
+void CViewConfigMenu::SetTxtNumMonsters(sf::Text txt)
+{
+	this->TxtNumMonsters = txt;
+}
+
+void CViewConfigMenu::SetTxtVOrbitron(sf::Text txt)
+{
+	this->TxtVOrbitron = txt;
+}
+
+void CViewConfigMenu::SetTxtVMonster(sf::Text txt)
+{
+	this->TxtVMonster = txt;
+}
+
+void CViewConfigMenu::SetText0(sf::Text txt)
+{
+	this->Text0 = txt;
+}
+
+void CViewConfigMenu::SetText1(sf::Text txt)
+{
+	this->Text1 = txt;
+}
+
+void CViewConfigMenu::SetText2(sf::Text txt)
+{
+	this->Text2 = txt;
+}
+
+void CViewConfigMenu::SetText3(sf::Text txt)
+{
+	this->Text3 = txt;
+}
+
+void CViewConfigMenu::SetText4(sf::Text txt)
+{
+	this->Text4 = txt;
+}
+
+void CViewConfigMenu::SetText5(sf::Text txt)
+{
+	this->Text5 = txt;
+}
+
+void CViewConfigMenu::SetTexture(sf::Texture texture)
+{
+	this->Texture = texture;
+}
+
+void CViewConfigMenu::SetBackgroundTexture(sf::Texture texture)
+{
+	this->BackgroundTexture = texture;
+}
+
+void CViewConfigMenu::SetSprite(sf::Sprite sprite)
+{
+	this->Sprite = sprite;
+}
+
+void CViewConfigMenu::SetBackgroundSprite(sf::Sprite sprite)
+{
+	this->BackgroundSprite = sprite;
+}
+
+void CViewConfigMenu::SetFont(sf::Font font)
+{
+	this->Font = font;
+}
+
+INT32S CViewConfigMenu::GetCurrentSelection() const
+{
+	return this->CurrentSelection;
+}
+
+BOOLEAN CViewConfigMenu::GetWaitingEntry() const
+{
+	return this->WaitingEntry;
+}
+
+sf::String CViewConfigMenu::GetPlayerInput() const
+{
+	return this->PlayerInput;
+}
+
+sf::Text CViewConfigMenu::GetTxtNumOrbits() const
+{
+	return this->TxtNumOrbits;
+}
+
+sf::Text CViewConfigMenu::GetTxtNumMonsters() const
+{
+	return this->TxtNumMonsters;
+}
+
+sf::Text CViewConfigMenu::GetTxtVOrbitron() const
+{
+	return this->TxtVOrbitron;
+}
+
+sf::Text CViewConfigMenu::GetTxtVMonster() const
+{
+	return this->TxtVMonster;
+}
+
+sf::Text CViewConfigMenu::GetText0() const
+{
+	return this->Text0;
+}
+
+sf::Text CViewConfigMenu::GetText1() const
+{
+	return this->Text1;
+}
+
+sf::Text CViewConfigMenu::GetText2() const
+{
+	return this->Text2;
+}
+
+sf::Text CViewConfigMenu::GetText3() const
+{
+	return this->Text3;
+}
+
+sf::Text CViewConfigMenu::GetText4() const
+{
+	return this->Text4;
+}
+
+sf::Text CViewConfigMenu::GetText5() const
+{
+	return this->Text5;
+}
+
+sf::Texture CViewConfigMenu::GetTexture() const
+{
+	return this->Texture;
+}
+
+sf::Texture CViewConfigMenu::GetBackgroundTexture() const
+{
+	return this->BackgroundTexture;
+}
+
+sf::Sprite CViewConfigMenu::GetSprite() const
+{
+	return this->Sprite;
+}
+
+sf::Sprite CViewConfigMenu::GetBackgroundSprite() const
+{
+	return this->BackgroundSprite;
+}
+
+sf::Font CViewConfigMenu::GetFont() const
+{
+	return this->Font;
+}

@@ -28,8 +28,8 @@ CConfigurationData::CConfigurationData(const CConfigurationData* config_data)
 	this->OrbitronInitialLife = config_data->OrbitronInitialLife;
 	this->OrbitNumber = config_data->OrbitNumber;
 	this->MonsterNumber = config_data->MonsterNumber;
-	this->ConstantLifeCount = config_data->ConstantLifeCount;
-	this->ConstantBombAdditionCount = config_data->ConstantBombAdditionCount;
+	this->ConstantLifeNumber = config_data->ConstantLifeNumber;
+	this->ConstantBombAdditionNumber = config_data->ConstantBombAdditionNumber;
 	this->RocketRightIntervalSec = config_data->RocketRightIntervalSec;
 	this->BombAdditionIntervalSec = config_data->BombAdditionIntervalSec;
 	this->BombRemovalIntervalSec = config_data->BombRemovalIntervalSec;
@@ -117,14 +117,14 @@ void CConfigurationData::XMLParser()
 			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
-			if (!strcmp("ConstantLifeCount", p_node->first_attribute()->value())) {
-				this->ConstantLifeCount = std::stof(p_node->last_attribute()->value());
+			if (!strcmp("ConstantLifeNumber", p_node->first_attribute()->value())) {
+				this->ConstantLifeNumber = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
-			if (!strcmp("ConstantBombAdditionCount", p_node->first_attribute()->value())) {
-				this->ConstantBombAdditionCount = std::stof(p_node->last_attribute()->value());
+			if (!strcmp("ConstantBombAdditionNumber", p_node->first_attribute()->value())) {
+				this->ConstantBombAdditionNumber = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
@@ -161,67 +161,188 @@ void CConfigurationData::XMLParser()
 	}
 }
 
-void CConfigurationData::SetNumOrbits(INT32S num_orbit)
+void CConfigurationData::SetFilename(std::string filename)
 {
-	this->OrbitNumber = num_orbit;
+	this->Filename = filename;
+}
+void CConfigurationData::SetConfigFileErrorStatus(BOOLEAN status)
+{
+	this->ConfigFileErrorStatus = status;
+}
+void CConfigurationData::SetOrbitronInitialVelocity(FP32 velocity)
+{
+	this->OrbitronInitialVelocity = velocity;
+}
+void CConfigurationData::SetMonsterInitialVelocity(FP32 velocity)
+{
+	this->MonsterInitialVelocity = velocity;
+}
+void CConfigurationData::SetRocketOrbitronVelocityRatio(FP32 ratio)
+{
+	this->RocketOrbitronVelocityRatio = ratio;
+}
+void CConfigurationData::SetVelocityIncreaseAtLevelUp(FP32 velocity_increase)
+{
+	this->VelocityIncreaseAtLevelUp = velocity_increase;
+}
+void CConfigurationData::SetMonsterOrbitChangeIntervalSec(FP32 interval)
+{
+	this->MonsterOrbitChangeIntervalSec = interval;
+}
+void CConfigurationData::SetMonsterSleepTimeSec(FP32 time)
+{
+	this->MonsterSleepTimeSec = time;
+}
+void CConfigurationData::SetOrbitronInitialLife(INT32S life)
+{
+	this->OrbitronInitialLife = life;
+}
+void CConfigurationData::SetOrbitNumber(INT32S orbit_number)
+{
+	this->OrbitNumber = orbit_number;
+}
+void CConfigurationData::SetMonsterNumber(INT32S monster_number)
+{
+	this->MonsterNumber = monster_number;
+}
+void CConfigurationData::SetConstantLifeNumber(INT32S num)
+{
+	this->ConstantLifeNumber = num;
+}
+void CConfigurationData::SetConstantBombAdditionNumber(INT32S num)
+{
+	this->ConstantBombAdditionNumber = num;
+}
+void CConfigurationData::SetRocketRightIntervalSec(INT32S interval)
+{
+	this->RocketRightIntervalSec = interval;
+}
+void CConfigurationData::SetBombAdditionIntervalSec(INT32S interval)
+{
+	this->BombAdditionIntervalSec = interval;
+}
+void CConfigurationData::SetBombRemovalIntervalSec(INT32S interval)
+{
+	this->BombRemovalIntervalSec = interval;
+}
+void CConfigurationData::SetLittlelifeNumForLife(INT32S littlelife_num)
+{
+	this->LittlelifeNumForLife = littlelife_num;
+}
+void CConfigurationData::SetOrbitronVelocity(FP32 velocity)
+{
+	this->OrbitronVelocity = velocity;
+}
+void CConfigurationData::SetMonsterVelocity(FP32 velocity)
+{
+	this->MonsterVelocity = velocity;
+}
+void CConfigurationData::SetBombVelocity(FP32 velocity)
+{
+	this->BombVelocity = velocity;
+}
+void CConfigurationData::SetRocketVelocity(FP32 velocity)
+{
+	this->RocketVelocity = velocity;
+}
+void CConfigurationData::SetRocketrightVelocity(FP32 velocity)
+{
+	this->RocketrightVelocity = velocity;
+}
+void CConfigurationData::SetLifeVelocity(FP32 velocity)
+{
+	this->LifeVelocity = velocity;
 }
 
-void CConfigurationData::SetNumMonsters(INT32S num_monster)
+std::string CConfigurationData::GetFilename() const
 {
-	this->MonsterNumber = num_monster;
+	return this->Filename;
 }
-
-void CConfigurationData::SetVOrbitron(FP32 v_orbitron)
-{
-	this->OrbitronVelocity = v_orbitron;
-}
-
-void CConfigurationData::SetVMonster(FP32 v_monster)
-{
-	this->MonsterVelocity = v_monster;
-}
-
 BOOLEAN CConfigurationData::GetConfigFileErrorStatus() const
 {
 	return this->ConfigFileErrorStatus;
 }
-
-INT32S CConfigurationData::GetNumOrbits() const
+FP32 CConfigurationData::GetOrbitronInitialVelocity() const
+{
+	return this->OrbitronInitialVelocity;
+}
+FP32 CConfigurationData::GetMonsterInitialVelocity() const
+{
+	return this->MonsterInitialVelocity;
+}
+FP32 CConfigurationData::GetRocketOrbitronVelocityRatio() const
+{
+	return this->RocketOrbitronVelocityRatio;
+}
+FP32 CConfigurationData::GetVelocityIncreaseAtLevelUp() const
+{
+	return this->VelocityIncreaseAtLevelUp;
+}
+FP32 CConfigurationData::GetMonsterOrbitChangeIntervalSec() const
+{
+	return this->MonsterOrbitChangeIntervalSec;
+}
+FP32 CConfigurationData::GetMonsterSleepTimeSec() const
+{
+	return this->MonsterSleepTimeSec;
+}
+INT32S CConfigurationData::GetOrbitronInitialLife() const
+{
+	return this->OrbitronInitialLife;
+}
+INT32S CConfigurationData::GetOrbitNumber() const
 {
 	return this->OrbitNumber;
 }
-
-INT32S CConfigurationData::GetNumMonsters() const
+INT32S CConfigurationData::GetMonsterNumber() const
 {
 	return this->MonsterNumber;
 }
-
-FP32 CConfigurationData::GetVOrbitron() const
+INT32S CConfigurationData::GetConstantLifeNumber() const
+{
+	return this->ConstantLifeNumber;
+}
+INT32S CConfigurationData::GetConstantBombAdditionNumber() const
+{
+	return this->ConstantBombAdditionNumber;
+}
+INT32S CConfigurationData::GetRocketRightIntervalSec() const
+{
+	return this->RocketRightIntervalSec;
+}
+INT32S CConfigurationData::GetBombAdditionIntervalSec() const
+{
+	return this->BombAdditionIntervalSec;
+}
+INT32S CConfigurationData::GetBombRemovalIntervalSec() const
+{
+	return this->BombRemovalIntervalSec;
+}
+INT32S CConfigurationData::GetLittlelifeNumForLife() const
+{
+	return this->LittlelifeNumForLife;
+}
+FP32 CConfigurationData::GetOrbitronVelocity() const
 {
 	return this->OrbitronVelocity;
 }
-
-FP32 CConfigurationData::GetVMonster() const
+FP32 CConfigurationData::GetMonsterVelocity() const
 {
 	return this->MonsterVelocity;
 }
-
-FP32 CConfigurationData::GetVBomb() const
+FP32 CConfigurationData::GetBombVelocity() const
 {
 	return this->BombVelocity;
 }
-
-FP32 CConfigurationData::GetVRocket() const
+FP32 CConfigurationData::GetRocketVelocity() const
 {
 	return this->RocketVelocity;
 }
-
-FP32 CConfigurationData::GetVRocketRight() const
+FP32 CConfigurationData::GetRocketrightVelocity() const
 {
 	return this->RocketrightVelocity;
 }
-
-FP32 CConfigurationData::GetVLife() const
+FP32 CConfigurationData::GetLifeVelocity() const
 {
 	return this->LifeVelocity;
 }

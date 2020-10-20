@@ -61,10 +61,10 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 			break;
 		case sf::Keyboard::Return:
 			if (view.CurrentSelection == 4 && !view.WaitingEntry) {
-				config_data.SetNumOrbits(model.NumOrbits);
-				config_data.SetNumMonsters(model.NumMonsters);
-				config_data.SetVOrbitron(model.VOrbitron);
-				config_data.SetVMonster(model.VMonster);
+				config_data.SetOrbitNumber(model.NumOrbits);
+				config_data.SetMonsterNumber(model.NumMonsters);
+				config_data.SetOrbitronVelocity(model.VOrbitron);
+				config_data.SetMonsterVelocity(model.VMonster);
 				return 2;
 			}else if (view.CurrentSelection == 5 && !view.WaitingEntry) {
 				return 0;

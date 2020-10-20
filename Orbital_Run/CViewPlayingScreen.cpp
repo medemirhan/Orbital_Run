@@ -138,7 +138,7 @@ void CViewPlayingScreen::SetSceneProperties()
 
 void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& init_config_data)
 {
-	for (INT32S i = 0; i < init_config_data.GetNumOrbits(); i++) {
+	for (INT32S i = 0; i < init_config_data.GetOrbitNumber(); i++) {
 		//sf::CircleShape* p_orbit = new sf::CircleShape;
 		std::shared_ptr<sf::CircleShape> p_orbit(new sf::CircleShape);
 		this->Orbits.push_back(*p_orbit);
@@ -278,4 +278,284 @@ void CViewPlayingScreen::UpdateEntityDrawings(const std::vector<INT32S>& idx)
 	for (INT32S i = 0; i < idx.size(); i++) {
 		this->EntityDrawings.erase(this->EntityDrawings.begin() + idx[i] - i);
 	}
+}
+
+void CViewPlayingScreen::SetEntityDrawings(const std::vector<sf::Sprite>& entity_drawings)
+{
+	this->EntityDrawings = entity_drawings;
+}
+
+void CViewPlayingScreen::SetEntityTextures(const std::vector<sf::Texture>& textures)
+{
+	this->EntityTextures = textures;
+}
+
+void CViewPlayingScreen::SetOrbits(const std::vector<sf::CircleShape>& orbits)
+{
+	this->Orbits = orbits;
+}
+
+void CViewPlayingScreen::SetMask(const sf::RectangleShape& mask)
+{
+	this->Mask = mask;
+}
+
+void CViewPlayingScreen::SetTxtScore(const sf::Text& txt)
+{
+	this->TxtScore = txt;
+}
+
+void CViewPlayingScreen::SetTxtGameLevel(const sf::Text& txt)
+{
+	this->TxtGameLevel = txt;
+}
+
+void CViewPlayingScreen::SetTxtLife(const sf::Text& txt)
+{
+	this->TxtLife = txt;
+}
+
+void CViewPlayingScreen::SetTxtLittlelife(const sf::Text& txt)
+{
+	this->TxtLittlelife = txt;
+}
+
+void CViewPlayingScreen::SetTxtRocketRight(const sf::Text& txt)
+{
+	this->TxtRocketRight = txt;
+}
+
+void CViewPlayingScreen::SetTxtLostLife(const sf::Text& txt)
+{
+	this->TxtLostLife = txt;
+}
+
+void CViewPlayingScreen::SetTxtLostLifeOptions(const sf::Text& txt)
+{
+	this->TxtLostLifeOptions = txt;
+}
+
+void CViewPlayingScreen::SetTxtGameOver(const sf::Text& txt)
+{
+	this->TxtGameOver = txt;
+}
+
+void CViewPlayingScreen::SetTxtGameOverOptions(const sf::Text& txt)
+{
+	this->TxtGameOverOptions = txt;
+}
+
+void CViewPlayingScreen::SetTxtGamePaused(const sf::Text& txt)
+{
+	this->TxtGamePaused = txt;
+}
+
+void CViewPlayingScreen::SetTxtGamePausedOptions(const sf::Text& txt)
+{
+	this->TxtGamePausedOptions = txt;
+}
+
+void CViewPlayingScreen::SetBackgroundSprite(const sf::Sprite& sprite)
+{
+	this->BackgroundSprite = sprite;
+}
+
+void CViewPlayingScreen::SetLevelIcon(const sf::Sprite& sprite)
+{
+	this->LevelIcon = sprite;
+}
+
+void CViewPlayingScreen::SetLifeIcon(const sf::Sprite& sprite)
+{
+	this->LifeIcon = sprite;
+}
+
+void CViewPlayingScreen::SetLittlelifeIcon(const sf::Sprite& sprite)
+{
+	this->LittlelifeIcon = sprite;
+}
+
+void CViewPlayingScreen::SetRocketRightIcon(const sf::Sprite& sprite)
+{
+	this->RocketRightIcon = sprite;
+}
+
+void CViewPlayingScreen::SetFont(const sf::Font& font)
+{
+	this->Font = font;
+}
+
+void CViewPlayingScreen::SetTextFont(const sf::Font& font)
+{
+	this->TextFont = font;
+}
+
+void CViewPlayingScreen::SetWarningFont(const sf::Font& font)
+{
+	this->WarningFont = font;
+}
+
+void CViewPlayingScreen::SetTexture(const sf::Texture& texture)
+{
+	this->Texture = texture;
+}
+
+void CViewPlayingScreen::SetLevelIconTexture(const sf::Texture& texture)
+{
+	this->LevelIconTexture = texture;
+}
+
+void CViewPlayingScreen::SetLifeIconTexture(const sf::Texture& texture)
+{
+	this->LifeIconTexture = texture;
+}
+
+void CViewPlayingScreen::SetLittlelifeIconTexture(const sf::Texture& texture)
+{
+	this->LittlelifeIconTexture = texture;
+}
+
+void CViewPlayingScreen::SetRocketRightIconTexture(const sf::Texture& texture)
+{
+	this->RocketRightIconTexture = texture;
+}
+
+std::vector<sf::Sprite> CViewPlayingScreen::GetEntityDrawings() const
+{
+	return this->EntityDrawings;
+}
+
+std::vector<sf::Texture> CViewPlayingScreen::GetEntityTextures() const
+{
+	return this->EntityTextures;
+}
+
+std::vector<sf::CircleShape> CViewPlayingScreen::GetOrbits() const
+{
+	return this->Orbits;
+}
+
+sf::RectangleShape CViewPlayingScreen::GetMask() const
+{
+	return this->Mask;
+}
+
+sf::Text CViewPlayingScreen::GetTxtScore() const
+{
+	return this->TxtScore;
+}
+
+sf::Text CViewPlayingScreen::GetTxtGameLevel() const
+{
+	return this->TxtGameLevel;
+}
+
+sf::Text CViewPlayingScreen::GetTxtLife() const
+{
+	return this->TxtLife;
+}
+
+sf::Text CViewPlayingScreen::GetTxtLittlelife() const
+{
+	return this->TxtLittlelife;
+}
+
+sf::Text CViewPlayingScreen::GetTxtRocketRight() const
+{
+	return this->TxtRocketRight;
+}
+
+sf::Text CViewPlayingScreen::GetTxtLostLife() const
+{
+	return this->TxtLostLife;
+}
+
+sf::Text CViewPlayingScreen::GetTxtLostLifeOptions() const
+{
+	return this->TxtLostLifeOptions;
+}
+
+sf::Text CViewPlayingScreen::GetTxtGameOver() const
+{
+	return this->TxtGameOver;
+}
+
+sf::Text CViewPlayingScreen::GetTxtGameOverOptions() const
+{
+	return this->TxtGameOverOptions;
+}
+
+sf::Text CViewPlayingScreen::GetTxtGamePaused() const
+{
+	return this->TxtGamePaused;
+}
+
+sf::Text CViewPlayingScreen::GetTxtGamePausedOptions() const
+{
+	return this->TxtGamePausedOptions;
+}
+
+sf::Sprite CViewPlayingScreen::GetBackgroundSprite() const
+{
+	return this->BackgroundSprite;
+}
+
+sf::Sprite CViewPlayingScreen::GetLevelIcon() const
+{
+	return this->LevelIcon;
+}
+
+sf::Sprite CViewPlayingScreen::GetLifeIcon() const
+{
+	return this->LifeIcon;
+}
+
+sf::Sprite CViewPlayingScreen::GetLittlelifeIcon() const
+{
+	return this->LittlelifeIcon;
+}
+
+sf::Sprite CViewPlayingScreen::GetRocketRightIcon() const
+{
+	return this->RocketRightIcon;
+}
+
+sf::Font CViewPlayingScreen::GetFont() const
+{
+	return this->Font;
+}
+
+sf::Font CViewPlayingScreen::GetTextFont() const
+{
+	return this->TextFont;
+}
+
+sf::Font CViewPlayingScreen::GetWarningFont() const
+{
+	return this->WarningFont;
+}
+
+sf::Texture CViewPlayingScreen::GetTexture() const
+{
+	return this->Texture;
+}
+
+sf::Texture CViewPlayingScreen::GetLevelIconTexture() const
+{
+	return this->LevelIconTexture;
+}
+
+sf::Texture CViewPlayingScreen::GetLifeIconTexture() const
+{
+	return this->LifeIconTexture;
+}
+
+sf::Texture CViewPlayingScreen::GetLittlelifeIconTexture() const
+{
+	return this->LittlelifeIconTexture;
+}
+
+sf::Texture CViewPlayingScreen::GetRocketRightIconTexture() const
+{
+	return this->RocketRightIconTexture;
 }

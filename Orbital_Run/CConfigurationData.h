@@ -8,23 +8,11 @@
 #include "rapidxml_utils.hpp"
 #include "type_definitions.h"
 
-#define GET_VARIABLE_NAME(var)    (#var)
-
-class CConfigurationData
-{
+class CConfigurationData {
 private:
 	std::string Filename;
 	BOOLEAN ConfigFileErrorStatus;
 public:
-	CConfigurationData();
-	CConfigurationData(const CConfigurationData* config_data);
-	~CConfigurationData();
-	void XMLParser();
-	void SetNumOrbits(INT32S num_orbit);
-	void SetNumMonsters(INT32S num_monster);
-	void SetVOrbitron(FP32 v_orbitron);
-	void SetVMonster(FP32 v_monster);
-
 	FP32 OrbitronInitialVelocity;
 	FP32 MonsterInitialVelocity;
 	FP32 RocketOrbitronVelocityRatio;
@@ -34,8 +22,8 @@ public:
 	INT32S OrbitronInitialLife;
 	INT32S OrbitNumber;
 	INT32S MonsterNumber;
-	INT32S ConstantLifeCount;
-	INT32S ConstantBombAdditionCount;
+	INT32S ConstantLifeNumber;
+	INT32S ConstantBombAdditionNumber;
 	INT32S RocketRightIntervalSec;
 	INT32S BombAdditionIntervalSec;
 	INT32S BombRemovalIntervalSec;
@@ -47,14 +35,56 @@ public:
 	FP32 RocketrightVelocity;
 	FP32 LifeVelocity;
 
+	CConfigurationData();
+	CConfigurationData(const CConfigurationData* config_data);
+	~CConfigurationData();
+	void XMLParser();
+	void SetFilename(std::string filename);
+	void SetConfigFileErrorStatus(BOOLEAN status);
+	void SetOrbitronInitialVelocity(FP32 velocity);
+	void SetMonsterInitialVelocity(FP32 velocity);
+	void SetRocketOrbitronVelocityRatio(FP32 ratio);
+	void SetVelocityIncreaseAtLevelUp(FP32 velocity_increase);
+	void SetMonsterOrbitChangeIntervalSec(FP32 interval);
+	void SetMonsterSleepTimeSec(FP32 time);
+	void SetOrbitronInitialLife(INT32S life);
+	void SetOrbitNumber(INT32S orbit_number);
+	void SetMonsterNumber(INT32S monster_number);
+	void SetConstantLifeNumber(INT32S num);
+	void SetConstantBombAdditionNumber(INT32S num);
+	void SetRocketRightIntervalSec(INT32S interval);
+	void SetBombAdditionIntervalSec(INT32S interval);
+	void SetBombRemovalIntervalSec(INT32S interval);
+	void SetLittlelifeNumForLife(INT32S littlelife_num);
+	void SetOrbitronVelocity(FP32 velocity);
+	void SetMonsterVelocity(FP32 velocity);
+	void SetBombVelocity(FP32 velocity);
+	void SetRocketVelocity(FP32 velocity);
+	void SetRocketrightVelocity(FP32 velocity);
+	void SetLifeVelocity(FP32 velocity);
+
+	std::string GetFilename() const;
 	BOOLEAN GetConfigFileErrorStatus() const;
-	INT32S GetNumOrbits() const;
-	INT32S GetNumMonsters() const;
-	FP32 GetVOrbitron() const;
-	FP32 GetVMonster() const;
-	FP32 GetVBomb() const;
-	FP32 GetVRocket() const;
-	FP32 GetVRocketRight() const;
-	FP32 GetVLife() const;
+	FP32 GetOrbitronInitialVelocity() const;
+	FP32 GetMonsterInitialVelocity() const;
+	FP32 GetRocketOrbitronVelocityRatio() const;
+	FP32 GetVelocityIncreaseAtLevelUp() const;
+	FP32 GetMonsterOrbitChangeIntervalSec() const;
+	FP32 GetMonsterSleepTimeSec() const;
+	INT32S GetOrbitronInitialLife() const;
+	INT32S GetOrbitNumber() const;
+	INT32S GetMonsterNumber() const;
+	INT32S GetConstantLifeNumber() const;
+	INT32S GetConstantBombAdditionNumber() const;
+	INT32S GetRocketRightIntervalSec() const;
+	INT32S GetBombAdditionIntervalSec() const;
+	INT32S GetBombRemovalIntervalSec() const;
+	INT32S GetLittlelifeNumForLife() const;
+	FP32 GetOrbitronVelocity() const;
+	FP32 GetMonsterVelocity() const;
+	FP32 GetBombVelocity() const;
+	FP32 GetRocketVelocity() const;
+	FP32 GetRocketrightVelocity() const;
+	FP32 GetLifeVelocity() const;
 };
 

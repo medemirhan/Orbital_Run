@@ -19,17 +19,7 @@ public:
 	CTimer();
 	~CTimer();
 	void MonsterSleepTimingHandler(CConfigurationData& config_data, const sf::Clock& global_clock, CModel& model);
-	sf::Time& GetElapsedTimeRocketright();
-	sf::Time& GetElapsedTimeBombAddition();
-	sf::Time& GetElapsedTimeBombRemoval();
-	sf::Time& GetElapsedTimeMonsterOrbitChange();
-	sf::Time& GetElapsedTimeRocketrightCache();
-	sf::Time& GetElapsedTimeBombAdditionCache();
-	sf::Time& GetElapsedTimeBombRemovalCache();
-	sf::Time& GetElapsedTimeMonsterOrbitChangeCache();
-	std::vector<sf::Time>& GetMonsterSleepTimeBegin();
-	std::vector<sf::Time>& GetMonsterSleepIdleTime();
-
+	
 	void SetElapsedTimeRocketright(const sf::Time& time);
 	void SetElapsedTimeBombAddition(const sf::Time& time);
 	void SetElapsedTimeBombRemoval(const sf::Time& time);
@@ -40,6 +30,16 @@ public:
 	void SetElapsedTimeMonsterOrbitChangeCache(const sf::Time& time);
 	void SetMonsterSleepTimeBegin(const std::vector<sf::Time>& time);
 	void SetMonsterSleepIdleTime(const std::vector<sf::Time>& time);
-
+	
+	sf::Time& GetElapsedTimeRocketright();
+	sf::Time& GetElapsedTimeBombAddition();
+	sf::Time& GetElapsedTimeBombRemoval();
+	sf::Time& GetElapsedTimeMonsterOrbitChange();
+	sf::Time& GetElapsedTimeRocketrightCache();
+	sf::Time& GetElapsedTimeBombAdditionCache();
+	sf::Time& GetElapsedTimeBombRemovalCache();
+	sf::Time& GetElapsedTimeMonsterOrbitChangeCache();
+	std::vector<sf::Time>& GetMonsterSleepTimeBegin();
+	std::vector<sf::Time>& GetMonsterSleepIdleTime();
 };
 
