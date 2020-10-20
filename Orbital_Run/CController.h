@@ -1,9 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-//#include "CViewMainMenu.h"
-//#include "CViewConfigMenu.h"
 #include "CConfigurationData.h"
-//#include "CViewPlayingScreen.h"
+
 class CTimer;
 class CModel;
 class CEntity;

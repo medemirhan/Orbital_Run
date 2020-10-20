@@ -155,9 +155,6 @@ void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& init_co
 
 void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_config_data, const std::shared_ptr<CEntity> p_entity)
 {
-	//sf::Sprite* p_entity_drawing = new sf::Sprite;
-	//entity_drawings.push_back(*p_entity_drawing);
-	//delete p_entity_drawing;
 	std::shared_ptr<sf::Sprite> p_entity_drawing(new sf::Sprite);
 	this->EntityDrawings.push_back(*p_entity_drawing);
 	switch (p_entity->GetEntityType()) {

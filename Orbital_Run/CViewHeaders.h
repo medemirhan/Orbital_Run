@@ -1,6 +1,6 @@
 #pragma once
 
-//Basic Screen Class
+//Base Screen Class
 #include "CView.h"
 
 //Including each screen of application

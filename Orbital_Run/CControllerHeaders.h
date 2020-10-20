@@ -1,6 +1,6 @@
 #pragma once
 
-//Basic Controller Class
+//Base Controller Class
 #include "CController.h"
 
 //Including each controller classes
