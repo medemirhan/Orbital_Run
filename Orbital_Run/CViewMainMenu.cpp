@@ -78,13 +78,11 @@ void CViewMainMenu::UpdateTextColors()
 		this->MenuOptionStartGame.setFillColor(sf::Color(255, 0, 0));
 		this->MenuOptionConfigMenu.setFillColor(sf::Color(255, 255, 255));
 		this->MenuOptionExit.setFillColor(sf::Color(255, 255, 255));
-	}
-	else if (this->CurrentSelection == 1) {
+	}else if (this->CurrentSelection == 1) {
 		this->MenuOptionStartGame.setFillColor(sf::Color(255, 255, 255));
 		this->MenuOptionConfigMenu.setFillColor(sf::Color(255, 0, 0));
 		this->MenuOptionExit.setFillColor(sf::Color(255, 255, 255));
-	}
-	else {
+	}else {
 		this->MenuOptionStartGame.setFillColor(sf::Color(255, 255, 255));
 		this->MenuOptionConfigMenu.setFillColor(sf::Color(255, 255, 255));
 		this->MenuOptionExit.setFillColor(sf::Color(255, 0, 0));

@@ -202,17 +202,25 @@ void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, std::vector<std::sha
 		if (p_entity_list[i]->GetIsAlive() && p_entity_list[i]->GetNumLife() > 0) {
 			if (p_entity_list[i]->GetEntityType() == ENTITY_TYPES_ROCKET) {
 				this->EntityDrawings[i].setRotation(90.0f + p_entity_list[i]->GetAngle());
+			}else {
+
 			}
 			app.draw(this->EntityDrawings[i]);
+		}else {
+
 		}
 	}
 
 	if (game_state == STATES_GAME_PAUSED || game_state == STATES_LOST_LIFE || game_state == STATES_GAME_OVER) {
 		app.draw(this->Mask);
+	}else {
+
 	}
 
 	if (game_state == STATES_GAME_OVER) {
 		app.draw(this->TxtScore);
+	}else {
+
 	}
 
 	app.draw(this->LevelIcon);

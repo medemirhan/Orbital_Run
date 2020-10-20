@@ -87,8 +87,7 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 		app.draw(this->TxtNumMonsters);
 		app.draw(this->TxtVOrbitron);
 		app.draw(this->TxtVMonster);
-	}
-	else if (this->CurrentSelection == 0) {
+	}else if (this->CurrentSelection == 0) {
 		app.draw(this->Text1);
 		app.draw(this->Text2);
 		app.draw(this->Text3);
@@ -98,9 +97,10 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
 			app.draw(this->Text0);
 			app.draw(this->TxtNumOrbits);
+		}else {
+
 		}
-	}
-	else if (this->CurrentSelection == 1) {
+	}else if (this->CurrentSelection == 1) {
 		app.draw(this->Text0);
 		app.draw(this->Text2);
 		app.draw(this->Text3);
@@ -110,9 +110,10 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
 			app.draw(this->Text1);
 			app.draw(this->TxtNumMonsters);
+		}else {
+
 		}
-	}
-	else if (this->CurrentSelection == 2) {
+	}else if (this->CurrentSelection == 2) {
 		app.draw(this->Text0);
 		app.draw(this->Text1);
 		app.draw(this->Text3);
@@ -122,9 +123,10 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
 			app.draw(this->Text2);
 			app.draw(this->TxtVOrbitron);
+		}else {
+
 		}
-	}
-	else if (this->CurrentSelection == 3) {
+	}else if (this->CurrentSelection == 3) {
 		app.draw(this->Text0);
 		app.draw(this->Text1);
 		app.draw(this->Text2);
@@ -134,10 +136,16 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
 			app.draw(this->Text3);
 			app.draw(this->TxtVMonster);
+		}else {
+
 		}
+	}else {
+
 	}
 	if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_STOP_MSEC) {
 		flash_display_clock.restart();
+	}else {
+
 	}
 	app.draw(this->Text4);
 	app.draw(this->Text5);

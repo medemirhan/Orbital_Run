@@ -17,6 +17,8 @@ INT32S main()
 	CConfigurationData config_data;
 	if (config_data.GetConfigFileErrorStatus()) {
 		return -1;
+	}else {
+
 	}
 
 	while (current_screen >= 0)
@@ -27,18 +29,15 @@ INT32S main()
 			CControllerMainMenu* p_controller_main_menu = new CControllerMainMenu;
 			current_screen = p_controller_main_menu->InvokeScreen(app, config_data, *p_model);
 			delete p_controller_main_menu;
-		}
-		else if (current_screen == 1) {
+		}else if (current_screen == 1) {
 			CControllerConfigMenu* p_controller_config_menu = new CControllerConfigMenu;
 			current_screen = p_controller_config_menu->InvokeScreen(app, config_data, *p_model);
 			delete p_controller_config_menu;
-		}
-		else if (current_screen == 2) {
+		}else if (current_screen == 2) {
 			CControllerPlayingScreen* p_controller_playing = new CControllerPlayingScreen;
 			current_screen = p_controller_playing->InvokeScreen(app, config_data, *p_model);
 			delete p_model, p_controller_playing;
-		}
-		else {
+		}else {
 			app.close();
 		}
 	}

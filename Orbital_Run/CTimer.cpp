@@ -24,6 +24,8 @@ void CTimer::MonsterSleepTimingHandler(CConfigurationData& config_data, const sf
 			this->GetMonsterSleepTimeBegin().erase(this->GetMonsterSleepTimeBegin().begin() + i);
 			this->GetMonsterSleepIdleTime().erase(this->GetMonsterSleepIdleTime().begin() + i);
 			i--;
+		}else {
+
 		}
 	}
 }

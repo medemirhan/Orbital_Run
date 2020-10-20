@@ -24,6 +24,8 @@ INT32S CControllerConfigMenu::InvokeScreen(sf::RenderWindow& app, CConfiguration
 			return_val = this->UserInputHandler(event, view, config_data, model);
 			if (return_val != 1) {
 				return return_val;
+			}else {
+
 			}
 		}
 		view.UpdateTextColors();
@@ -36,20 +38,25 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 {
 	if (event.type == sf::Event::Closed) {
 		return -1;
+	}else {
+
 	}
-	if (event.type == sf::Event::KeyPressed)
-	{
+	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Escape:
 			return 0;
 		case sf::Keyboard::Up:
 			if (view.CurrentSelection > 0 && !view.WaitingEntry) {
 				view.CurrentSelection--;
+			}else {
+
 			}
 			break;
 		case sf::Keyboard::Down:
 			if (view.CurrentSelection < 5 && !view.WaitingEntry) {
 				view.CurrentSelection++;
+			}else {
+
 			}
 			break;
 		case sf::Keyboard::Return:
@@ -59,11 +66,9 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				config_data.SetVOrbitron(model.VOrbitron);
 				config_data.SetVMonster(model.VMonster);
 				return 2;
-			}
-			else if (view.CurrentSelection == 5 && !view.WaitingEntry) {
+			}else if (view.CurrentSelection == 5 && !view.WaitingEntry) {
 				return 0;
-			}
-			else {
+			}else {
 				view.WaitingEntry = !view.WaitingEntry;
 				view.PlayerInput = "";
 			}
@@ -71,6 +76,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 		default:
 			break;
 		}
+	}else {
+
 	}
 	if (event.type == sf::Event::TextEntered && view.WaitingEntry) {
 		if ((event.text.unicode > 47 && event.text.unicode < 58) || event.text.unicode == 46) {
@@ -81,6 +88,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				model.NumOrbits = std::stof(std::string(view.PlayerInput));
 				if (model.NumOrbits < LOWER_LIMIT_ORBIT_NUM || model.NumOrbits > UPPER_LIMIT_ORBIT_NUM) {
 					model.NumOrbits = config_data.OrbitNumber;
+				}else {
+
 				}
 				break;
 			case 1:
@@ -88,6 +97,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				model.NumMonsters = std::stof(std::string(view.PlayerInput));
 				if (model.NumMonsters < LOWER_LIMIT_MONSTER_NUM || model.NumMonsters > UPPER_LIMIT_MONSTER_NUM) {
 					model.NumMonsters = config_data.MonsterNumber;
+				}else {
+
 				}
 				break;
 			case 2:
@@ -95,6 +106,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				model.VOrbitron = std::stof(std::string(view.PlayerInput));
 				if (model.VOrbitron < LOWER_LIMIT_ORBITRON_VEL || model.VOrbitron > UPPER_LIMIT_ORBITRON_VEL) {
 					model.VOrbitron = config_data.OrbitronVelocity;
+				}else {
+
 				}
 				break;
 			case 3:
@@ -102,12 +115,18 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				model.VMonster = std::stof(std::string(view.PlayerInput));
 				if (model.VMonster <LOWER_LIMIT_MONSTER_VEL || model.VMonster > UPPER_LIMIT_MONSTER_VEL) {
 					model.VMonster = config_data.MonsterVelocity;
+				}else {
+
 				}
 				break;
 			default:
 				break;
 			}
+		}else {
+
 		}
+	}else {
+
 	}
 	return 1;
 }

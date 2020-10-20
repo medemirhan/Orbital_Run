@@ -23,6 +23,8 @@ INT32S CControllerMainMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationDa
 			return_val = this->UserInputHandler(event, view);
 			if (return_val != 0) {
 				return return_val;
+			}else {
+
 			}
 		}
 		view.UpdateTextColors();
@@ -35,33 +37,39 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& vi
 {
 	if (event.type == sf::Event::Closed) {
 		return -1;
+	}else {
+
 	}
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
 			if (view.CurrentSelection > 0) {
 				view.CurrentSelection--;
+			}else {
+
 			}
 			break;
 		case sf::Keyboard::Down:
 			if (view.CurrentSelection < 2) {
 				view.CurrentSelection++;
+			}else {
+
 			}
 			break;
 		case sf::Keyboard::Return:
 			if (view.CurrentSelection == 0) {
 				return 2;
-			}
-			else if (view.CurrentSelection == 1) {
+			}else if (view.CurrentSelection == 1) {
 				return 1;
-			}
-			else {
+			}else {
 				return -1;
 			}
 			break;
 		default:
 			break;
 		}
+	}else {
+
 	}
 	return 0;
 }

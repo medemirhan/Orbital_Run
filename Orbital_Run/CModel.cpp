@@ -41,8 +41,7 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
             if (random_point_x > bounding_box_x - BOUNDING_BOX_WIDTH / 2.0f && random_point_x < bounding_box_x + BOUNDING_BOX_WIDTH / 2.0f && random_point_y > bounding_box_y - BOUNDING_BOX_HEIGHT / 2.0f && random_point_y < bounding_box_y + BOUNDING_BOX_HEIGHT / 2.0f) {
                 collision = true;
                 break;
-            }
-            else {
+            }else {
                 collision = false;
             }
         }
@@ -105,6 +104,8 @@ std::vector<INT32S> CModel::UpdateEntityList()
         if (!(this->EntityList[i]->GetIsAlive())) {
             this->EntityList.erase(this->EntityList.begin() + i);
             idx.push_back(i);
+        }else {
+
         }
     }
     return idx;

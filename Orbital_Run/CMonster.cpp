@@ -33,17 +33,13 @@ void CMonster::ChangeOrbit(FP32 direction)
 
 	if (cur_pos_x >= WINDOW_CENTER_X && cur_pos_y >= WINDOW_CENTER_Y) {
 		theta = ATAN((cur_pos_y - WINDOW_CENTER_Y) / (cur_pos_x - WINDOW_CENTER_X));
-	}
-	else if (cur_pos_x < WINDOW_CENTER_X && cur_pos_y >= WINDOW_CENTER_Y) {
+	}else if (cur_pos_x < WINDOW_CENTER_X && cur_pos_y >= WINDOW_CENTER_Y) {
 		theta = (ANGLE_MAX / 2.0f) + ATAN((cur_pos_y - WINDOW_CENTER_Y) / (cur_pos_x - WINDOW_CENTER_X));
-	}
-	else if (cur_pos_x < WINDOW_CENTER_X && cur_pos_y < WINDOW_CENTER_Y) {
+	}else if (cur_pos_x < WINDOW_CENTER_X && cur_pos_y < WINDOW_CENTER_Y) {
 		theta = (ANGLE_MAX / 2.0f) + ATAN((cur_pos_y - WINDOW_CENTER_Y) / (cur_pos_x - WINDOW_CENTER_X));
-	}
-	else if (cur_pos_x >= WINDOW_CENTER_X && cur_pos_y < WINDOW_CENTER_Y) {
+	}else if (cur_pos_x >= WINDOW_CENTER_X && cur_pos_y < WINDOW_CENTER_Y) {
 		theta = ANGLE_MAX + ATAN((cur_pos_y - WINDOW_CENTER_Y) / (cur_pos_x - WINDOW_CENTER_X));
-	}
-	else {
+	}else {
 
 	}
 	updated_pos_x = (INNER_ORBIT_RADIUS + (this->GetOrbit() + direction) * DISTANCE_BTW_ORBITS) * COS(theta) + WINDOW_CENTER_X;

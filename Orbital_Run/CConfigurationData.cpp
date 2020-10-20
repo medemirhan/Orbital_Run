@@ -56,8 +56,7 @@ void CConfigurationData::XMLParser()
 		std::ifstream file(this->Filename);
 		if (file.fail()) {
 			throw std::runtime_error("Configuration file (config.xml) couldn't be read.");
-		}
-		else {
+		}else {
 			std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 			buffer.push_back('\0');
 			doc.parse<0>(&buffer[0]);
@@ -67,106 +66,91 @@ void CConfigurationData::XMLParser()
 			if (!strcmp("OrbitronInitialVelocity", p_node->first_attribute()->value())) {
 				this->OrbitronInitialVelocity = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("MonsterInitialVelocity", p_node->first_attribute()->value())) {
 				this->MonsterInitialVelocity = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("RocketOrbitronVelocityRatio", p_node->first_attribute()->value())) {
 				this->RocketOrbitronVelocityRatio = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("VelocityIncreaseAtLevelUp", p_node->first_attribute()->value())) {
 				this->VelocityIncreaseAtLevelUp = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("MonsterOrbitChangeIntervalSec", p_node->first_attribute()->value())) {
 				this->MonsterOrbitChangeIntervalSec = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("MonsterSleepTimeSec", p_node->first_attribute()->value())) {
 				this->MonsterSleepTimeSec = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("OrbitronInitialLife", p_node->first_attribute()->value())) {
 				this->OrbitronInitialLife = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("OrbitNumber", p_node->first_attribute()->value())) {
 				this->OrbitNumber = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("MonsterNumber", p_node->first_attribute()->value())) {
 				this->MonsterNumber = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("ConstantLifeCount", p_node->first_attribute()->value())) {
 				this->ConstantLifeCount = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("ConstantBombAdditionCount", p_node->first_attribute()->value())) {
 				this->ConstantBombAdditionCount = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("RocketRightIntervalSec", p_node->first_attribute()->value())) {
 				this->RocketRightIntervalSec = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("BombAdditionIntervalSec", p_node->first_attribute()->value())) {
 				this->BombAdditionIntervalSec = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("BombRemovalIntervalSec", p_node->first_attribute()->value())) {
 				this->BombRemovalIntervalSec = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 			if (!strcmp("LittlelifeNumForLife", p_node->first_attribute()->value())) {
 				this->LittlelifeNumForLife = std::stof(p_node->last_attribute()->value());
 				p_node = p_node->next_sibling();
-			}
-			else {
+			}else {
 				throw std::runtime_error("Corrupted config file (config.xml).");
 			}
 		}
