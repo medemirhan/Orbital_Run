@@ -17,7 +17,7 @@ void CTimer::MonsterSleepTimingHandler(CConfigurationData& config_data, const sf
 {
 	for (INT32S i = 0; i < model.GetSleepingMonsters().size(); i++) {
 		FP32 elapsed = global_clock.getElapsedTime().asSeconds() - this->GetMonsterSleepTimeBegin()[i].asSeconds() - this->GetMonsterSleepIdleTime()[i].asSeconds();
-		if (elapsed > config_data.MonsterSleepTimeSec) {
+		if (elapsed > config_data.GetMonsterSleepTimeSec()) {
 			model.GetSleepingMonsters()[i]->SetNumLife(model.GetSleepingMonsters()[i]->GetNumLife() + 1);
 			model.GetSleepingMonsters()[i]->SetVelocity(config_data.GetMonsterVelocity());
 			model.GetSleepingMonsters().erase(model.GetSleepingMonsters().begin() + i);

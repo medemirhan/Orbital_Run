@@ -12,7 +12,7 @@ CControllerPlayingScreen::~CControllerPlayingScreen()
 
 INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
 {
-	model.GameState = STATES_PLAYING_GAME;
+	model.SetGameState(STATES_PLAYING_GAME);
 	INT32S return_val = 2;
 	BOOLEAN change_screen = false;
 	sf::Clock global_clock;
@@ -39,13 +39,13 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT);
 	sf::Clock clock_rocketright;
 
-	for (INT32S i = 0; i < updated_config_data.ConstantBombAdditionNumber; i++) {
+	for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) {
 		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB);
 	}
 	sf::Clock clock_bomb_addition;
 	sf::Clock clock_bomb_removal;
 
-	for (INT32S i = 0; i < updated_config_data.ConstantLifeNumber; i++) {
+	for (INT32S i = 0; i < updated_config_data.GetConstantLifeNumber(); i++) {
 		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE);
 		num_active_life++;
 	}
@@ -65,7 +65,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			}
 		}
 
-		switch (model.GameState) {
+		switch (model.GetGameState()) {
 		case STATES_PLAYING_GAME:
 		{
 			for (INT32S i = 0; i < model.EntityList.size(); i++) {
@@ -75,10 +75,10 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 
 				}
 			}
-			model.GameLevel += model.EntityList.front()->GetVelocity() / ANGLE_MAX;
+			model.SetGameLevel(model.GetGameLevel() + model.EntityList.front()->GetVelocity() / ANGLE_MAX);
 
 			timer.SetElapsedTimeMonsterOrbitChange(timer.GetElapsedTimeMonsterOrbitChangeCache() + clock_monster_orbit_change.getElapsedTime());
-			if (timer.GetElapsedTimeMonsterOrbitChange().asSeconds() > updated_config_data.MonsterOrbitChangeIntervalSec) {
+			if (timer.GetElapsedTimeMonsterOrbitChange().asSeconds() > updated_config_data.GetMonsterOrbitChangeIntervalSec()) {
 				this->MonsterChaseOrbitron(model.EntityList);
 				timer.SetElapsedTimeMonsterOrbitChangeCache(sf::Time::Zero);
 				clock_monster_orbit_change.restart();
@@ -95,18 +95,18 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				}
 			}
 
-			if (num_active_life < updated_config_data.ConstantLifeNumber) {
-				for (INT32S i = 0; i < updated_config_data.ConstantLifeNumber - num_active_life; i++) {
+			if (num_active_life < updated_config_data.GetConstantLifeNumber()) {
+				for (INT32S i = 0; i < updated_config_data.GetConstantLifeNumber() - num_active_life; i++) {
 					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE);
 					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				}
-				num_active_life = updated_config_data.ConstantLifeNumber;
+				num_active_life = updated_config_data.GetConstantLifeNumber();
 			}else {
 
 			}
 
 			timer.SetElapsedTimeRocketright(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
-			if (timer.GetElapsedTimeRocketright().asSeconds() > updated_config_data.RocketRightIntervalSec) {
+			if (timer.GetElapsedTimeRocketright().asSeconds() > updated_config_data.GetRocketRightIntervalSec()) {
 				model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT);
 				view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				timer.SetElapsedTimeRocketrightCache(sf::Time::Zero);
@@ -116,8 +116,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			}
 
 			timer.SetElapsedTimeBombAddition(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
-			if (timer.GetElapsedTimeBombAddition().asSeconds() > updated_config_data.BombAdditionIntervalSec) {
-				for (INT32S i = 0; i < updated_config_data.ConstantBombAdditionNumber; i++) {
+			if (timer.GetElapsedTimeBombAddition().asSeconds() > updated_config_data.GetBombAdditionIntervalSec()) {
+				for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) {
 					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB);
 					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				}
@@ -129,7 +129,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			}
 
 			timer.SetElapsedTimeBombRemoval(timer.GetElapsedTimeBombRemovalCache() + clock_bomb_removal.getElapsedTime());
-			if (timer.GetElapsedTimeBombRemoval().asSeconds() > updated_config_data.BombRemovalIntervalSec) {
+			if (timer.GetElapsedTimeBombRemoval().asSeconds() > updated_config_data.GetBombRemovalIntervalSec()) {
 				INT32S bomb_removed = 0;
 				for (INT32S i = 0; i < model.EntityList.size(); i++) {
 					if (model.EntityList[i]->GetEntityType() == ENTITY_TYPES_BOMB && bomb_removed < updated_config_data.ConstantBombAdditionNumber) {
@@ -174,7 +174,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			if (model.EntityList.front()->GetAngle() >= ANGLE_MIN && model.EntityList.front()->GetAngle() < ANGLE_MIN + angle_tolerance) {
 				for (INT32S i = 0; i < model.EntityList.size(); i++) {
 					if (model.EntityList[i]->GetVelocity() > 0 && model.EntityList[i]->GetEntityType() != ENTITY_TYPES_BOMB) {
-						model.EntityList[i]->SetVelocity(model.EntityList[i]->GetVelocity() + updated_config_data.VelocityIncreaseAtLevelUp);
+						model.EntityList[i]->SetVelocity(model.EntityList[i]->GetVelocity() + updated_config_data.GetVelocityIncreaseAtLevelUp());
 					}else {
 
 					}
@@ -212,9 +212,9 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 		INT32S indicator_num_littlelife = p_orbitron->GetNumLittleLife();
 		INT32S indicator_num_rocketright = p_orbitron->GetNumRocketRight();
 
-		view.UpdateIndicatorsView(model.GameLevel, indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
+		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		view.PrintScreen(app, model.EntityList, model.GameState, num_orbits);
+		view.PrintScreen(app, model.GetEntityList(), model.GetGameState(), num_orbits);
 
 		//std::mutex m;
 		//app.setActive(false);
@@ -238,33 +238,33 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front()));
 		switch (event.key.code) {
 		case sf::Keyboard::Escape:
-			if (model.GameState == STATES_PLAYING_GAME) {
+			if (model.GetGameState() == STATES_PLAYING_GAME) {
 				interrupt_clock.restart();
 				timer.SetElapsedTimeRocketrightCache(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
 				timer.SetElapsedTimeBombAdditionCache(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
 				timer.SetElapsedTimeBombRemovalCache(timer.GetElapsedTimeBombRemovalCache() + clock_bomb_removal.getElapsedTime());
 				timer.SetElapsedTimeMonsterOrbitChangeCache(timer.GetElapsedTimeMonsterOrbitChangeCache() + clock_bomb_removal.getElapsedTime());
-				model.GameState = STATES_GAME_PAUSED;
+				model.SetGameState(STATES_GAME_PAUSED);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Left:
-			if (p_orbitron->GetOrbit() > 0 && model.GameState == STATES_PLAYING_GAME) {
+			if (p_orbitron->GetOrbit() > 0 && model.GetGameState() == STATES_PLAYING_GAME) {
 				p_orbitron->ChangeOrbit(DIRECTION_IN);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Right:
-			if (p_orbitron->GetOrbit() < num_orbits - 1 && model.GameState == STATES_PLAYING_GAME) {
+			if (p_orbitron->GetOrbit() < num_orbits - 1 && model.GetGameState() == STATES_PLAYING_GAME) {
 				p_orbitron->ChangeOrbit(DIRECTION_OUT);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Space:
-			if (model.GameState == STATES_PLAYING_GAME && p_orbitron->GetNumRocketRight() > 0) {
+			if (model.GetGameState() == STATES_PLAYING_GAME && p_orbitron->GetNumRocketRight() > 0) {
 				//fire rocket
 				model.GenerateEntityOnRandomPoint(config_data, ENTITY_TYPES_ROCKET);
 				model.EntityList.back()->SetPosition(p_orbitron->GetPositionX(), p_orbitron->GetPositionY());
@@ -279,7 +279,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (model.GameState == STATES_GAME_PAUSED || model.GameState == STATES_LOST_LIFE) {
+			if (model.GetGameState() == STATES_GAME_PAUSED || model.GetGameState() == STATES_LOST_LIFE) {
 				clock_rocketright.restart();
 				clock_bomb_addition.restart();
 				clock_bomb_removal.restart();
@@ -289,10 +289,10 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 					temp_timer[i] += interrupt_clock.getElapsedTime();
 					timer.SetMonsterSleepIdleTime(temp_timer);
 				}
-				model.GameState = STATES_PLAYING_GAME;
+				model.SetGameState(STATES_PLAYING_GAME);
 			}
-			else if (model.GameState == STATES_GAME_OVER) {
-				model.GameState = STATES_PLAYING_GAME;
+			else if (model.GetGameState() == STATES_GAME_OVER) {
+				model.SetGameState(STATES_PLAYING_GAME);
 				//buraya initial game_config deðerlerini çekeceði bir config dosyasý yolla
 				change_screen = true;
 				return 2;
@@ -301,7 +301,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 			}
 			break;
 		case sf::Keyboard::M:
-			if (model.GameState == STATES_GAME_PAUSED || model.GameState == STATES_LOST_LIFE || model.GameState == STATES_GAME_OVER) {
+			if (model.GetGameState() == STATES_GAME_PAUSED || model.GetGameState() == STATES_LOST_LIFE || model.GetGameState() == STATES_GAME_OVER) {
 				CConfigurationData* p_default_config = new CConfigurationData;
 				config_data.SetOrbitNumber(p_default_config->GetOrbitNumber());
 				config_data.SetMonsterNumber(p_default_config->GetMonsterNumber());

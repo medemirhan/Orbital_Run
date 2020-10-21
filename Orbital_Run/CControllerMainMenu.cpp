@@ -12,7 +12,7 @@ CControllerMainMenu::~CControllerMainMenu()
 
 INT32S CControllerMainMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
 {
-	model.GameState = STATES_MAIN_MENU;
+	model.SetGameState(STATES_MAIN_MENU);
 	INT32S return_val = 1;
 	CViewMainMenu view;
 	view.SetSceneProperties();
@@ -43,23 +43,23 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& vi
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
-			if (view.CurrentSelection > 0) {
-				view.CurrentSelection--;
+			if (view.GetCurrentSelection() > 0) {
+				view.SetCurrentSelection(view.GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (view.CurrentSelection < 2) {
-				view.CurrentSelection++;
+			if (view.GetCurrentSelection() < 2) {
+				view.SetCurrentSelection(view.GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (view.CurrentSelection == 0) {
+			if (view.GetCurrentSelection() == 0) {
 				return 2;
-			}else if (view.CurrentSelection == 1) {
+			}else if (view.GetCurrentSelection() == 1) {
 				return 1;
 			}else {
 				return -1;

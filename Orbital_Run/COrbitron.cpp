@@ -75,10 +75,10 @@ void COrbitron::SetNumRocketRight(INT32S num_rocket_right)
 
 INT32S COrbitron::GetNumLittleLife() const
 {
-	return NumLittleLife;
+	return this->NumLittleLife;
 }
 
 INT32S COrbitron::GetNumRocketRight() const
 {
-	return NumRocketRight;
+	return this->NumRocketRight;
 }

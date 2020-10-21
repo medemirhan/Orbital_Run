@@ -21,6 +21,7 @@ public:
 	void PrintScreen(sf::RenderWindow& app);
 	void UpdateTextColors();
 
+	void SetCurrentSelection(INT32S selection);
 	void SetTexture(sf::Texture texture);
 	void SetGameLogoTexture(sf::Texture texture);
 	void SetBackgroundTexture(sf::Texture texture);
@@ -33,6 +34,7 @@ public:
 	void SetMenuOptionConfigMenu(sf::Text text);
 	void SetMenuOptionExit(sf::Text text);
 
+	INT32S GetCurrentSelection() const;
 	sf::Texture GetTexture() const;
 	sf::Texture GetGameLogoTexture() const;
 	sf::Texture GetBackgroundTexture() const;

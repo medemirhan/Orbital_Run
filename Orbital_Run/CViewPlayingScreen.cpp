@@ -189,7 +189,7 @@ void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_c
 	this->EntityDrawings.back().setOrigin(this->EntityDrawings.back().getLocalBounds().width / 2.0f, this->EntityDrawings.back().getLocalBounds().height / 2.0f);
 }
 
-void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, std::vector<std::shared_ptr<CEntity>>& p_entity_list, E_STATES& game_state, INT32S num_orbits)
+void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, const E_STATES& game_state, INT32S num_orbits)
 {
 	//m.lock();
 	//app.setActive(true);

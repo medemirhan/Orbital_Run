@@ -12,7 +12,7 @@ CControllerConfigMenu::~CControllerConfigMenu()
 
 INT32S CControllerConfigMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
 {
-	model.GameState = STATES_CONFIG_MENU;
+	model.SetGameState(STATES_CONFIG_MENU);
 	INT32S return_val = 1;
 	CViewConfigMenu view;
 	view.SetSceneProperties();
@@ -46,31 +46,31 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 		case sf::Keyboard::Escape:
 			return 0;
 		case sf::Keyboard::Up:
-			if (view.CurrentSelection > 0 && !view.WaitingEntry) {
-				view.CurrentSelection--;
+			if (view.GetCurrentSelection() > 0 && !view.GetWaitingEntry()) {
+				view.SetCurrentSelection(view.GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (view.CurrentSelection < 5 && !view.WaitingEntry) {
-				view.CurrentSelection++;
+			if (view.GetCurrentSelection() < 5 && !view.GetWaitingEntry()) {
+				view.SetCurrentSelection(view.GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (view.CurrentSelection == 4 && !view.WaitingEntry) {
-				config_data.SetOrbitNumber(model.NumOrbits);
-				config_data.SetMonsterNumber(model.NumMonsters);
-				config_data.SetOrbitronVelocity(model.VOrbitron);
-				config_data.SetMonsterVelocity(model.VMonster);
+			if (view.GetCurrentSelection() == 4 && !view.GetWaitingEntry()) {
+				config_data.SetOrbitNumber(model.GetNumOrbits());
+				config_data.SetMonsterNumber(model.GetNumMonsters());
+				config_data.SetOrbitronVelocity(model.GetVOrbitron());
+				config_data.SetMonsterVelocity(model.GetVMonster());
 				return 2;
-			}else if (view.CurrentSelection == 5 && !view.WaitingEntry) {
+			}else if (view.GetCurrentSelection() == 5 && !view.GetWaitingEntry()) {
 				return 0;
 			}else {
-				view.WaitingEntry = !view.WaitingEntry;
-				view.PlayerInput = "";
+				view.SetWaitingEntry(!view.GetWaitingEntry());
+				view.SetPlayerInput("");
 			}
 			break;
 		default:
@@ -79,42 +79,42 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 	}else {
 
 	}
-	if (event.type == sf::Event::TextEntered && view.WaitingEntry) {
+	if (event.type == sf::Event::TextEntered && view.GetWaitingEntry()) {
 		if ((event.text.unicode > 47 && event.text.unicode < 58) || event.text.unicode == 46) {
-			view.PlayerInput += event.text.unicode;
-			switch (view.CurrentSelection) {
+			view.SetPlayerInput(view.GetPlayerInput() + event.text.unicode);
+			switch (view.GetCurrentSelection()) {
 			case 0:
-				view.TxtNumOrbits.setString(view.PlayerInput);
-				model.NumOrbits = std::stof(std::string(view.PlayerInput));
-				if (model.NumOrbits < LOWER_LIMIT_ORBIT_NUM || model.NumOrbits > UPPER_LIMIT_ORBIT_NUM) {
-					model.NumOrbits = config_data.OrbitNumber;
+				view.TxtNumOrbits.setString(view.GetPlayerInput());
+				model.SetNumOrbits(std::stof(std::string(view.GetPlayerInput())));
+				if (model.GetNumOrbits() < LOWER_LIMIT_ORBIT_NUM || model.GetNumOrbits() > UPPER_LIMIT_ORBIT_NUM) {
+					model.SetNumOrbits(config_data.GetOrbitNumber());
 				}else {
 
 				}
 				break;
 			case 1:
-				view.TxtNumMonsters.setString(view.PlayerInput);
-				model.NumMonsters = std::stof(std::string(view.PlayerInput));
-				if (model.NumMonsters < LOWER_LIMIT_MONSTER_NUM || model.NumMonsters > UPPER_LIMIT_MONSTER_NUM) {
-					model.NumMonsters = config_data.MonsterNumber;
+				view.TxtNumMonsters.setString(view.GetPlayerInput());
+				model.SetNumMonsters(std::stof(std::string(view.GetPlayerInput())));
+				if (model.GetNumMonsters() < LOWER_LIMIT_MONSTER_NUM || model.GetNumMonsters() > UPPER_LIMIT_MONSTER_NUM) {
+					model.SetNumMonsters(config_data.GetMonsterNumber());
 				}else {
 
 				}
 				break;
 			case 2:
-				view.TxtVOrbitron.setString(view.PlayerInput);
-				model.VOrbitron = std::stof(std::string(view.PlayerInput));
-				if (model.VOrbitron < LOWER_LIMIT_ORBITRON_VEL || model.VOrbitron > UPPER_LIMIT_ORBITRON_VEL) {
-					model.VOrbitron = config_data.OrbitronVelocity;
+				view.TxtVOrbitron.setString(view.GetPlayerInput());
+				model.SetVOrbitron(std::stof(std::string(view.GetPlayerInput())));
+				if (model.GetVOrbitron() < LOWER_LIMIT_ORBITRON_VEL || model.GetVOrbitron() > UPPER_LIMIT_ORBITRON_VEL) {
+					model.SetVOrbitron(config_data.GetOrbitronVelocity());
 				}else {
 
 				}
 				break;
 			case 3:
-				view.TxtVMonster.setString(view.PlayerInput);
-				model.VMonster = std::stof(std::string(view.PlayerInput));
-				if (model.VMonster <LOWER_LIMIT_MONSTER_VEL || model.VMonster > UPPER_LIMIT_MONSTER_VEL) {
-					model.VMonster = config_data.MonsterVelocity;
+				view.TxtVMonster.setString(view.GetPlayerInput());
+				model.SetVMonster(std::stof(std::string(view.GetPlayerInput())));
+				if (model.GetVMonster() <LOWER_LIMIT_MONSTER_VEL || model.GetVMonster() > UPPER_LIMIT_MONSTER_VEL) {
+					model.SetVMonster(config_data.GetMonsterVelocity());
 				}else {
 
 				}

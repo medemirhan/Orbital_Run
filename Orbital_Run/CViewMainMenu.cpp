@@ -89,6 +89,11 @@ void CViewMainMenu::UpdateTextColors()
 	}
 }
 
+void CViewMainMenu::SetCurrentSelection(INT32S selection)
+{
+	this->CurrentSelection = selection;
+}
+
 void CViewMainMenu::SetTexture(sf::Texture texture)
 {
 	this->Texture = texture;
@@ -142,6 +147,11 @@ void CViewMainMenu::SetMenuOptionConfigMenu(sf::Text text)
 void CViewMainMenu::SetMenuOptionExit(sf::Text text)
 {
 	this->MenuOptionExit = text;
+}
+
+INT32S CViewMainMenu::GetCurrentSelection() const
+{
+	return this->CurrentSelection;
 }
 
 sf::Texture CViewMainMenu::GetTexture() const
