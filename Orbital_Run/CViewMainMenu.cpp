@@ -58,8 +58,9 @@ void CViewMainMenu::SetSceneProperties()
 	this->MenuOptionExit.setPosition(sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f + 120.0f));
 }
 
-void CViewMainMenu::PrintScreen(sf::RenderWindow& app)
+void CViewMainMenu::PrintScreen(sf::RenderWindow& app, std::mutex& mutex)
 {
+	mutex.lock();
 	app.clear();
 	app.draw(this->BackgroundSprite);
 	app.draw(this->Sprite);
@@ -69,6 +70,8 @@ void CViewMainMenu::PrintScreen(sf::RenderWindow& app)
 	app.draw(this->MenuOptionConfigMenu);
 	app.draw(this->MenuOptionExit);
 	app.display();
+	app.setActive(false);
+	mutex.unlock();
 }
 
 void CViewMainMenu::UpdateTextColors()

@@ -15,8 +15,10 @@ INT32S CControllerMainMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationDa
 	model.SetGameState(STATES_MAIN_MENU);
 	INT32S return_val = 1;
 	CViewMainMenu view;
+	app.setActive(true);
 	view.SetSceneProperties();
-	
+
+	//std::mutex mutex;
 	while (app.isOpen()) {
 		sf::Event event;
 		while (app.pollEvent(event)) {
@@ -28,7 +30,12 @@ INT32S CControllerMainMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationDa
 			}
 		}
 		view.UpdateTextColors();
-		view.PrintScreen(app);
+		
+		//view.PrintScreen(app);
+		std::mutex mutex;
+		app.setActive(false);
+		std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(app), std::ref(mutex));
+		thread_print_screen.join();
 	}
 	//return -1; ????????????
 }

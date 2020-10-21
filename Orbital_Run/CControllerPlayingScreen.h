@@ -3,10 +3,11 @@
 #include "CController.h"
 #include "CConfigurationData.h"
 #include "CViewPlayingScreen.h"
+#include <mutex>
 
 class CControllerPlayingScreen : public CController {
 private:
-
+	//std::mutex mutex;
 public:
 	CControllerPlayingScreen();
 	~CControllerPlayingScreen();

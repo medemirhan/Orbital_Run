@@ -72,8 +72,9 @@ void CViewConfigMenu::SetSceneProperties()
 	this->Text5.setPosition({ 300.f, 620.f });
 }
 
-void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_display_clock)
+void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_display_clock, std::mutex& mutex)
 {
+	mutex.lock();
 	app.clear();
 	app.draw(this->BackgroundSprite);
 	app.draw(this->Sprite);
@@ -150,6 +151,8 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 	app.draw(this->Text4);
 	app.draw(this->Text5);
 	app.display();
+	app.setActive(false);
+	mutex.unlock();
 }
 
 void CViewConfigMenu::UpdateTextColors()

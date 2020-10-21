@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <mutex>
 #include "CView.h"
 #include "CModel.h"
 #include "CConfigurationData.h"
@@ -18,7 +19,7 @@ public:
 	CViewMainMenu();
 	~CViewMainMenu();
 	void SetSceneProperties();
-	void PrintScreen(sf::RenderWindow& app);
+	void PrintScreen(sf::RenderWindow& app, std::mutex& mutex);
 	void UpdateTextColors();
 
 	void SetCurrentSelection(INT32S selection);

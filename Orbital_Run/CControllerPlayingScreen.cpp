@@ -27,6 +27,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	std::vector<E_COLLISION_TYPES> collision_types;
 
 	CViewPlayingScreen view;
+	app.setActive(true);
 	view.SetSceneProperties();
 	view.GenerateOrbitDrawings(updated_config_data);
 	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ORBITRON);
@@ -53,7 +54,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	for (INT32S i = 0; i < model.EntityList.size(); i++) {
 		view.GenerateEntityDrawings(updated_config_data, model.EntityList[i]);
 	}
-
+	
 	while (app.isOpen()) {
 		sf::Event event;
 		while (app.pollEvent(event)) {
@@ -214,12 +215,11 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 
 		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		view.PrintScreen(app, model.GetEntityList(), model.GetGameState(), num_orbits);
-
-		//std::mutex m;
-		//app.setActive(false);
-		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, view, std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits);
-		//thread_print_screen.join();
+		//view.PrintScreen(app, model.GetEntityList(), model.GetGameState(), num_orbits);
+		std::mutex mutex;
+		app.setActive(false);
+		std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
+		thread_print_screen.join();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_SLEEP_TIME_MSEC));
 	}
