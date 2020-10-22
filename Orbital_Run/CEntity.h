@@ -22,6 +22,7 @@ public:
 	~CEntity();
 	virtual void RotateEntity(FP32 x_pivot, FP32 y_pivot) = 0;
 	void Init(E_ENTITY_TYPES entity_type, FP32 pos_x, FP32 pos_y, FP32 velocity, FP32 radius, FP32 angle, INT32S orbit, INT32S num_life, BOOLEAN is_alive);
+	
 	void SetEntityType(E_ENTITY_TYPES entity_type);
 	void SetPosition(FP32 pos_x, FP32 pos_y);
 	void SetVelocity(FP32 velocity);

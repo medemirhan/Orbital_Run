@@ -6,8 +6,7 @@
 #include "CConfigurationData.h"
 #include "type_definitions.h"
 
-INT32S main()
-{
+INT32S main() {
 	srand(time(nullptr));
 	INT32S current_screen = 0;
 
@@ -21,10 +20,8 @@ INT32S main()
 
 	}
 
-	while (current_screen >= 0)
-	{
+	while (current_screen >= 0) {
 		CModel* p_model = new CModel(config_data);
-		E_STATES* p_game_state = new E_STATES;
 		if (current_screen == 0) {
 			CControllerMainMenu* p_controller_main_menu = new CControllerMainMenu;
 			current_screen = p_controller_main_menu->InvokeScreen(app, config_data, *p_model);
