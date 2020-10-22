@@ -7,7 +7,7 @@
 
 class CControllerPlayingScreen : public CController {
 private:
-	//std::mutex mutex;
+	
 public:
 	CControllerPlayingScreen();
 	~CControllerPlayingScreen();

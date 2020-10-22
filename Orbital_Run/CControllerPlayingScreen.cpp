@@ -22,6 +22,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	INT32S num_orbits = updated_config_data.GetOrbitNumber();
 	INT32S num_monsters = updated_config_data.GetMonsterNumber();
 	INT32S num_active_life = 0;
+	std::mutex mutex;
 
 	std::vector<std::vector<std::shared_ptr<CEntity>>> collision_list;
 	std::vector<E_COLLISION_TYPES> collision_types;
@@ -215,11 +216,11 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 
 		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		//view.PrintScreen(app, model.GetEntityList(), model.GetGameState(), num_orbits);
-		std::mutex mutex;
-		app.setActive(false);
-		std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
-		thread_print_screen.join();
+		view.PrintScreen(app, model.GetEntityList(), model.GetGameState(), num_orbits);
+
+		//app.setActive(false);
+		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
+		//thread_print_screen.join();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_SLEEP_TIME_MSEC));
 	}

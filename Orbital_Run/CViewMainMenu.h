@@ -19,7 +19,7 @@ public:
 	CViewMainMenu();
 	~CViewMainMenu();
 	void SetSceneProperties();
-	void PrintScreen(sf::RenderWindow& app, std::mutex& mutex);
+	void PrintScreen(sf::RenderWindow& app);
 	void UpdateTextColors();
 
 	void SetCurrentSelection(INT32S selection);

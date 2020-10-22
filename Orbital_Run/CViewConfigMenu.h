@@ -22,7 +22,7 @@ public:
 	CViewConfigMenu(CConfigurationData& config_data);
 	~CViewConfigMenu();
 	void SetSceneProperties();
-	void PrintScreen(sf::RenderWindow& app, sf::Clock& flash_display_clock, std::mutex& mutex);
+	void PrintScreen(sf::RenderWindow& app, sf::Clock& flash_display_clock);
 	void UpdateTextColors();
 
 	void SetCurrentSelection(INT32S selection);

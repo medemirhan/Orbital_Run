@@ -187,9 +187,9 @@ void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_c
 	this->EntityDrawings.back().setOrigin(this->EntityDrawings.back().getLocalBounds().width / 2.0f, this->EntityDrawings.back().getLocalBounds().height / 2.0f);
 }
 
-void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, const E_STATES& game_state, INT32S num_orbits, std::mutex& mutex)
+void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, const E_STATES& game_state, INT32S num_orbits)
 {
-	mutex.lock();
+	//mutex.lock();
 	app.clear();
 	app.draw(this->BackgroundSprite);
 	for (INT32S i = 0; i < num_orbits; i++) {
@@ -246,8 +246,8 @@ void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<st
 		break;
 	}
 	app.display();
-	app.setActive(false);
-	mutex.unlock();
+	//app.setActive(false);
+	//mutex.unlock();
 }
 
 void CViewPlayingScreen::UpdateIndicatorsView(FP32 game_level, INT32S indicator_num_life, INT32S indicator_num_littlelife, INT32S indicator_num_rocketright)
