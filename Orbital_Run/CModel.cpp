@@ -2,11 +2,18 @@
 
 CModel::CModel()
 {
-
+    this->GameState = STATES_MAIN_MENU;
+    this->GameLevel = 0.0f;
+    this->NumOrbits = 0;
+    this->NumMonsters = 0;
+    this->VOrbitron = 0.0f;
+    this->VMonster = 0.0f;
 }
 
 CModel::CModel(CConfigurationData& config_data)
 {
+    this->GameState = STATES_MAIN_MENU;
+    this->GameLevel = 0.0f;
     this->NumOrbits = config_data.OrbitNumber;
     this->NumMonsters = config_data.MonsterNumber;
     this->VOrbitron = config_data.OrbitronVelocity;

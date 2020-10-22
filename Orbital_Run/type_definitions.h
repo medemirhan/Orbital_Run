@@ -14,8 +14,8 @@ typedef long double                FP64;
 typedef long long                  INT64S;
 typedef unsigned long long         INT64U;
 
-#define WINDOW_WIDTH                                 1200.0f
-#define WINDOW_HEIGHT                                900.0f
+#define WINDOW_WIDTH                                 1200
+#define WINDOW_HEIGHT                                900
 #define WINDOW_CENTER_X                              WINDOW_WIDTH / 2.0f
 #define WINDOW_CENTER_Y                              WINDOW_HEIGHT / 2.0f
 #define INNER_ORBIT_RADIUS                           80.0f

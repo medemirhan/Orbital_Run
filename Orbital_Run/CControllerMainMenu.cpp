@@ -36,7 +36,7 @@ INT32S CControllerMainMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationDa
 		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(app), std::ref(mutex));
 		//thread_print_screen.join();
 	}
-	//return -1; ????????????
+	return -1; //????????????
 }
 
 INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& view)

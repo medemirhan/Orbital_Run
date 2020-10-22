@@ -93,7 +93,7 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 			switch (view.GetCurrentSelection()) {
 			case 0:
 				view.TxtNumOrbits.setString(view.GetPlayerInput());
-				model.SetNumOrbits(std::stof(std::string(view.GetPlayerInput())));
+				model.SetNumOrbits(std::stoi(std::string(view.GetPlayerInput())));
 				if (model.GetNumOrbits() < LOWER_LIMIT_ORBIT_NUM || model.GetNumOrbits() > UPPER_LIMIT_ORBIT_NUM) {
 					model.SetNumOrbits(config_data.GetOrbitNumber());
 				}else {
@@ -102,7 +102,7 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				break;
 			case 1:
 				view.TxtNumMonsters.setString(view.GetPlayerInput());
-				model.SetNumMonsters(std::stof(std::string(view.GetPlayerInput())));
+				model.SetNumMonsters(std::stoi(std::string(view.GetPlayerInput())));
 				if (model.GetNumMonsters() < LOWER_LIMIT_MONSTER_NUM || model.GetNumMonsters() > UPPER_LIMIT_MONSTER_NUM) {
 					model.SetNumMonsters(config_data.GetMonsterNumber());
 				}else {

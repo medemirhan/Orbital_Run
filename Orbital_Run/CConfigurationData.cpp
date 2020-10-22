@@ -19,6 +19,7 @@ CConfigurationData::CConfigurationData()
 
 CConfigurationData::CConfigurationData(const CConfigurationData* config_data)
 {
+	this->ConfigFileErrorStatus = false;
 	this->OrbitronInitialVelocity = config_data->OrbitronInitialVelocity;
 	this->MonsterInitialVelocity = config_data->MonsterInitialVelocity;
 	this->RocketOrbitronVelocityRatio = config_data->RocketOrbitronVelocityRatio;
