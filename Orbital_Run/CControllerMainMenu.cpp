@@ -10,9 +10,9 @@ CControllerMainMenu::~CControllerMainMenu()
 
 }
 
-INT32S CControllerMainMenu::InvokeScreen(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+INT32S CControllerMainMenu::StateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
 {
-	model.SetGameState(STATES_MAIN_MENU);
+	game->SetState(CGame::MainMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
 	CViewMainMenu view;

@@ -187,7 +187,7 @@ void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_c
 	this->EntityDrawings.back().setOrigin(this->EntityDrawings.back().getLocalBounds().width / 2.0f, this->EntityDrawings.back().getLocalBounds().height / 2.0f);
 }
 
-void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, const E_STATES& game_state, INT32S num_orbits)
+void CViewPlayingScreen::PrintScreen(CGame* game, sf::RenderWindow& app, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, INT32S num_orbits)
 {
 	//mutex.lock();
 	app.clear();
@@ -208,13 +208,13 @@ void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<st
 		}
 	}
 
-	if (game_state == STATES_GAME_PAUSED || game_state == STATES_LOST_LIFE || game_state == STATES_GAME_OVER) {
+	if (game->GetFlagGamePaused() || game->GetFlagLostLife() || game->GetFlagGameOver()) {
 		app.draw(this->Mask);
 	}else {
 
 	}
 
-	if (game_state == STATES_GAME_OVER) {
+	if (game->GetFlagGameOver()) {
 		app.draw(this->TxtScore);
 	}else {
 
@@ -229,21 +229,20 @@ void CViewPlayingScreen::PrintScreen(sf::RenderWindow& app, const std::vector<st
 	app.draw(this->TxtLittlelife);
 	app.draw(this->TxtRocketRight);
 
-	switch (game_state) {
-	case STATES_LOST_LIFE:
+	if (game->GetFlagLostLife()) {
 		app.draw(this->TxtLostLife);
 		app.draw(this->TxtLostLifeOptions);
-		break;
-	case STATES_GAME_OVER:
+	}
+	else if (game->GetFlagGameOver()) {
 		app.draw(this->TxtGameOver);
 		app.draw(this->TxtGameOverOptions);
-		break;
-	case STATES_GAME_PAUSED:
+	}
+	else if (game->GetFlagGamePaused()) {
 		app.draw(this->TxtGamePaused);
 		app.draw(this->TxtGamePausedOptions);
-		break;
-	default:
-		break;
+	}
+	else {
+
 	}
 	app.display();
 	//app.setActive(false);

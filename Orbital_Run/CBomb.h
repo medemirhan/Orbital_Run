@@ -1,8 +1,7 @@
 #pragma once
 #include "CEntity.h"
 
-class CBomb : public CEntity
-{
+class CBomb : public CEntity {
 private:
 
 public:

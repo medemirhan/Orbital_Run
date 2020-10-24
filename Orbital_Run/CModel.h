@@ -15,7 +15,6 @@ class CModel {
 	friend class CControllerConfigMenu;
 	friend class CControllerPlayingScreen;
 private:
-	E_STATES GameState;
 	FP32 GameLevel;
 	INT32S NumOrbits;
 	INT32S NumMonsters;
@@ -32,7 +31,6 @@ public:
 	void GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTITY_TYPES entity_type);
 	std::vector<INT32S> UpdateEntityList();
 
-	void SetGameState(E_STATES state);
 	void SetGameLevel(FP32 level);
 	void SetNumOrbits(INT32S num_orbits);
 	void SetNumMonsters(INT32S num_monsters);
@@ -43,7 +41,6 @@ public:
 	void SetRocketFiringAngles(const std::vector<FP32>& angles);
 	void SetSleepingMonsters(const std::vector<std::shared_ptr<CEntity>> p_sleeping_monster);
 
-	E_STATES GetGameState() const;
 	FP32 GetGameLevel() const;
 	INT32S GetNumOrbits() const;
 	INT32S GetNumMonsters() const;

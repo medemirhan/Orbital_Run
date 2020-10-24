@@ -66,6 +66,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CStateMainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateConfigMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CStatePlayingScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBomb.h">
@@ -78,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CControllerConfigMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CControllerHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CControllerMainMenu.h">
@@ -119,9 +128,6 @@
     <ClInclude Include="CViewConfigMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CViewHeaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CViewMainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,6 +135,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="type_definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateMainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateConfigMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CStatePlayingScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

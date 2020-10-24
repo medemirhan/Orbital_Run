@@ -5,7 +5,6 @@
 #include "CView.h"
 #include "CModel.h"
 #include "CConfigurationData.h"
-//#include "type_definitions.h"
 
 class CViewMainMenu : public CView {
 	friend class CControllerMainMenu;

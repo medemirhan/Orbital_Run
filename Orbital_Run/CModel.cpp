@@ -2,7 +2,6 @@
 
 CModel::CModel()
 {
-    this->GameState = STATES_MAIN_MENU;
     this->GameLevel = 0.0f;
     this->NumOrbits = 0;
     this->NumMonsters = 0;
@@ -12,7 +11,6 @@ CModel::CModel()
 
 CModel::CModel(CConfigurationData& config_data)
 {
-    this->GameState = STATES_MAIN_MENU;
     this->GameLevel = 0.0f;
     this->NumOrbits = config_data.OrbitNumber;
     this->NumMonsters = config_data.MonsterNumber;
@@ -54,8 +52,6 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
         }
     } while (collision);
 
-    //std::shared_ptr<CEntity> p_entity(new CEntity);
-    //CEntity* p_entity = new CEntity;
     switch (entity_type) {
     case ENTITY_TYPES_ORBITRON:
     {
@@ -118,11 +114,6 @@ std::vector<INT32S> CModel::UpdateEntityList()
     return idx;
 }
 
-void CModel::SetGameState(E_STATES state)
-{
-    this->GameState = state;
-}
-
 void CModel::SetGameLevel(FP32 level)
 {
     this->GameLevel = level;
@@ -165,11 +156,6 @@ void CModel::SetRocketFiringAngles(const std::vector<FP32>& angles)
 void CModel::SetSleepingMonsters(const std::vector<std::shared_ptr<CEntity>> p_sleeping_monster)
 {
     this->SleepingMonsters = p_sleeping_monster;
-}
-
-E_STATES CModel::GetGameState() const
-{
-    return this->GameState;
 }
 
 FP32 CModel::GetGameLevel() const

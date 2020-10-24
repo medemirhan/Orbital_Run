@@ -1,8 +1,7 @@
 #pragma once
 #include "CEntity.h"
 
-class CLife : public CEntity
-{
+class CLife : public CEntity {
 private:
 
 public:

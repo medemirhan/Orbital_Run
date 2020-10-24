@@ -10,9 +10,9 @@ CControllerPlayingScreen::~CControllerPlayingScreen()
 
 }
 
-INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+INT32S CControllerPlayingScreen::StateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
 {
-	model.SetGameState(STATES_PLAYING_GAME);
+	game->SetState(CGame::PlayingState);
 	INT32S return_val = 2;
 	BOOLEAN change_screen = false;
 	sf::Clock global_clock;
@@ -59,7 +59,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	while (app.isOpen()) {
 		sf::Event event;
 		while (app.pollEvent(event)) {
-			return_val = this->UserInputHandler(event, view, config_data, model, timer, change_screen, global_clock, interrupt_clock, clock_rocketright, clock_bomb_addition, clock_bomb_removal, clock_monster_orbit_change, num_orbits);
+			return_val = this->UserInputHandler(game, event, view, config_data, model, timer, change_screen, global_clock, interrupt_clock, clock_rocketright, clock_bomb_addition, clock_bomb_removal, clock_monster_orbit_change, num_orbits);
 			if (change_screen) {
 				return return_val;
 			}else {
@@ -67,13 +67,12 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			}
 		}
 
-		switch (model.GetGameState()) {
-		case STATES_PLAYING_GAME:
-		{
+		if (!game->GetFlagGameOver() && !game->GetFlagLostLife() && !game->GetFlagGamePaused()) {
 			for (INT32S i = 0; i < model.EntityList.size(); i++) {
 				if (model.EntityList[i]->GetIsAlive() && model.EntityList[i]->GetVelocity() > 0 && model.EntityList[i]->GetNumLife() > 0) {
 					model.EntityList[i]->RotateEntity(WINDOW_CENTER_X, WINDOW_CENTER_Y);
-				}else {
+				}
+				else {
 
 				}
 			}
@@ -84,7 +83,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				this->MonsterChaseOrbitron(model.EntityList);
 				timer.SetElapsedTimeMonsterOrbitChangeCache(sf::Time::Zero);
 				clock_monster_orbit_change.restart();
-			}else {
+			}
+			else {
 
 			}
 
@@ -92,7 +92,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 			for (INT32S i = 0; i < model.EntityList.size(); i++) {
 				if (model.EntityList[i]->GetEntityType() == ENTITY_TYPES_LIFE) {
 					num_active_life++;
-				}else {
+				}
+				else {
 
 				}
 			}
@@ -103,7 +104,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				}
 				num_active_life = updated_config_data.GetConstantLifeNumber();
-			}else {
+			}
+			else {
 
 			}
 
@@ -113,7 +115,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
 				timer.SetElapsedTimeRocketrightCache(sf::Time::Zero);
 				clock_rocketright.restart();
-			}else {
+			}
+			else {
 
 			}
 
@@ -126,7 +129,8 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				timer.SetElapsedTimeBombAdditionCache(sf::Time::Zero);
 				clock_bomb_addition.restart();
 				//clock_bomb_removal.restart();
-			}else {
+			}
+			else {
 
 			}
 
@@ -141,13 +145,15 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 						view.EntityDrawings.erase(view.EntityDrawings.begin() + i);
 						i--;
 						bomb_removed++;
-					}else {
+					}
+					else {
 
 					}
 				}
 				timer.SetElapsedTimeBombRemovalCache(sf::Time::Zero);
 				clock_bomb_removal.restart();
-			}else {
+			}
+			else {
 
 			}
 
@@ -158,15 +164,17 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				catch (...) {
 					continue;
 				}
-			}else {
+			}
+			else {
 
 			}
 
 			collision_list = this->CollisionDetection(model.EntityList);
 
 			if (collision_list.size() > 0) {
-				this->CollisionHandler(updated_config_data, collision_list, &collision_types, model.GameState, model.SleepingMonsters, global_clock, interrupt_clock, timer);
-			}else {
+				this->CollisionHandler(game, updated_config_data, collision_list, &collision_types, model.SleepingMonsters, global_clock, interrupt_clock, timer);
+			}
+			else {
 
 			}
 
@@ -177,29 +185,17 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 				for (INT32S i = 0; i < model.EntityList.size(); i++) {
 					if (model.EntityList[i]->GetVelocity() > 0 && model.EntityList[i]->GetEntityType() != ENTITY_TYPES_BOMB) {
 						model.EntityList[i]->SetVelocity(model.EntityList[i]->GetVelocity() + updated_config_data.GetVelocityIncreaseAtLevelUp());
-					}else {
+					}
+					else {
 
 					}
 				}
-			}else {
+			}
+			else {
 
 			}
-			break;
-		}
-		case STATES_LOST_LIFE:
-		{
-			break;
-		}
-		case STATES_GAME_OVER:
-		{
-			break;
-		}
-		case STATES_GAME_PAUSED:
-		{
-			break;
-		}
-		default:
-			break;
+		}else {
+
 		}
 
 		std::vector<INT32S> idx = model.UpdateEntityList();
@@ -216,7 +212,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 
 		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		view.PrintScreen(app, model.GetEntityList(), model.GetGameState(), num_orbits);
+		view.PrintScreen(game, app, model.GetEntityList(), num_orbits);
 
 		//app.setActive(false);
 		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
@@ -227,7 +223,7 @@ INT32S CControllerPlayingScreen::InvokeScreen(sf::RenderWindow& app, CConfigurat
 	return -1;
 }
 
-INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlayingScreen& view, CConfigurationData& config_data, CModel& model, CTimer& timer, BOOLEAN& change_screen, sf::Clock& global_clock, sf::Clock& interrupt_clock, sf::Clock& clock_rocketright, sf::Clock& clock_bomb_addition, sf::Clock& clock_bomb_removal, sf::Clock& clock_monster_orbit_change, INT32S& num_orbits)
+INT32S CControllerPlayingScreen::UserInputHandler(CGame* game, sf::Event& event, CViewPlayingScreen& view, CConfigurationData& config_data, CModel& model, CTimer& timer, BOOLEAN& change_screen, sf::Clock& global_clock, sf::Clock& interrupt_clock, sf::Clock& clock_rocketright, sf::Clock& clock_bomb_addition, sf::Clock& clock_bomb_removal, sf::Clock& clock_monster_orbit_change, INT32S& num_orbits)
 {
 	if (event.type == sf::Event::Closed) {
 		change_screen = true;
@@ -239,33 +235,33 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front()));
 		switch (event.key.code) {
 		case sf::Keyboard::Escape:
-			if (model.GetGameState() == STATES_PLAYING_GAME) {
+			if (!game->GetFlagGameOver() && !game->GetFlagLostLife() && !game->GetFlagGamePaused()) {
 				interrupt_clock.restart();
 				timer.SetElapsedTimeRocketrightCache(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
 				timer.SetElapsedTimeBombAdditionCache(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
 				timer.SetElapsedTimeBombRemovalCache(timer.GetElapsedTimeBombRemovalCache() + clock_bomb_removal.getElapsedTime());
 				timer.SetElapsedTimeMonsterOrbitChangeCache(timer.GetElapsedTimeMonsterOrbitChangeCache() + clock_bomb_removal.getElapsedTime());
-				model.SetGameState(STATES_GAME_PAUSED);
+				game->SetFlagGamePaused(true);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Left:
-			if (p_orbitron->GetOrbit() > 0 && model.GetGameState() == STATES_PLAYING_GAME) {
+			if (p_orbitron->GetOrbit() > 0 && !game->GetFlagGameOver() && !game->GetFlagLostLife() && !game->GetFlagGamePaused()) {
 				p_orbitron->ChangeOrbit(DIRECTION_IN);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Right:
-			if (p_orbitron->GetOrbit() < num_orbits - 1 && model.GetGameState() == STATES_PLAYING_GAME) {
+			if (p_orbitron->GetOrbit() < num_orbits - 1 && !game->GetFlagGameOver() && !game->GetFlagLostLife() && !game->GetFlagGamePaused()) {
 				p_orbitron->ChangeOrbit(DIRECTION_OUT);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Space:
-			if (model.GetGameState() == STATES_PLAYING_GAME && p_orbitron->GetNumRocketRight() > 0) {
+			if (p_orbitron->GetNumRocketRight() > 0 && !game->GetFlagGameOver() && !game->GetFlagLostLife() && !game->GetFlagGamePaused()) {
 				//fire rocket
 				model.GenerateEntityOnRandomPoint(config_data, ENTITY_TYPES_ROCKET);
 				model.EntityList.back()->SetPosition(p_orbitron->GetPositionX(), p_orbitron->GetPositionY());
@@ -280,7 +276,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (model.GetGameState() == STATES_GAME_PAUSED || model.GetGameState() == STATES_LOST_LIFE) {
+			if (game->GetFlagGamePaused()) {
 				clock_rocketright.restart();
 				clock_bomb_addition.restart();
 				clock_bomb_removal.restart();
@@ -290,11 +286,21 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 					temp_timer[i] += interrupt_clock.getElapsedTime();
 					timer.SetMonsterSleepIdleTime(temp_timer);
 				}
-				model.SetGameState(STATES_PLAYING_GAME);
-			}
-			else if (model.GetGameState() == STATES_GAME_OVER) {
-				model.SetGameState(STATES_PLAYING_GAME);
+				game->SetFlagGamePaused(false);
+			}else if (game->GetFlagLostLife()) {
+				clock_rocketright.restart();
+				clock_bomb_addition.restart();
+				clock_bomb_removal.restart();
+				clock_monster_orbit_change.restart();
+				for (INT32S i = 0; i < model.SleepingMonsters.size(); i++) {
+					std::vector<sf::Time> temp_timer = timer.GetMonsterSleepIdleTime();
+					temp_timer[i] += interrupt_clock.getElapsedTime();
+					timer.SetMonsterSleepIdleTime(temp_timer);
+				}
+				game->SetFlagLostLife(false);
+			}else if (game->GetFlagGameOver()) {
 				//buraya initial game_config deðerlerini çekeceði bir config dosyasý yolla
+				game->SetFlagGameOver(false);
 				change_screen = true;
 				return 2;
 			}else {
@@ -302,7 +308,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 			}
 			break;
 		case sf::Keyboard::M:
-			if (model.GetGameState() == STATES_GAME_PAUSED || model.GetGameState() == STATES_LOST_LIFE || model.GetGameState() == STATES_GAME_OVER) {
+			if (game->GetFlagGamePaused() || game->GetFlagLostLife() || game->GetFlagGameOver()) {
 				CConfigurationData* p_default_config = new CConfigurationData;
 				config_data.SetOrbitNumber(p_default_config->GetOrbitNumber());
 				config_data.SetMonsterNumber(p_default_config->GetMonsterNumber());
@@ -310,6 +316,15 @@ INT32S CControllerPlayingScreen::UserInputHandler(sf::Event& event, CViewPlaying
 				config_data.SetMonsterVelocity(p_default_config->GetMonsterVelocity());
 				delete p_default_config;
 				change_screen = true;
+				if (game->GetFlagGamePaused()) {
+					game->SetFlagGamePaused(false);
+				}else if (game->GetFlagLostLife()) {
+					game->SetFlagLostLife(false);
+				}else if (game->GetFlagGameOver()) {
+					game->SetFlagGameOver(false);
+				}else {
+
+				}
 				return 0;
 			}else {
 
@@ -345,7 +360,7 @@ std::vector<std::vector<std::shared_ptr<CEntity>>> CControllerPlayingScreen::Col
 	return collision_list;
 }
 
-void CControllerPlayingScreen::CollisionHandler(CConfigurationData& config_data, std::vector<std::vector<std::shared_ptr<CEntity>>>& p_collision_list, std::vector<E_COLLISION_TYPES>* p_collision_types, E_STATES& game_state, std::vector<std::shared_ptr<CEntity>>& p_sleeping_monsters, const sf::Clock& global_clock, sf::Clock& interrupt_clock, CTimer& timer)
+void CControllerPlayingScreen::CollisionHandler(CGame* game, CConfigurationData& config_data, std::vector<std::vector<std::shared_ptr<CEntity>>>& p_collision_list, std::vector<E_COLLISION_TYPES>* p_collision_types, std::vector<std::shared_ptr<CEntity>>& p_sleeping_monsters, const sf::Clock& global_clock, sf::Clock& interrupt_clock, CTimer& timer)
 {
 	for (INT32S i = 0; i < p_collision_list.size(); i++) {
 		if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_MONSTER) {
@@ -360,11 +375,11 @@ void CControllerPlayingScreen::CollisionHandler(CConfigurationData& config_data,
 			timer.GetMonsterSleepIdleTime().push_back(sf::Time::Zero);
 
 			if (p_collision_list[i][0]->GetNumLife() == 0) {
-				game_state = STATES_GAME_OVER;
+				game->SetFlagGameOver(true);
 				break;
 			}else {
 				interrupt_clock.restart();
-				game_state = STATES_LOST_LIFE;
+				game->SetFlagLostLife(true);
 				break;
 			}
 		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_MONSTER && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
@@ -379,11 +394,11 @@ void CControllerPlayingScreen::CollisionHandler(CConfigurationData& config_data,
 			timer.GetMonsterSleepIdleTime().push_back(sf::Time::Zero);
 
 			if (p_collision_list[i][1]->GetNumLife() == 0) {
-				game_state = STATES_GAME_OVER;
+				game->SetFlagGameOver(true);
 				break;
 			}else {
 				interrupt_clock.restart();
-				game_state = STATES_LOST_LIFE;
+				game->SetFlagLostLife(true);
 				break;
 			}
 		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_BOMB) {
@@ -392,11 +407,11 @@ void CControllerPlayingScreen::CollisionHandler(CConfigurationData& config_data,
 			p_collision_list[i][1]->SetIsAlive(false);
 			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_BOMB);
 			if (p_collision_list[i][0]->GetNumLife() == 0) {
-				game_state = STATES_GAME_OVER;
+				game->SetFlagGameOver(true);
 				break;
 			}else {
 				interrupt_clock.restart();
-				game_state = STATES_LOST_LIFE;
+				game->SetFlagLostLife(true);
 				break;
 			}
 		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_BOMB && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
@@ -405,11 +420,11 @@ void CControllerPlayingScreen::CollisionHandler(CConfigurationData& config_data,
 			p_collision_list[i][0]->SetIsAlive(false);
 			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_BOMB);
 			if (p_collision_list[i][1]->GetNumLife() == 0) {
-				game_state = STATES_GAME_OVER;
+				game->SetFlagGameOver(true);
 				break;
 			}else {
 				interrupt_clock.restart();
-				game_state = STATES_LOST_LIFE;
+				game->SetFlagLostLife(true);
 				break;
 			}
 		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_LIFE) {

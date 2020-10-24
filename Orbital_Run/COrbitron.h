@@ -1,8 +1,7 @@
 #pragma once
 #include "CEntity.h"
 
-class COrbitron : public CEntity
-{
+class COrbitron : public CEntity {
 private:
 	INT32S NumLittleLife;
 	INT32S NumRocketRight;

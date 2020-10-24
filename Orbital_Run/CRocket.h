@@ -1,8 +1,7 @@
 #pragma once
 #include "CEntity.h"
 
-class CRocket : public CEntity
-{
+class CRocket : public CEntity {
 private:
 
 public:
