@@ -10,9 +10,9 @@ CControllerConfigMenu::~CControllerConfigMenu()
 
 }
 
-INT32S CControllerConfigMenu::StateHandler(CGame* game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
+INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	game->SetState(CGame::ConfigMenuState);
+	game.SetState(CGame::ConfigMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
 	CViewConfigMenu view;

@@ -17,7 +17,7 @@ CGame::CGame()
 	//this->ConfigMenuState = new CStateConfigMenu;
 	//this->PlayingState = new CStatePlayingScreen;
 	this->CurrentState = this->MainMenuState;
-	this->CurrentState->OnEntry(this);
+	this->CurrentState->OnEntry(*this);
 	this->IsRunning = true;
 	this->FlagGameOver = false;
 	this->FlagLostLife = false;
@@ -33,7 +33,7 @@ CGame::~CGame()
 
 void CGame::OnStateHandler(sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	this->CurrentState->OnStateHandler(this, window, config_data, model);
+	this->CurrentState->OnStateHandler(*this, window, config_data, model);
 }
 
 CState* CGame::GetState()
@@ -49,13 +49,13 @@ void CGame::SetIsRunning(BOOLEAN is_running)
 void CGame::SetState(CState* new_state)
 {
 	// leave the current state - execute exit action
-	this->CurrentState->OnExit(this);
+	this->CurrentState->OnExit(*this);
 
 	// state transistion
 	this->CurrentState = new_state;
 
 	// enter the new state - execute enter action
-	this->CurrentState->OnEntry(this);
+	this->CurrentState->OnEntry(*this);
 }
 
 BOOLEAN CGame::GetIsRunning()
