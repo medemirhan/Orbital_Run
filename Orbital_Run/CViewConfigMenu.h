@@ -21,7 +21,7 @@ public:
 	CViewConfigMenu();
 	CViewConfigMenu(CConfigurationData& config_data);
 	~CViewConfigMenu();
-	void SetSceneProperties();
+	void SetSceneProperties() override;
 	void PrintScreen(sf::RenderWindow& app, sf::Clock& flash_display_clock);
 	void UpdateTextColors();
 

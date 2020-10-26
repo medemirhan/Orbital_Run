@@ -17,7 +17,7 @@ private:
 public:
 	CViewMainMenu();
 	~CViewMainMenu();
-	void SetSceneProperties();
+	void SetSceneProperties() override;
 	void PrintScreen(sf::RenderWindow& app);
 	void UpdateTextColors();
 

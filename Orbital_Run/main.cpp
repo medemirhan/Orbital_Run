@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+//#include <memory>
 #include "CConfigurationData.h"
 #include "CGame.h"
 #include "CModel.h"
@@ -11,7 +12,8 @@ INT32S main() {
 
 	//std::string config_file = "config.xml";
 	CGame game;
-	CModel* p_model = nullptr;
+	//CModel* p_model = nullptr;
+	
 	//game.MainMenuState = new CStateMainMenu;
 	//game.ConfigMenuState = new CStateConfigMenu;
 	//game.PlayingState = new CStatePlayingScreen;
@@ -25,10 +27,11 @@ INT32S main() {
 	}
 
 	while (game.GetIsRunning()) {
-		p_model = new CModel(config_data);
+		std::shared_ptr<CModel> p_model(new CModel(config_data));
+		//p_model = new CModel(config_data);
 		game.OnStateHandler(app, config_data, *p_model);
 	}
-	delete p_model;
+	//delete p_model;
 
 	return 0;
 }

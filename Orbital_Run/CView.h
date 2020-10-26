@@ -4,6 +4,8 @@
 #include "CController.h"
 
 class CView {
+private:
+
 public:
     virtual void SetSceneProperties() = 0;
 };
