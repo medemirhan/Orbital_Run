@@ -299,7 +299,6 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame* game, sf::Event& event,
 				}
 				game->SetFlagLostLife(false);
 			}else if (game->GetFlagGameOver()) {
-				//buraya initial game_config deðerlerini çekeceði bir config dosyasý yolla
 				game->SetFlagGameOver(false);
 				change_screen = true;
 				return 2;
