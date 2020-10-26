@@ -10,19 +10,19 @@ CControllerConfigMenu::~CControllerConfigMenu()
 
 }
 
-INT32S CControllerConfigMenu::StateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+INT32S CControllerConfigMenu::StateHandler(CGame* game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	game->SetState(CGame::ConfigMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
 	CViewConfigMenu view;
-	app.setActive(true);
+	window.setActive(true);
 	view.SetSceneProperties();
 
 	sf::Clock flash_display_clock;
-	while (app.isOpen()) {
+	while (window.isOpen()) {
 		sf::Event event;
-		while (app.pollEvent(event)) {
+		while (window.pollEvent(event)) {
 			return_val = this->UserInputHandler(event, view, config_data, model);
 			if (return_val != 1) {
 				return return_val;
@@ -32,10 +32,10 @@ INT32S CControllerConfigMenu::StateHandler(CGame* game, sf::RenderWindow& app, C
 		}
 		view.UpdateTextColors();
 
-		view.PrintScreen(app, flash_display_clock);
+		view.PrintScreen(window, flash_display_clock);
 
-		//app.setActive(false);
-		//std::thread thread_print_screen(&CViewConfigMenu::PrintScreen, std::ref(view), std::ref(app), std::ref(flash_display_clock), std::ref(mutex));
+		//window.setActive(false);
+		//std::thread thread_print_screen(&CViewConfigMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(flash_display_clock), std::ref(mutex));
 		//thread_print_screen.join();
 
 	}

@@ -19,7 +19,7 @@ private:
 public:
 	CGame();
 	~CGame();
-	void OnStateHandler(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model);
+	void OnStateHandler(sf::RenderWindow& window, CConfigurationData& config_data, CModel& model);
 	void SetIsRunning(BOOLEAN is_running);
 	void SetState(CState* new_state);           // state setter function
 	void SetFlagGameOver(BOOLEAN flag);

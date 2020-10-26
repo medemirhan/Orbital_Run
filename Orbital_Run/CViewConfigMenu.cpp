@@ -72,71 +72,71 @@ void CViewConfigMenu::SetSceneProperties()
 	this->Text5.setPosition({ 300.f, 620.f });
 }
 
-void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_display_clock)
+void CViewConfigMenu::PrintScreen(sf::RenderWindow& window, sf::Clock& flash_display_clock)
 {
 	//mutex.lock();
-	app.clear();
-	app.draw(this->BackgroundSprite);
-	app.draw(this->Sprite);
+	window.clear();
+	window.draw(this->BackgroundSprite);
+	window.draw(this->Sprite);
 
 	if (!this->WaitingEntry) {
-		app.draw(this->Text0);
-		app.draw(this->Text1);
-		app.draw(this->Text2);
-		app.draw(this->Text3);
-		app.draw(this->TxtNumOrbits);
-		app.draw(this->TxtNumMonsters);
-		app.draw(this->TxtVOrbitron);
-		app.draw(this->TxtVMonster);
+		window.draw(this->Text0);
+		window.draw(this->Text1);
+		window.draw(this->Text2);
+		window.draw(this->Text3);
+		window.draw(this->TxtNumOrbits);
+		window.draw(this->TxtNumMonsters);
+		window.draw(this->TxtVOrbitron);
+		window.draw(this->TxtVMonster);
 	}else if (this->CurrentSelection == 0) {
-		app.draw(this->Text1);
-		app.draw(this->Text2);
-		app.draw(this->Text3);
-		app.draw(this->TxtNumMonsters);
-		app.draw(this->TxtVOrbitron);
-		app.draw(this->TxtVMonster);
+		window.draw(this->Text1);
+		window.draw(this->Text2);
+		window.draw(this->Text3);
+		window.draw(this->TxtNumMonsters);
+		window.draw(this->TxtVOrbitron);
+		window.draw(this->TxtVMonster);
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
-			app.draw(this->Text0);
-			app.draw(this->TxtNumOrbits);
+			window.draw(this->Text0);
+			window.draw(this->TxtNumOrbits);
 		}else {
 
 		}
 	}else if (this->CurrentSelection == 1) {
-		app.draw(this->Text0);
-		app.draw(this->Text2);
-		app.draw(this->Text3);
-		app.draw(this->TxtNumOrbits);
-		app.draw(this->TxtVOrbitron);
-		app.draw(this->TxtVMonster);
+		window.draw(this->Text0);
+		window.draw(this->Text2);
+		window.draw(this->Text3);
+		window.draw(this->TxtNumOrbits);
+		window.draw(this->TxtVOrbitron);
+		window.draw(this->TxtVMonster);
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
-			app.draw(this->Text1);
-			app.draw(this->TxtNumMonsters);
+			window.draw(this->Text1);
+			window.draw(this->TxtNumMonsters);
 		}else {
 
 		}
 	}else if (this->CurrentSelection == 2) {
-		app.draw(this->Text0);
-		app.draw(this->Text1);
-		app.draw(this->Text3);
-		app.draw(this->TxtNumOrbits);
-		app.draw(this->TxtNumMonsters);
-		app.draw(this->TxtVMonster);
+		window.draw(this->Text0);
+		window.draw(this->Text1);
+		window.draw(this->Text3);
+		window.draw(this->TxtNumOrbits);
+		window.draw(this->TxtNumMonsters);
+		window.draw(this->TxtVMonster);
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
-			app.draw(this->Text2);
-			app.draw(this->TxtVOrbitron);
+			window.draw(this->Text2);
+			window.draw(this->TxtVOrbitron);
 		}else {
 
 		}
 	}else if (this->CurrentSelection == 3) {
-		app.draw(this->Text0);
-		app.draw(this->Text1);
-		app.draw(this->Text2);
-		app.draw(this->TxtNumOrbits);
-		app.draw(this->TxtNumMonsters);
-		app.draw(this->TxtVOrbitron);
+		window.draw(this->Text0);
+		window.draw(this->Text1);
+		window.draw(this->Text2);
+		window.draw(this->TxtNumOrbits);
+		window.draw(this->TxtNumMonsters);
+		window.draw(this->TxtVOrbitron);
 		if (flash_display_clock.getElapsedTime().asMilliseconds() > FLASH_TEXT_START_MSEC && flash_display_clock.getElapsedTime().asMilliseconds() <= FLASH_TEXT_STOP_MSEC) {
-			app.draw(this->Text3);
-			app.draw(this->TxtVMonster);
+			window.draw(this->Text3);
+			window.draw(this->TxtVMonster);
 		}else {
 
 		}
@@ -148,10 +148,10 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& app, sf::Clock& flash_displa
 	}else {
 
 	}
-	app.draw(this->Text4);
-	app.draw(this->Text5);
-	app.display();
-	//app.setActive(false);
+	window.draw(this->Text4);
+	window.draw(this->Text5);
+	window.display();
+	//window.setActive(false);
 	//mutex.unlock();
 }
 

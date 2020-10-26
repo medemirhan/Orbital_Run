@@ -31,9 +31,9 @@ CGame::~CGame()
 	delete this->PlayingState;
 }
 
-void CGame::OnStateHandler(sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+void CGame::OnStateHandler(sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	this->CurrentState->OnStateHandler(this, app, config_data, model);
+	this->CurrentState->OnStateHandler(this, window, config_data, model);
 }
 
 CState* CGame::GetState()

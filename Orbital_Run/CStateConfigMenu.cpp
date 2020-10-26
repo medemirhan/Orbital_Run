@@ -1,8 +1,8 @@
 #include "CStateConfigMenu.h"
 
-void CStateConfigMenu::OnStateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+void CStateConfigMenu::OnStateHandler(CGame* game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	INT32S state_return = p_controller_config_menu->StateHandler(game, app, config_data, model);
+	INT32S state_return = p_controller_config_menu->StateHandler(game, window, config_data, model);
 	switch (state_return) {
 	case -1:
 		game->SetIsRunning(false);

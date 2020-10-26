@@ -18,7 +18,7 @@ public:
 	CViewMainMenu();
 	~CViewMainMenu();
 	void SetSceneProperties() override;
-	void PrintScreen(sf::RenderWindow& app);
+	void PrintScreen(sf::RenderWindow& window);
 	void UpdateTextColors();
 
 	void SetCurrentSelection(INT32S selection);

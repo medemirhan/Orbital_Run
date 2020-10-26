@@ -10,7 +10,7 @@ CControllerPlayingScreen::~CControllerPlayingScreen()
 
 }
 
-INT32S CControllerPlayingScreen::StateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+INT32S CControllerPlayingScreen::StateHandler(CGame* game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	game->SetState(CGame::PlayingState);
 	INT32S return_val = 2;
@@ -28,7 +28,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame* game, sf::RenderWindow& app
 	std::vector<E_COLLISION_TYPES> collision_types;
 
 	CViewPlayingScreen view;
-	app.setActive(true);
+	window.setActive(true);
 	view.SetSceneProperties();
 	view.GenerateOrbitDrawings(updated_config_data);
 	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ORBITRON);
@@ -56,9 +56,9 @@ INT32S CControllerPlayingScreen::StateHandler(CGame* game, sf::RenderWindow& app
 		view.GenerateEntityDrawings(updated_config_data, model.EntityList[i]);
 	}
 	
-	while (app.isOpen()) {
+	while (window.isOpen()) {
 		sf::Event event;
-		while (app.pollEvent(event)) {
+		while (window.pollEvent(event)) {
 			return_val = this->UserInputHandler(game, event, view, config_data, model, timer, change_screen, global_clock, interrupt_clock, clock_rocketright, clock_bomb_addition, clock_bomb_removal, clock_monster_orbit_change, num_orbits);
 			if (change_screen) {
 				return return_val;
@@ -212,10 +212,10 @@ INT32S CControllerPlayingScreen::StateHandler(CGame* game, sf::RenderWindow& app
 
 		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		view.PrintScreen(game, app, model.GetEntityList(), num_orbits);
+		view.PrintScreen(game, window, model.GetEntityList(), num_orbits);
 
-		//app.setActive(false);
-		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(app), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
+		//window.setActive(false);
+		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(window), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
 		//thread_print_screen.join();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_SLEEP_TIME_MSEC));

@@ -10,18 +10,18 @@ CControllerMainMenu::~CControllerMainMenu()
 
 }
 
-INT32S CControllerMainMenu::StateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+INT32S CControllerMainMenu::StateHandler(CGame* game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	game->SetState(CGame::MainMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
 	CViewMainMenu view;
-	app.setActive(true);
+	window.setActive(true);
 	view.SetSceneProperties();
 
-	while (app.isOpen()) {
+	while (window.isOpen()) {
 		sf::Event event;
-		while (app.pollEvent(event)) {
+		while (window.pollEvent(event)) {
 			return_val = this->UserInputHandler(event, view);
 			if (return_val != 0) {
 				return return_val;
@@ -31,9 +31,9 @@ INT32S CControllerMainMenu::StateHandler(CGame* game, sf::RenderWindow& app, CCo
 		}
 		view.UpdateTextColors();
 		
-		view.PrintScreen(app);
-		//app.setActive(false);
-		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(app), std::ref(mutex));
+		view.PrintScreen(window);
+		//window.setActive(false);
+		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(mutex));
 		//thread_print_screen.join();
 	}
 	return -1; //????????????

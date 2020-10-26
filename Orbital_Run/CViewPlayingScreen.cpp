@@ -187,13 +187,13 @@ void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_c
 	this->EntityDrawings.back().setOrigin(this->EntityDrawings.back().getLocalBounds().width / 2.0f, this->EntityDrawings.back().getLocalBounds().height / 2.0f);
 }
 
-void CViewPlayingScreen::PrintScreen(CGame* game, sf::RenderWindow& app, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, INT32S num_orbits)
+void CViewPlayingScreen::PrintScreen(CGame* game, sf::RenderWindow& window, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, INT32S num_orbits)
 {
 	//mutex.lock();
-	app.clear();
-	app.draw(this->BackgroundSprite);
+	window.clear();
+	window.draw(this->BackgroundSprite);
 	for (INT32S i = 0; i < num_orbits; i++) {
-		app.draw(this->Orbits[num_orbits - i - 1]);
+		window.draw(this->Orbits[num_orbits - i - 1]);
 	}
 	for (INT32S i = 0; i < p_entity_list.size(); i++) {
 		if (p_entity_list[i]->GetIsAlive() && p_entity_list[i]->GetNumLife() > 0) {
@@ -202,50 +202,50 @@ void CViewPlayingScreen::PrintScreen(CGame* game, sf::RenderWindow& app, const s
 			}else {
 
 			}
-			app.draw(this->EntityDrawings[i]);
+			window.draw(this->EntityDrawings[i]);
 		}else {
 
 		}
 	}
 
 	if (game->GetFlagGamePaused() || game->GetFlagLostLife() || game->GetFlagGameOver()) {
-		app.draw(this->Mask);
+		window.draw(this->Mask);
 	}else {
 
 	}
 
 	if (game->GetFlagGameOver()) {
-		app.draw(this->TxtScore);
+		window.draw(this->TxtScore);
 	}else {
 
 	}
 
-	app.draw(this->LevelIcon);
-	app.draw(this->LittlelifeIcon);
-	app.draw(this->LifeIcon);
-	app.draw(this->RocketRightIcon);
-	app.draw(this->TxtGameLevel);
-	app.draw(this->TxtLife);
-	app.draw(this->TxtLittlelife);
-	app.draw(this->TxtRocketRight);
+	window.draw(this->LevelIcon);
+	window.draw(this->LittlelifeIcon);
+	window.draw(this->LifeIcon);
+	window.draw(this->RocketRightIcon);
+	window.draw(this->TxtGameLevel);
+	window.draw(this->TxtLife);
+	window.draw(this->TxtLittlelife);
+	window.draw(this->TxtRocketRight);
 
 	if (game->GetFlagLostLife()) {
-		app.draw(this->TxtLostLife);
-		app.draw(this->TxtLostLifeOptions);
+		window.draw(this->TxtLostLife);
+		window.draw(this->TxtLostLifeOptions);
 	}
 	else if (game->GetFlagGameOver()) {
-		app.draw(this->TxtGameOver);
-		app.draw(this->TxtGameOverOptions);
+		window.draw(this->TxtGameOver);
+		window.draw(this->TxtGameOverOptions);
 	}
 	else if (game->GetFlagGamePaused()) {
-		app.draw(this->TxtGamePaused);
-		app.draw(this->TxtGamePausedOptions);
+		window.draw(this->TxtGamePaused);
+		window.draw(this->TxtGamePausedOptions);
 	}
 	else {
 
 	}
-	app.display();
-	//app.setActive(false);
+	window.display();
+	//window.setActive(false);
 	//mutex.unlock();
 }
 

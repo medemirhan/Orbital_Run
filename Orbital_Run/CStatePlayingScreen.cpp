@@ -1,8 +1,8 @@
 #include "CStatePlayingScreen.h"
 
-void CStatePlayingScreen::OnStateHandler(CGame* game, sf::RenderWindow& app, CConfigurationData& config_data, CModel& model)
+void CStatePlayingScreen::OnStateHandler(CGame* game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	INT32S state_return = p_controller_playing_screen->StateHandler(game, app, config_data, model);
+	INT32S state_return = p_controller_playing_screen->StateHandler(game, window, config_data, model);
 	switch (state_return) {
 	case -1:
 		game->SetIsRunning(false);

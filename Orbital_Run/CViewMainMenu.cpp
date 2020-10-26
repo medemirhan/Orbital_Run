@@ -58,19 +58,19 @@ void CViewMainMenu::SetSceneProperties()
 	this->MenuOptionExit.setPosition(sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f + 120.0f));
 }
 
-void CViewMainMenu::PrintScreen(sf::RenderWindow& app)
+void CViewMainMenu::PrintScreen(sf::RenderWindow& window)
 {
 	//mutex.lock();
-	app.clear();
-	app.draw(this->BackgroundSprite);
-	app.draw(this->Sprite);
-	app.draw(this->GameLogo);
-	app.draw(this->Header);
-	app.draw(this->MenuOptionStartGame);
-	app.draw(this->MenuOptionConfigMenu);
-	app.draw(this->MenuOptionExit);
-	app.display();
-	//app.setActive(false);
+	window.clear();
+	window.draw(this->BackgroundSprite);
+	window.draw(this->Sprite);
+	window.draw(this->GameLogo);
+	window.draw(this->Header);
+	window.draw(this->MenuOptionStartGame);
+	window.draw(this->MenuOptionConfigMenu);
+	window.draw(this->MenuOptionExit);
+	window.display();
+	//window.setActive(false);
 	//mutex.unlock();
 }
 
