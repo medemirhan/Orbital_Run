@@ -12,5 +12,5 @@ public:
 	~CStateConfigMenu();
 	void OnStateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model) override;
 	void OnEntry(CGame& game) override;
-	void OnExit(CGame& game) override;
+	void OnExit() override;
 };

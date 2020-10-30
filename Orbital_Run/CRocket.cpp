@@ -15,6 +15,7 @@ CRocket::~CRocket()
 
 }
 
+/* Rotates entity "Velocity" degrees around the given pivot point */
 void CRocket::RotateEntity(FP32 x_pivot, FP32 y_pivot)
 {
 	FP32 x_shifted = this->PositionX - x_pivot;

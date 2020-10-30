@@ -10,6 +10,7 @@ CViewPlayingScreen::~CViewPlayingScreen()
 
 }
 
+/* Sets scene properties such as textures, fonts, texts etc. */
 void CViewPlayingScreen::SetSceneProperties()
 {
 	
@@ -136,9 +137,11 @@ void CViewPlayingScreen::SetSceneProperties()
 	this->BackgroundSprite.setTexture(this->Texture);
 }
 
-void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& init_config_data)
+/* Generates orbit drawing properties depending on the config data. Orbit drawings are stored in */
+/* member variable "Orbits" and printed to the screen when member function PrintScreen is called */
+void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& config_data)
 {
-	for (INT32S i = 0; i < init_config_data.GetOrbitNumber(); i++) {
+	for (INT32S i = 0; i < config_data.GetOrbitNumber(); i++) {
 		std::shared_ptr<sf::CircleShape> p_orbit(new sf::CircleShape);
 		this->Orbits.push_back(*p_orbit);
 		this->Orbits[i].setRadius(INNER_ORBIT_RADIUS + i * DISTANCE_BTW_ORBITS);
@@ -151,7 +154,9 @@ void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& init_co
 	}
 }
 
-void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_config_data, const std::shared_ptr<CEntity> p_entity)
+/* Generates given entity's drawing properties and pushes it back to the member variable EntityDrawings. */
+/* These drawings are printed to the screen when member function PrintScreen is called */
+void CViewPlayingScreen::GenerateEntityDrawings(const std::shared_ptr<CEntity> p_entity)
 {
 	std::shared_ptr<sf::Sprite> p_entity_drawing(new sf::Sprite);
 	this->EntityDrawings.push_back(*p_entity_drawing);
@@ -187,6 +192,7 @@ void CViewPlayingScreen::GenerateEntityDrawings(const CConfigurationData& init_c
 	this->EntityDrawings.back().setOrigin(this->EntityDrawings.back().getLocalBounds().width / 2.0f, this->EntityDrawings.back().getLocalBounds().height / 2.0f);
 }
 
+/* Prints current scene */
 void CViewPlayingScreen::PrintScreen(CGame& game, sf::RenderWindow& window, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, INT32S num_orbits)
 {
 	//mutex.lock();
@@ -249,6 +255,7 @@ void CViewPlayingScreen::PrintScreen(CGame& game, sf::RenderWindow& window, cons
 	//mutex.unlock();
 }
 
+/* Updates indicators depending on the arguments */
 void CViewPlayingScreen::UpdateIndicatorsView(FP32 game_level, INT32S indicator_num_life, INT32S indicator_num_littlelife, INT32S indicator_num_rocketright)
 {
 	std::ostringstream stream_game_level;
@@ -269,6 +276,7 @@ void CViewPlayingScreen::UpdateIndicatorsView(FP32 game_level, INT32S indicator_
 	this->TxtScore.setPosition(sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f - 220.0f));
 }
 
+/* Erases elements at the given idx positions of member variable EntityDrawings */
 void CViewPlayingScreen::UpdateEntityDrawings(const std::vector<INT32S>& idx)
 {
 	for (INT32S i = 0; i < idx.size(); i++) {

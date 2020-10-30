@@ -10,6 +10,8 @@ CControllerPlayingScreen::~CControllerPlayingScreen()
 
 }
 
+/* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
+/* Returns an integer that indicates enum of State which will be assigned as current state. */
 INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	game.SetState(CGame::pPlayingState);
@@ -30,44 +32,44 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 	CViewPlayingScreen view;
 	window.setActive(true);
 	view.SetSceneProperties();
-	view.GenerateOrbitDrawings(updated_config_data);
-	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ORBITRON);
+	view.GenerateOrbitDrawings(updated_config_data); /* Invoke View to draw orbits */
+	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ORBITRON); /* Invoke Model to generate Orbitron */
 
 	for (INT32S i = 0; i < num_monsters; i++) {
-		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_MONSTER);
+		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_MONSTER); /* Invoke Model to generate Monsters */
 	}
 	sf::Clock clock_monster_orbit_change;
 
-	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT);
+	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT); /* Invoke Model to generate RocketRights */
 	sf::Clock clock_rocketright;
 
-	for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) {
+	for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) { /* Invoke Model to generate Bombs */
 		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB);
 	}
 	sf::Clock clock_bomb_addition;
 	sf::Clock clock_bomb_removal;
 
 	for (INT32S i = 0; i < updated_config_data.GetConstantLifeNumber(); i++) {
-		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE);
+		model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE); /* Invoke Model to generate Lifes */
 		num_active_life++;
 	}
 
 	for (INT32S i = 0; i < model.EntityList.size(); i++) {
-		view.GenerateEntityDrawings(updated_config_data, model.EntityList[i]);
+		view.GenerateEntityDrawings(model.EntityList[i]); /* Invoke View to generate drawings depending on the Entity List stored by Model */
 	}
 	
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			return_val = this->UserInputHandler(game, event, view, config_data, model, timer, change_screen, global_clock, interrupt_clock, clock_rocketright, clock_bomb_addition, clock_bomb_removal, clock_monster_orbit_change, num_orbits);
-			if (change_screen) {
-				return return_val;
+			if (change_screen) {   /* change_screen might be updated in the UserInputHandler function */
+				return return_val; /* If so, change the State */
 			}else {
 
 			}
 		}
 
-		if (!game.GetFlagGameOver() && !game.GetFlagLostLife() && !game.GetFlagGamePaused()) {
+		if (!game.GetFlagGameOver() && !game.GetFlagLostLife() && !game.GetFlagGamePaused()) { /* If game is not interrupted (i.e. no game over, no pause, no lose life), run below */
 			for (INT32S i = 0; i < model.EntityList.size(); i++) {
 				if (model.EntityList[i]->GetIsAlive() && model.EntityList[i]->GetVelocity() > 0 && model.EntityList[i]->GetNumLife() > 0) {
 					model.EntityList[i]->RotateEntity(WINDOW_CENTER_X, WINDOW_CENTER_Y);
@@ -76,11 +78,11 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 				}
 			}
-			model.SetGameLevel(model.GetGameLevel() + model.EntityList.front()->GetVelocity() / ANGLE_MAX);
+			model.SetGameLevel(model.GetGameLevel() + model.EntityList.front()->GetVelocity() / ANGLE_MAX); /* Invoke model to calculate game level depending on the current angle of the orbitron. Every full lap increases game level by 1 */
 
 			timer.SetElapsedTimeMonsterOrbitChange(timer.GetElapsedTimeMonsterOrbitChangeCache() + clock_monster_orbit_change.getElapsedTime());
 			if (timer.GetElapsedTimeMonsterOrbitChange().asSeconds() > updated_config_data.GetMonsterOrbitChangeIntervalSec()) {
-				this->OrbitronChasingHandler(model.EntityList);
+				this->OrbitronChasingHandler(model.EntityList); /* Invoke OrbitronChasingHandler with a predefined period */
 				timer.SetElapsedTimeMonsterOrbitChangeCache(sf::Time::Zero);
 				clock_monster_orbit_change.restart();
 			}
@@ -98,10 +100,10 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 				}
 			}
 
-			if (num_active_life < updated_config_data.GetConstantLifeNumber()) {
+			if (num_active_life < updated_config_data.GetConstantLifeNumber()) { /* Lifes on the screen is kept constant always */
 				for (INT32S i = 0; i < updated_config_data.GetConstantLifeNumber() - num_active_life; i++) {
-					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE);
-					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
+					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE); /* Invoke model to generate new life if it is below predefined constant number */
+					view.GenerateEntityDrawings(model.EntityList.back());
 				}
 				num_active_life = updated_config_data.GetConstantLifeNumber();
 			}
@@ -111,8 +113,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 			timer.SetElapsedTimeRocketright(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
 			if (timer.GetElapsedTimeRocketright().asSeconds() > updated_config_data.GetRocketRightIntervalSec()) {
-				model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT);
-				view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
+				model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT); /* Invoke model to generate new rocket right at a predefined period */
+				view.GenerateEntityDrawings(model.EntityList.back());
 				timer.SetElapsedTimeRocketrightCache(sf::Time::Zero);
 				clock_rocketright.restart();
 			}
@@ -123,8 +125,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 			timer.SetElapsedTimeBombAddition(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
 			if (timer.GetElapsedTimeBombAddition().asSeconds() > updated_config_data.GetBombAdditionIntervalSec()) {
 				for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) {
-					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB);
-					view.GenerateEntityDrawings(updated_config_data, model.EntityList.back());
+					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB); /* Invoke model to generate new bombs at a predefined period */
+					view.GenerateEntityDrawings(model.EntityList.back());
 				}
 				timer.SetElapsedTimeBombAdditionCache(sf::Time::Zero);
 				clock_bomb_addition.restart();
@@ -140,8 +142,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 				for (INT32S i = 0; i < model.EntityList.size(); i++) {
 					if (model.EntityList[i]->GetEntityType() == ENTITY_TYPES_BOMB && bomb_removed < updated_config_data.ConstantBombAdditionNumber) {
 						//bombanýn biri remove edilmeden önce orbitronla çarpýþýp yokolduysa, bu bombanýn yerine henüz removal
-						//süresi gelmemiþ bir bomba remove edilmiþ oluyor!
-						model.EntityList.erase(model.EntityList.begin() + i);
+						//süresi gelmemiþ bir bomba remove edilmiþ oluyor. kontrol et!
+						model.EntityList.erase(model.EntityList.begin() + i); /* Invoke model to remove bombs at a predefined period */
 						view.EntityDrawings.erase(view.EntityDrawings.begin() + i);
 						i--;
 						bomb_removed++;
@@ -157,7 +159,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 			}
 
-			if (model.RocketsOnOrbits.size() > 0) {
+			if (model.RocketsOnOrbits.size() > 0) { /* Invoke RocketFiringHandler if at least a rocket is fired and moving on orbits */
 				try {
 					this->RocketFiringHandler(model.RocketsOnOrbits, model.RocketFiringAngles);
 				}
@@ -169,19 +171,19 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 			}
 
-			collision_list = this->CollisionDetection(model.EntityList);
+			collision_list = this->CollisionDetection(model.EntityList); /* Invoke CollisionDetection to check collisions at the moment */
 
-			if (collision_list.size() > 0) {
+			if (collision_list.size() > 0) { /* Invoke CollisionHandler if collision list is not empty */
 				this->CollisionHandler(game, updated_config_data, collision_list, collision_types, model.SleepingMonsters, global_clock, interrupt_clock, timer);
 			}
 			else {
 
 			}
 
-			timer.MonsterSleepTimingHandler(config_data, global_clock, model);
+			timer.MonsterSleepTimingHandler(config_data, global_clock, model); /* If there is a sleeping monster (i.e. shot by rocket or collided with orbitron), its wake time is handled by MonsterSleepTimingHandler */
 
 			FP32 angle_tolerance = model.EntityList.front()->GetVelocity();
-			if (model.EntityList.front()->GetAngle() >= ANGLE_MIN && model.EntityList.front()->GetAngle() < ANGLE_MIN + angle_tolerance) {
+			if (model.EntityList.front()->GetAngle() >= ANGLE_MIN && model.EntityList.front()->GetAngle() < ANGLE_MIN + angle_tolerance) { /* This if block invokes Model to increase game level (entity velocities) at every full lap of Orbitron */
 				for (INT32S i = 0; i < model.EntityList.size(); i++) {
 					if (model.EntityList[i]->GetVelocity() > 0 && model.EntityList[i]->GetEntityType() != ENTITY_TYPES_BOMB) {
 						model.EntityList[i]->SetVelocity(model.EntityList[i]->GetVelocity() + updated_config_data.GetVelocityIncreaseAtLevelUp());
@@ -198,21 +200,21 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 		}
 
-		std::vector<INT32S> idx = model.UpdateEntityList();
-		view.UpdateEntityDrawings(idx);
+		std::vector<INT32S> idx = model.UpdateEntityList(); /* Invoke Model to remove entities which is not alive as a result of above operations */
+		view.UpdateEntityDrawings(idx); /* Invoke View to stay up to date with the Model's EntityList */
 		for (INT32S i = 0; i < model.EntityList.size(); i++) {
 			view.EntityDrawings[i].setPosition(model.EntityList[i]->GetPositionX(), model.EntityList[i]->GetPositionY());
 			view.EntityDrawings[i].setOrigin(view.EntityDrawings[i].getLocalBounds().width / 2.0f, view.EntityDrawings[i].getLocalBounds().height / 2.0f);
 		}
 
-		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front()));
+		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front())); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 		INT32S indicator_num_life = model.EntityList.front()->GetNumLife();
 		INT32S indicator_num_littlelife = p_orbitron->GetNumLittleLife();
 		INT32S indicator_num_rocketright = p_orbitron->GetNumRocketRight();
 
 		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		view.PrintScreen(game, window, model.GetEntityList(), num_orbits);
+		view.PrintScreen(game, window, model.GetEntityList(), num_orbits); /* Invoke View to print current scene */
 
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(window), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
@@ -220,22 +222,23 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_SLEEP_TIME_MSEC));
 	}
-	return -1;
+	return STATES_EXIT; /* If the while loop above exits, this means that window is closed. */
 }
 
+/* Takes Event as argument and performs necessary actions depending on the user button press */
 INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event, CViewPlayingScreen& view, CConfigurationData& config_data, CModel& model, CTimer& timer, BOOLEAN& change_screen, sf::Clock& global_clock, sf::Clock& interrupt_clock, sf::Clock& clock_rocketright, sf::Clock& clock_bomb_addition, sf::Clock& clock_bomb_removal, sf::Clock& clock_monster_orbit_change, INT32S& num_orbits)
 {
 	if (event.type == sf::Event::Closed) {
 		change_screen = true;
-		return -1;
+		return STATES_EXIT;
 	}else {
 
 	}
 	if (event.type == sf::Event::KeyPressed) {
-		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front()));
+		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front())); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 		switch (event.key.code) {
 		case sf::Keyboard::Escape:
-			if (!game.GetFlagGameOver() && !game.GetFlagLostLife() && !game.GetFlagGamePaused()) {
+			if (!game.GetFlagGameOver() && !game.GetFlagLostLife() && !game.GetFlagGamePaused()) { /* If game is interrupted by Esc press, store current timer values to cache timers */
 				interrupt_clock.restart();
 				timer.SetElapsedTimeRocketrightCache(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
 				timer.SetElapsedTimeBombAdditionCache(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
@@ -260,15 +263,14 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 
 			}
 			break;
-		case sf::Keyboard::Space:
+		case sf::Keyboard::Space: /* Fire rocket if below condition is met */
 			if (p_orbitron->GetNumRocketRight() > 0 && !game.GetFlagGameOver() && !game.GetFlagLostLife() && !game.GetFlagGamePaused()) {
-				//fire rocket
 				model.GenerateEntityOnRandomPoint(config_data, ENTITY_TYPES_ROCKET);
 				model.EntityList.back()->SetPosition(p_orbitron->GetPositionX(), p_orbitron->GetPositionY());
 				model.EntityList.back()->SetOrbit(p_orbitron->GetOrbit());
 				model.EntityList.back()->SetAngle(p_orbitron->GetAngle());
 				p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() - 1);
-				view.GenerateEntityDrawings(config_data, model.EntityList.back());
+				view.GenerateEntityDrawings(model.EntityList.back());
 				model.RocketsOnOrbits.push_back(model.EntityList.back());
 				model.RocketFiringAngles.push_back(p_orbitron->GetAngle());
 			}else {
@@ -301,7 +303,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 			}else if (game.GetFlagGameOver()) {
 				game.SetFlagGameOver(false);
 				change_screen = true;
-				return 2;
+				return STATES_PLAYING_SCREEN;
 			}else {
 
 			}
@@ -324,7 +326,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 				}else {
 
 				}
-				return 0;
+				return STATES_MAIN_MENU;
 			}else {
 
 			}
@@ -334,9 +336,12 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 	}else {
 
 	}
-	return 2;
+
+	return STATES_PLAYING_SCREEN; /* If above If statements doesn't change the state, return current state */
 }
 
+/* Checks Model's EntityList to see whether any entity pair is collided and returns a 2D vector that stores collision list */
+/* It uses Euclidean Distance between entities to decide collision */
 std::vector<std::vector<std::shared_ptr<CEntity>>> CControllerPlayingScreen::CollisionDetection(const std::vector<std::shared_ptr<CEntity>>& entity_list)
 {
 	std::vector<std::vector<std::shared_ptr<CEntity>>> collision_list;
@@ -359,6 +364,8 @@ std::vector<std::vector<std::shared_ptr<CEntity>>> CControllerPlayingScreen::Col
 	return collision_list;
 }
 
+/* Takes collision list as argument and performs necessary operations such as decreasing collided entities' lifes, */
+/* set FlagLostLife to true, start MonsterSleepTimer etc. */
 void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData& config_data, std::vector<std::vector<std::shared_ptr<CEntity>>>& collision_list, std::vector<E_COLLISION_TYPES>& collision_types, std::vector<std::shared_ptr<CEntity>>& sleeping_monsters, const sf::Clock& global_clock, sf::Clock& interrupt_clock, CTimer& timer)
 {
 	for (INT32S i = 0; i < collision_list.size(); i++) {
@@ -427,7 +434,7 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 				break;
 			}
 		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_LIFE) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][0]));
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][0])); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 			p_orbitron->SetNumLittleLife(p_orbitron->GetNumLittleLife() + 1);
 			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
 			collision_list[i][1]->SetIsAlive(false);
@@ -439,7 +446,7 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 
 			}
 		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_LIFE && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][1]));
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][1])); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
 			p_orbitron->SetNumLittleLife(p_orbitron->GetNumLittleLife() + 1);
 			collision_list[i][0]->SetIsAlive(false);
@@ -451,13 +458,13 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 
 			}
 		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ROCKET_RIGHT) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][0]));
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][0])); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 			p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() + 1);
 			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
 			collision_list[i][1]->SetIsAlive(false);
 			collision_types.push_back(COLLISION_TYPES_ORBITRON_ROCKETRIGHT);
 		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ROCKET_RIGHT && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][1]));
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][1])); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
 			p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() + 1);
 			collision_list[i][0]->SetIsAlive(false);
@@ -489,6 +496,8 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 	}
 }
 
+/* Takes rockets on orbits list and rocket firing angles, decides whether a rocket completed a complete lap without hitting any monster */
+/* If so, rocket is removed from the scene */
 void CControllerPlayingScreen::RocketFiringHandler(std::vector<std::shared_ptr<CEntity>>& rockets_on_orbits, std::vector<FP32>& rocket_firing_angles)
 {
 	FP32 angle_tolerance;
@@ -510,6 +519,9 @@ void CControllerPlayingScreen::RocketFiringHandler(std::vector<std::shared_ptr<C
 	}
 }
 
+
+/* Takes entity list as argument and controls Euclidean distances of Orbitron and Monsters at closest orbits with Orbitron */
+/* Then invokes ChangeOrbit function of the Monster which has the minimum distance to the Orbitron */
 void CControllerPlayingScreen::OrbitronChasingHandler(std::vector<std::shared_ptr<CEntity>>& entity_list)
 {
 	INT32S target_orbit = entity_list.front()->GetOrbit();
@@ -533,10 +545,10 @@ void CControllerPlayingScreen::OrbitronChasingHandler(std::vector<std::shared_pt
 	}
 
 	if (entity_list[nearest_monster_index]->GetOrbit() > target_orbit && entity_list[nearest_monster_index]->GetEntityType() == ENTITY_TYPES_MONSTER) {
-		std::shared_ptr<CMonster> p_monster = std::dynamic_pointer_cast<CMonster>(std::shared_ptr<CEntity>(entity_list[nearest_monster_index]));
+		std::shared_ptr<CMonster> p_monster = std::dynamic_pointer_cast<CMonster>(std::shared_ptr<CEntity>(entity_list[nearest_monster_index])); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 		p_monster->ChangeOrbit(DIRECTION_IN);
 	}else if (entity_list[nearest_monster_index]->GetOrbit() < target_orbit && entity_list[nearest_monster_index]->GetEntityType() == ENTITY_TYPES_MONSTER) {
-		std::shared_ptr<CMonster> p_monster = std::dynamic_pointer_cast<CMonster>(std::shared_ptr<CEntity>(entity_list[nearest_monster_index]));
+		std::shared_ptr<CMonster> p_monster = std::dynamic_pointer_cast<CMonster>(std::shared_ptr<CEntity>(entity_list[nearest_monster_index])); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
 		p_monster->ChangeOrbit(DIRECTION_OUT);
 	}else {
 

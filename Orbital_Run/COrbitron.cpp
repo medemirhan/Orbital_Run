@@ -15,6 +15,7 @@ COrbitron::~COrbitron()
 
 }
 
+/* Assigns values given as arguments to class members */
 void COrbitron::Init(E_ENTITY_TYPES entity_type, FP32 pos_x, FP32 pos_y, FP32 velocity, FP32 radius, FP32 angle, INT32S orbit, INT32S num_life, BOOLEAN is_alive, INT32S num_little_life, INT32S num_rocket_right)
 {
 	this->EntityType = entity_type;
@@ -30,6 +31,7 @@ void COrbitron::Init(E_ENTITY_TYPES entity_type, FP32 pos_x, FP32 pos_y, FP32 ve
 	this->NumRocketRight = num_rocket_right;
 }
 
+/* Rotates entity "Velocity" degrees around the given pivot point */
 void COrbitron::RotateEntity(FP32 x_pivot, FP32 y_pivot)
 {
 	FP32 x_shifted = this->PositionX - x_pivot;
@@ -40,6 +42,7 @@ void COrbitron::RotateEntity(FP32 x_pivot, FP32 y_pivot)
 	this->Angle = fmod((this->Angle + this->Velocity), ANGLE_MAX);
 }
 
+/* Changes orbit of the orbitron at given direction (to inner or outer orbit) */
 void COrbitron::ChangeOrbit(FP32 direction)
 {
 	FP32 cur_pos_x = this->GetPositionX();

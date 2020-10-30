@@ -20,6 +20,7 @@ CEntity::~CEntity()
 
 }
 
+/* Assigns values given as arguments to class members */
 void CEntity::Init(E_ENTITY_TYPES entity_type, FP32 pos_x, FP32 pos_y, FP32 velocity, FP32 radius, FP32 angle, INT32S orbit, INT32S num_life, BOOLEAN is_alive)
 {
 	this->EntityType = entity_type;

@@ -15,6 +15,7 @@ CLife::~CLife()
 
 }
 
+/* Rotates entity "Velocity" degrees around the given pivot point */
 void CLife::RotateEntity(FP32 x_pivot, FP32 y_pivot)
 {
 	FP32 x_shifted = this->PositionX - x_pivot;

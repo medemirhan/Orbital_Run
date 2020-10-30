@@ -13,6 +13,7 @@ CTimer::~CTimer()
 
 }
 
+/* Takes sleeping monsters from Model object and handles its waking time actions */
 void CTimer::MonsterSleepTimingHandler(CConfigurationData& config_data, const sf::Clock& global_clock, CModel& model)
 {
 	for (INT32S i = 0; i < model.GetSleepingMonsters().size(); i++) {

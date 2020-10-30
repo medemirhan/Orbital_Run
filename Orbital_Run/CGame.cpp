@@ -4,18 +4,13 @@
 #include "CStateConfigMenu.h"
 #include "CStatePlayingScreen.h"
 
-//define and initialize static members 
+/*Static members must be defined and initialized outside of the class body */ 
 CState* CGame::pMainMenuState = new CStateMainMenu;
 CState* CGame::pConfigMenuState = new CStateConfigMenu;
 CState* CGame::pPlayingState = new CStatePlayingScreen;
 
 CGame::CGame()
 {
-	// We don't initialize static data member here, 
-	// because static data initialization will happen on every constructor call.
-	//this->pMainMenuState = new CStateMainMenu;
-	//this->pConfigMenuState = new CStateConfigMenu;
-	//this->pPlayingState = new CStatePlayingScreen;
 	this->pCurrentState = this->pMainMenuState;
 	this->pCurrentState->OnEntry(*this);
 	this->IsRunning = true;
@@ -31,6 +26,7 @@ CGame::~CGame()
 	delete this->pPlayingState;
 }
 
+/* Delegates its behaviour to the pCurrentState's OnStateHandler method */
 void CGame::OnStateHandler(sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	this->pCurrentState->OnStateHandler(*this, window, config_data, model);
@@ -48,14 +44,9 @@ void CGame::SetIsRunning(BOOLEAN is_running)
 
 void CGame::SetState(CState* p_state)
 {
-	// leave the current state - execute exit action
-	this->pCurrentState->OnExit(*this);
-
-	// state transistion
-	this->pCurrentState = p_state;
-
-	// enter the new state - execute enter action
-	this->pCurrentState->OnEntry(*this);
+	this->pCurrentState->OnExit(); /* leave current state and delegate execute exit action to pCurrentState's OnExit method */
+	this->pCurrentState = p_state; /* set current state */
+	this->pCurrentState->OnEntry(*this); /* enter new state and delegate entry action to pCurrentState's OnEntry method */
 }
 
 BOOLEAN CGame::GetIsRunning()

@@ -12,7 +12,7 @@ INT32S main(int argc, char** argv) {
 	CGame game;
 	CConfigurationData config_data;
 	if (config_data.GetConfigFileErrorStatus()) {
-		return -1;
+		return STATES_EXIT;
 	}else {
 
 	}

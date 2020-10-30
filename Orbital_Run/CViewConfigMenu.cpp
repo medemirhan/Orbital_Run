@@ -14,6 +14,7 @@ CViewConfigMenu::~CViewConfigMenu()
 
 }
 
+/* Sets scene properties such as textures, fonts, texts etc. */
 void CViewConfigMenu::SetSceneProperties()
 {
 	this->Texture.setSmooth(true);
@@ -72,6 +73,7 @@ void CViewConfigMenu::SetSceneProperties()
 	this->Text5.setPosition({ 300.f, 620.f });
 }
 
+/* Prints current scene */
 void CViewConfigMenu::PrintScreen(sf::RenderWindow& window, sf::Clock& flash_display_clock)
 {
 	//mutex.lock();
@@ -155,6 +157,7 @@ void CViewConfigMenu::PrintScreen(sf::RenderWindow& window, sf::Clock& flash_dis
 	//mutex.unlock();
 }
 
+/* Updates text colors depending on the user's button actions */
 void CViewConfigMenu::UpdateTextColors()
 {
 	this->Sprite.setColor(sf::Color(255, 255, 255));

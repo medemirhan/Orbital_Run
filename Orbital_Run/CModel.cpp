@@ -23,6 +23,7 @@ CModel::~CModel()
 
 }
 
+/* Takes config data and entity type, and generates an entity on random position/random orbit */
 void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTITY_TYPES entity_type)
 {
     INT32S random_orbit;
@@ -50,7 +51,7 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
                 collision = false;
             }
         }
-    } while (collision);
+    } while (collision); /* Repeats until no collision with existing entities */
 
     switch (entity_type) {
     case ENTITY_TYPES_ORBITRON:
@@ -100,6 +101,7 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
     }
 }
 
+/* Returns non-alive entities' id's from the entity list */
 std::vector<INT32S> CModel::UpdateEntityList()
 {
     std::vector<INT32S> idx;

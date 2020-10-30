@@ -17,6 +17,7 @@ CConfigurationData::CConfigurationData()
 	this->LifeVelocity = this->OrbitronInitialVelocity / VDEFAULT_ENTITTY_VLIFE_RATIO;
 }
 
+/* Copy constructor */
 CConfigurationData::CConfigurationData(const CConfigurationData& config_data)
 {
 	this->ConfigFileErrorStatus = false;
@@ -48,6 +49,8 @@ CConfigurationData::~CConfigurationData()
 
 }
 
+/* Parses data from XML file and assign them to corresponding class member. */
+/* Throws error if XML file couldn't be read or node names in the XML file doesn't match with the class member name*/
 void CConfigurationData::XMLParser()
 {
 	xml_document<> doc;

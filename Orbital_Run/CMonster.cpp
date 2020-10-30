@@ -15,6 +15,7 @@ CMonster::~CMonster()
 
 }
 
+/* Rotates entity "Velocity" degrees around the given pivot point */
 void CMonster::RotateEntity(FP32 x_pivot, FP32 y_pivot)
 {
 	FP32 x_shifted = this->PositionX - x_pivot;
@@ -25,6 +26,7 @@ void CMonster::RotateEntity(FP32 x_pivot, FP32 y_pivot)
 	this->Angle = fmod((this->Angle + this->Velocity), ANGLE_MAX);
 }
 
+/* Changes orbit of the monster at given direction (to inner or outer orbit) */
 void CMonster::ChangeOrbit(FP32 direction)
 {
 	FP32 cur_pos_x = this->GetPositionX();

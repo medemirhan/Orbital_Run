@@ -10,6 +10,8 @@ CControllerMainMenu::~CControllerMainMenu()
 
 }
 
+/* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
+/* Returns an integer that indicates enum of State which will be assigned as current state. */
 INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	game.SetState(CGame::pMainMenuState);
@@ -23,7 +25,7 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			return_val = this->UserInputHandler(event, view);
-			if (return_val != 0) {
+			if (return_val != STATES_MAIN_MENU) { /* If return differs from main menu, change the State */
 				return return_val;
 			}else {
 
@@ -31,21 +33,23 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 		}
 		view.UpdateTextColors();
 		
-		view.PrintScreen(window);
+		view.PrintScreen(window); /* Invoke View to print current scene */
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(mutex));
 		//thread_print_screen.join();
 	}
-	return -1; //????????????
+	return STATES_EXIT; /* If the while loop above exits, this means that window is closed. */
 }
 
+/* Takes Event as argument and performs necessary actions depending on the user button press */
 INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& view)
 {
 	if (event.type == sf::Event::Closed) {
-		return -1;
+		return STATES_EXIT;
 	}else {
 
 	}
+
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
@@ -64,11 +68,11 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& vi
 			break;
 		case sf::Keyboard::Return:
 			if (view.GetCurrentSelection() == 0) {
-				return 2;
+				return STATES_PLAYING_SCREEN;
 			}else if (view.GetCurrentSelection() == 1) {
-				return 1;
+				return STATES_CONFIG_MENU;
 			}else {
-				return -1;
+				return STATES_EXIT;
 			}
 			break;
 		default:
@@ -77,5 +81,6 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& vi
 	}else {
 
 	}
-	return 0;
+	
+	return STATES_MAIN_MENU; /* If above If statements doesn't change the state, return current state */
 }

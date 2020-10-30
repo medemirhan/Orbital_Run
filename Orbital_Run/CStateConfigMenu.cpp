@@ -10,20 +10,21 @@ CStateConfigMenu::~CStateConfigMenu()
 
 }
 
+/* Invokes Config Menu State's StateHandler. Depending on the return of the StateHandler, assigns current state */
 void CStateConfigMenu::OnStateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	INT32S state_return = pControllerConfigMenu->StateHandler(game, window, config_data, model);
 	switch (state_return) {
-	case -1:
+	case STATES_EXIT:
 		game.SetIsRunning(false);
 		break;
-	case 0:
+	case STATES_MAIN_MENU:
 		game.SetState(CGame::pMainMenuState);
 		break;
-	case 1:
+	case STATES_CONFIG_MENU:
 		game.SetState(CGame::pConfigMenuState);
 		break;
-	case 2:
+	case STATES_PLAYING_SCREEN:
 		game.SetState(CGame::pPlayingState);
 		break;
 	default:
@@ -31,12 +32,14 @@ void CStateConfigMenu::OnStateHandler(CGame& game, sf::RenderWindow& window, CCo
 	}
 }
 
+/* Generates CControllerConfigMenu object on the entry of this state */
 void CStateConfigMenu::OnEntry(CGame& game)
 {
 	pControllerConfigMenu = new CControllerConfigMenu;
 }
 
-void CStateConfigMenu::OnExit(CGame& game)
+/* Deallocates memory on the exit of this state */
+void CStateConfigMenu::OnExit()
 {
 	delete pControllerConfigMenu;
 }

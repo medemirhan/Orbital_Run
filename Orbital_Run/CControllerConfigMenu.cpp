@@ -10,6 +10,8 @@ CControllerConfigMenu::~CControllerConfigMenu()
 
 }
 
+/* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
+/* Returns an integer that indicates enum of State which will be assigned as current state. */
 INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
 	game.SetState(CGame::pConfigMenuState);
@@ -24,7 +26,7 @@ INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			return_val = this->UserInputHandler(event, view, config_data, model);
-			if (return_val != 1) {
+			if (return_val != STATES_CONFIG_MENU) { /* If return differs from config menu, change the State */
 				return return_val;
 			}else {
 
@@ -32,27 +34,28 @@ INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window
 		}
 		view.UpdateTextColors();
 
-		view.PrintScreen(window, flash_display_clock);
+		view.PrintScreen(window, flash_display_clock); /* Invoke View to print current scene */
 
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewConfigMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(flash_display_clock), std::ref(mutex));
 		//thread_print_screen.join();
 
 	}
-	return -1;
+	return STATES_EXIT; /* If the while loop above exits, this means that window is closed. */
 }
 
+/* Takes Event as argument and performs necessary actions depending on the user button press */
 INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu& view, CConfigurationData& config_data, CModel& model)
 {
 	if (event.type == sf::Event::Closed) {
-		return -1;
+		return STATES_EXIT;
 	}else {
 
 	}
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Escape:
-			return 0;
+			return STATES_MAIN_MENU;
 		case sf::Keyboard::Up:
 			if (view.GetCurrentSelection() > 0 && !view.GetWaitingEntry()) {
 				view.SetCurrentSelection(view.GetCurrentSelection() - 1);
@@ -73,9 +76,9 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				config_data.SetMonsterNumber(model.GetNumMonsters());
 				config_data.SetOrbitronVelocity(model.GetVOrbitron());
 				config_data.SetMonsterVelocity(model.GetVMonster());
-				return 2;
+				return STATES_PLAYING_SCREEN;
 			}else if (view.GetCurrentSelection() == 5 && !view.GetWaitingEntry()) {
-				return 0;
+				return STATES_MAIN_MENU;
 			}else {
 				view.SetWaitingEntry(!view.GetWaitingEntry());
 				view.SetPlayerInput("");
@@ -136,5 +139,6 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 	}else {
 
 	}
-	return 1;
+
+	return STATES_CONFIG_MENU; /* If above If statements doesn't change the state, return current state */
 }
