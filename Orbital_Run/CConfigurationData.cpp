@@ -17,30 +17,30 @@ CConfigurationData::CConfigurationData()
 	this->LifeVelocity = this->OrbitronInitialVelocity / VDEFAULT_ENTITTY_VLIFE_RATIO;
 }
 
-CConfigurationData::CConfigurationData(const CConfigurationData* config_data)
+CConfigurationData::CConfigurationData(const CConfigurationData& config_data)
 {
 	this->ConfigFileErrorStatus = false;
-	this->OrbitronInitialVelocity = config_data->OrbitronInitialVelocity;
-	this->MonsterInitialVelocity = config_data->MonsterInitialVelocity;
-	this->RocketOrbitronVelocityRatio = config_data->RocketOrbitronVelocityRatio;
-	this->VelocityIncreaseAtLevelUp = config_data->VelocityIncreaseAtLevelUp;
-	this->MonsterOrbitChangeIntervalSec = config_data->MonsterOrbitChangeIntervalSec;
-	this->MonsterSleepTimeSec = config_data->MonsterSleepTimeSec;
-	this->OrbitronInitialLife = config_data->OrbitronInitialLife;
-	this->OrbitNumber = config_data->OrbitNumber;
-	this->MonsterNumber = config_data->MonsterNumber;
-	this->ConstantLifeNumber = config_data->ConstantLifeNumber;
-	this->ConstantBombAdditionNumber = config_data->ConstantBombAdditionNumber;
-	this->RocketRightIntervalSec = config_data->RocketRightIntervalSec;
-	this->BombAdditionIntervalSec = config_data->BombAdditionIntervalSec;
-	this->BombRemovalIntervalSec = config_data->BombRemovalIntervalSec;
-	this->LittlelifeNumForLife = config_data->LittlelifeNumForLife;
-	this->OrbitronVelocity = config_data->OrbitronVelocity;
-	this->MonsterVelocity = config_data->MonsterVelocity;
-	this->BombVelocity = config_data->BombVelocity;
-	this->RocketVelocity = config_data->RocketVelocity;
-	this->RocketrightVelocity = config_data->RocketrightVelocity;
-	this->LifeVelocity = config_data->LifeVelocity;
+	this->OrbitronInitialVelocity = config_data.OrbitronInitialVelocity;
+	this->MonsterInitialVelocity = config_data.MonsterInitialVelocity;
+	this->RocketOrbitronVelocityRatio = config_data.RocketOrbitronVelocityRatio;
+	this->VelocityIncreaseAtLevelUp = config_data.VelocityIncreaseAtLevelUp;
+	this->MonsterOrbitChangeIntervalSec = config_data.MonsterOrbitChangeIntervalSec;
+	this->MonsterSleepTimeSec = config_data.MonsterSleepTimeSec;
+	this->OrbitronInitialLife = config_data.OrbitronInitialLife;
+	this->OrbitNumber = config_data.OrbitNumber;
+	this->MonsterNumber = config_data.MonsterNumber;
+	this->ConstantLifeNumber = config_data.ConstantLifeNumber;
+	this->ConstantBombAdditionNumber = config_data.ConstantBombAdditionNumber;
+	this->RocketRightIntervalSec = config_data.RocketRightIntervalSec;
+	this->BombAdditionIntervalSec = config_data.BombAdditionIntervalSec;
+	this->BombRemovalIntervalSec = config_data.BombRemovalIntervalSec;
+	this->LittlelifeNumForLife = config_data.LittlelifeNumForLife;
+	this->OrbitronVelocity = config_data.OrbitronVelocity;
+	this->MonsterVelocity = config_data.MonsterVelocity;
+	this->BombVelocity = config_data.BombVelocity;
+	this->RocketVelocity = config_data.RocketVelocity;
+	this->RocketrightVelocity = config_data.RocketrightVelocity;
+	this->LifeVelocity = config_data.LifeVelocity;
 }
 
 CConfigurationData::~CConfigurationData()

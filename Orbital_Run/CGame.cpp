@@ -5,19 +5,19 @@
 #include "CStatePlayingScreen.h"
 
 //define and initialize static members 
-CState* CGame::MainMenuState = new CStateMainMenu;
-CState* CGame::ConfigMenuState = new CStateConfigMenu;
-CState* CGame::PlayingState = new CStatePlayingScreen;
+CState* CGame::pMainMenuState = new CStateMainMenu;
+CState* CGame::pConfigMenuState = new CStateConfigMenu;
+CState* CGame::pPlayingState = new CStatePlayingScreen;
 
 CGame::CGame()
 {
 	// We don't initialize static data member here, 
 	// because static data initialization will happen on every constructor call.
-	//this->MainMenuState = new CStateMainMenu;
-	//this->ConfigMenuState = new CStateConfigMenu;
-	//this->PlayingState = new CStatePlayingScreen;
-	this->CurrentState = this->MainMenuState;
-	this->CurrentState->OnEntry(*this);
+	//this->pMainMenuState = new CStateMainMenu;
+	//this->pConfigMenuState = new CStateConfigMenu;
+	//this->pPlayingState = new CStatePlayingScreen;
+	this->pCurrentState = this->pMainMenuState;
+	this->pCurrentState->OnEntry(*this);
 	this->IsRunning = true;
 	this->FlagGameOver = false;
 	this->FlagLostLife = false;
@@ -26,19 +26,19 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	delete this->MainMenuState;
-	delete this->ConfigMenuState;
-	delete this->PlayingState;
+	delete this->pMainMenuState;
+	delete this->pConfigMenuState;
+	delete this->pPlayingState;
 }
 
 void CGame::OnStateHandler(sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	this->CurrentState->OnStateHandler(*this, window, config_data, model);
+	this->pCurrentState->OnStateHandler(*this, window, config_data, model);
 }
 
 CState* CGame::GetState()
 {
-	return this->CurrentState;
+	return this->pCurrentState;
 }
 
 void CGame::SetIsRunning(BOOLEAN is_running)
@@ -46,16 +46,16 @@ void CGame::SetIsRunning(BOOLEAN is_running)
 	this->IsRunning = is_running;
 }
 
-void CGame::SetState(CState* new_state)
+void CGame::SetState(CState* p_state)
 {
 	// leave the current state - execute exit action
-	this->CurrentState->OnExit(*this);
+	this->pCurrentState->OnExit(*this);
 
 	// state transistion
-	this->CurrentState = new_state;
+	this->pCurrentState = p_state;
 
 	// enter the new state - execute enter action
-	this->CurrentState->OnEntry(*this);
+	this->pCurrentState->OnEntry(*this);
 }
 
 BOOLEAN CGame::GetIsRunning()

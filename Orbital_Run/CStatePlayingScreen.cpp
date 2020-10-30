@@ -1,20 +1,30 @@
 #include "CStatePlayingScreen.h"
 
+CStatePlayingScreen::CStatePlayingScreen()
+{
+
+}
+
+CStatePlayingScreen::~CStatePlayingScreen()
+{
+
+}
+
 void CStatePlayingScreen::OnStateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	INT32S state_return = p_controller_playing_screen->StateHandler(game, window, config_data, model);
+	INT32S state_return = pControllerPlayingScreen->StateHandler(game, window, config_data, model);
 	switch (state_return) {
 	case -1:
 		game.SetIsRunning(false);
 		break;
 	case 0:
-		game.SetState(CGame::MainMenuState);
+		game.SetState(CGame::pMainMenuState);
 		break;
 	case 1:
-		game.SetState(CGame::ConfigMenuState);
+		game.SetState(CGame::pConfigMenuState);
 		break;
 	case 2:
-		game.SetState(CGame::PlayingState);
+		game.SetState(CGame::pPlayingState);
 		break;
 	default:
 		break;
@@ -23,7 +33,7 @@ void CStatePlayingScreen::OnStateHandler(CGame& game, sf::RenderWindow& window, 
 
 void CStatePlayingScreen::OnEntry(CGame& game)
 {
-	p_controller_playing_screen = new CControllerPlayingScreen;
+	pControllerPlayingScreen = new CControllerPlayingScreen;
 	game.SetFlagGameOver(false);
 	game.SetFlagLostLife(false);
 	game.SetFlagGamePaused(false);
@@ -31,5 +41,5 @@ void CStatePlayingScreen::OnEntry(CGame& game)
 
 void CStatePlayingScreen::OnExit(CGame& game)
 {
-	delete p_controller_playing_screen;
+	delete pControllerPlayingScreen;
 }

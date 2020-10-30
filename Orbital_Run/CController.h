@@ -12,6 +12,8 @@ class CGame;
 
 class CController {
 public:
+	CController() {}
+	virtual ~CController() {}
 	virtual INT32S StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model) = 0;
 };
 

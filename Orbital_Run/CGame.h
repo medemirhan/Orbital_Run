@@ -11,7 +11,7 @@ class CStatePlayingScreen;
 
 class CGame {
 private:
-	CState* CurrentState;                    // current state (state variable)
+	CState* pCurrentState;
 	BOOLEAN IsRunning;
 	BOOLEAN FlagGameOver;
 	BOOLEAN FlagLostLife;
@@ -20,18 +20,19 @@ public:
 	CGame();
 	~CGame();
 	void OnStateHandler(sf::RenderWindow& window, CConfigurationData& config_data, CModel& model);
+	static CState* pMainMenuState;          /* concrete state object */
+	static CState* pConfigMenuState;        /* concrete state object */
+	static CState* pPlayingState;           /* concrete state object */
+
 	void SetIsRunning(BOOLEAN is_running);
-	void SetState(CState* new_state);           // state setter function
+	void SetState(CState* p_state);
 	void SetFlagGameOver(BOOLEAN flag);
 	void SetFlagLostLife(BOOLEAN flag);
 	void SetFlagGamePaused(BOOLEAN flag);
+	CState* GetState();
 	BOOLEAN GetFlagGameOver();
 	BOOLEAN GetFlagLostLife();
 	BOOLEAN GetFlagGamePaused();
 	BOOLEAN GetIsRunning();
-	CState* GetState();
-	static CState* MainMenuState;          // concrete state objects
-	static CState* ConfigMenuState;
-	static CState* PlayingState;
 };
 

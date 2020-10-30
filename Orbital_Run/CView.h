@@ -7,5 +7,7 @@ class CView {
 private:
 
 public:
+    CView() {}
+    virtual ~CView() {}
     virtual void SetSceneProperties() = 0;
 };

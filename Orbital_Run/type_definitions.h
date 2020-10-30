@@ -51,7 +51,6 @@ typedef unsigned long long         INT64U;
 #define LEVEL_DISPLAY_PRECISION                      3
 #define MASK_ALPHA                                   150
 
-
 typedef enum {
 	ENTITY_TYPES_ORBITRON = 0,
 	ENTITY_TYPES_MONSTER,
@@ -60,15 +59,6 @@ typedef enum {
 	ENTITY_TYPES_BOMB,
 	ENTITY_TYPES_LIFE
 }E_ENTITY_TYPES;
-
-typedef enum {
-	STATES_MAIN_MENU = 0,
-	STATES_CONFIG_MENU,
-	STATES_PLAYING_GAME,
-	STATES_LOST_LIFE,
-	STATES_GAME_OVER,
-	STATES_GAME_PAUSED
-}E_STATES;
 
 typedef enum {
 	COLLISION_TYPES_ORBITRON_MONSTER = 0,

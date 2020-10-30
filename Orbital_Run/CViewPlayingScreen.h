@@ -35,8 +35,8 @@ public:
 	CViewPlayingScreen();
 	~CViewPlayingScreen();
 	void SetSceneProperties() override;
-	void GenerateOrbitDrawings(const CConfigurationData& init_config_data);
-	void GenerateEntityDrawings(const CConfigurationData& init_config_data, const std::shared_ptr<CEntity> p_entity);
+	void GenerateOrbitDrawings(const CConfigurationData& config_data);
+	void GenerateEntityDrawings(const CConfigurationData& config_data, const std::shared_ptr<CEntity> p_entity);
 	void PrintScreen(CGame& game, sf::RenderWindow& window, const std::vector<std::shared_ptr<CEntity>>& p_entity_list, INT32S num_orbits);
 	void UpdateIndicatorsView(FP32 game_level, INT32S indicator_num_life, INT32S indicator_num_littlelife, INT32S indicator_num_rocketright);
 	void UpdateEntityDrawings(const std::vector<INT32S>& idx);

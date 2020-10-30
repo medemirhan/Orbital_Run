@@ -10,7 +10,6 @@
 #include "CTimer.h"
 
 class CModel {
-	friend class CController;
 	friend class CControllerMainMenu;
 	friend class CControllerConfigMenu;
 	friend class CControllerPlayingScreen;

@@ -12,7 +12,7 @@ CControllerMainMenu::~CControllerMainMenu()
 
 INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	game.SetState(CGame::MainMenuState);
+	game.SetState(CGame::pMainMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
 	CViewMainMenu view;

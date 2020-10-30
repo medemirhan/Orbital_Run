@@ -12,12 +12,12 @@ CControllerPlayingScreen::~CControllerPlayingScreen()
 
 INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	game.SetState(CGame::PlayingState);
+	game.SetState(CGame::pPlayingState);
 	INT32S return_val = 2;
 	BOOLEAN change_screen = false;
 	sf::Clock global_clock;
 	sf::Clock interrupt_clock;
-	CConfigurationData updated_config_data(&config_data);
+	CConfigurationData updated_config_data(config_data);
 	CTimer timer;
 	INT32S num_orbits = updated_config_data.GetOrbitNumber();
 	INT32S num_monsters = updated_config_data.GetMonsterNumber();
@@ -80,7 +80,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 			timer.SetElapsedTimeMonsterOrbitChange(timer.GetElapsedTimeMonsterOrbitChangeCache() + clock_monster_orbit_change.getElapsedTime());
 			if (timer.GetElapsedTimeMonsterOrbitChange().asSeconds() > updated_config_data.GetMonsterOrbitChangeIntervalSec()) {
-				this->MonsterChaseOrbitron(model.EntityList);
+				this->OrbitronChasingHandler(model.EntityList);
 				timer.SetElapsedTimeMonsterOrbitChangeCache(sf::Time::Zero);
 				clock_monster_orbit_change.restart();
 			}
@@ -172,7 +172,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 			collision_list = this->CollisionDetection(model.EntityList);
 
 			if (collision_list.size() > 0) {
-				this->CollisionHandler(game, updated_config_data, collision_list, &collision_types, model.SleepingMonsters, global_clock, interrupt_clock, timer);
+				this->CollisionHandler(game, updated_config_data, collision_list, collision_types, model.SleepingMonsters, global_clock, interrupt_clock, timer);
 			}
 			else {
 
@@ -337,17 +337,17 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 	return 2;
 }
 
-std::vector<std::vector<std::shared_ptr<CEntity>>> CControllerPlayingScreen::CollisionDetection(const std::vector<std::shared_ptr<CEntity>>& p_entity_list)
+std::vector<std::vector<std::shared_ptr<CEntity>>> CControllerPlayingScreen::CollisionDetection(const std::vector<std::shared_ptr<CEntity>>& entity_list)
 {
 	std::vector<std::vector<std::shared_ptr<CEntity>>> collision_list;
 	FP32 distance;
 
-	for (INT32S i = 0; i < p_entity_list.size(); i++) {
-		for (INT32S j = i + 1; j < p_entity_list.size(); j++) {
-			if (p_entity_list[i]->GetIsAlive() && p_entity_list[j]->GetIsAlive() && p_entity_list[i]->GetNumLife() > 0 && p_entity_list[j]->GetNumLife() > 0) {
-				distance = EUCLIDEAN_DIST(p_entity_list[i]->GetPositionX(), p_entity_list[j]->GetPositionX(), p_entity_list[i]->GetPositionY(), p_entity_list[j]->GetPositionY());
+	for (INT32S i = 0; i < entity_list.size(); i++) {
+		for (INT32S j = i + 1; j < entity_list.size(); j++) {
+			if (entity_list[i]->GetIsAlive() && entity_list[j]->GetIsAlive() && entity_list[i]->GetNumLife() > 0 && entity_list[j]->GetNumLife() > 0) {
+				distance = EUCLIDEAN_DIST(entity_list[i]->GetPositionX(), entity_list[j]->GetPositionX(), entity_list[i]->GetPositionY(), entity_list[j]->GetPositionY());
 				if (distance <= 2 * ENTITY_DRAWING_RADIUS) {
-					collision_list.push_back({ p_entity_list[i], p_entity_list[j] });
+					collision_list.push_back({ entity_list[i], entity_list[j] });
 				}else {
 
 				}
@@ -359,21 +359,21 @@ std::vector<std::vector<std::shared_ptr<CEntity>>> CControllerPlayingScreen::Col
 	return collision_list;
 }
 
-void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData& config_data, std::vector<std::vector<std::shared_ptr<CEntity>>>& p_collision_list, std::vector<E_COLLISION_TYPES>* p_collision_types, std::vector<std::shared_ptr<CEntity>>& p_sleeping_monsters, const sf::Clock& global_clock, sf::Clock& interrupt_clock, CTimer& timer)
+void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData& config_data, std::vector<std::vector<std::shared_ptr<CEntity>>>& collision_list, std::vector<E_COLLISION_TYPES>& collision_types, std::vector<std::shared_ptr<CEntity>>& sleeping_monsters, const sf::Clock& global_clock, sf::Clock& interrupt_clock, CTimer& timer)
 {
-	for (INT32S i = 0; i < p_collision_list.size(); i++) {
-		if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_MONSTER) {
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetVelocity(0.0f);
-			//p_collision_list[i][1]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_MONSTER);
+	for (INT32S i = 0; i < collision_list.size(); i++) {
+		if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_MONSTER) {
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetVelocity(0.0f);
+			//collision_list[i][1]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_MONSTER);
 
-			p_sleeping_monsters.push_back(p_collision_list[i][1]);
+			sleeping_monsters.push_back(collision_list[i][1]);
 			timer.GetMonsterSleepTimeBegin().push_back(global_clock.getElapsedTime());
 			timer.GetMonsterSleepIdleTime().push_back(sf::Time::Zero);
 
-			if (p_collision_list[i][0]->GetNumLife() == 0) {
+			if (collision_list[i][0]->GetNumLife() == 0) {
 				game.SetFlagGameOver(true);
 				break;
 			}else {
@@ -381,18 +381,18 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 				game.SetFlagLostLife(true);
 				break;
 			}
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_MONSTER && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][0]->SetVelocity(0.0f);
-			//p_collision_list[i][0]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_MONSTER);
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_MONSTER && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][0]->SetVelocity(0.0f);
+			//collision_list[i][0]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_MONSTER);
 
-			p_sleeping_monsters.push_back(p_collision_list[i][0]);
+			sleeping_monsters.push_back(collision_list[i][0]);
 			timer.GetMonsterSleepTimeBegin().push_back(global_clock.getElapsedTime());
 			timer.GetMonsterSleepIdleTime().push_back(sf::Time::Zero);
 
-			if (p_collision_list[i][1]->GetNumLife() == 0) {
+			if (collision_list[i][1]->GetNumLife() == 0) {
 				game.SetFlagGameOver(true);
 				break;
 			}else {
@@ -400,12 +400,12 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 				game.SetFlagLostLife(true);
 				break;
 			}
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_BOMB) {
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_BOMB);
-			if (p_collision_list[i][0]->GetNumLife() == 0) {
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_BOMB) {
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_BOMB);
+			if (collision_list[i][0]->GetNumLife() == 0) {
 				game.SetFlagGameOver(true);
 				break;
 			}else {
@@ -413,12 +413,12 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 				game.SetFlagLostLife(true);
 				break;
 			}
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_BOMB && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][0]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_BOMB);
-			if (p_collision_list[i][1]->GetNumLife() == 0) {
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_BOMB && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][0]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_BOMB);
+			if (collision_list[i][1]->GetNumLife() == 0) {
 				game.SetFlagGameOver(true);
 				break;
 			}else {
@@ -426,61 +426,61 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 				game.SetFlagLostLife(true);
 				break;
 			}
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_LIFE) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(p_collision_list[i][0]));
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_LIFE) {
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][0]));
 			p_orbitron->SetNumLittleLife(p_orbitron->GetNumLittleLife() + 1);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_LIFE);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_LIFE);
 			if (p_orbitron->GetNumLittleLife() == config_data.LittlelifeNumForLife) {
 				p_orbitron->SetNumLife(p_orbitron->GetNumLife() + 1);
 				p_orbitron->SetNumLittleLife(0);
 			}else {
 
 			}
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_LIFE && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(p_collision_list[i][1]));
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_LIFE && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][1]));
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
 			p_orbitron->SetNumLittleLife(p_orbitron->GetNumLittleLife() + 1);
-			p_collision_list[i][0]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_LIFE);
+			collision_list[i][0]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_LIFE);
 			if (p_orbitron->GetNumLittleLife() == config_data.LittlelifeNumForLife) {
-				p_orbitron->SetNumLife(p_collision_list[i][1]->GetNumLife() + 1);
+				p_orbitron->SetNumLife(collision_list[i][1]->GetNumLife() + 1);
 				p_orbitron->SetNumLittleLife(0);
 			}else {
 
 			}
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ROCKET_RIGHT) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(p_collision_list[i][0]));
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ORBITRON && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ROCKET_RIGHT) {
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][0]));
 			p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() + 1);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_ROCKETRIGHT);
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ROCKET_RIGHT && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
-			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(p_collision_list[i][1]));
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_ROCKETRIGHT);
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ROCKET_RIGHT && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ORBITRON) {
+			std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(collision_list[i][1]));
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
 			p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() + 1);
-			p_collision_list[i][0]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_ORBITRON_ROCKETRIGHT);
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_MONSTER && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ROCKET) {
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
-			p_collision_list[i][0]->SetVelocity(0.0f);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetIsAlive(false);
-			p_collision_types->push_back(COLLISION_TYPES_MONSTER_ROCKET);
+			collision_list[i][0]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_ORBITRON_ROCKETRIGHT);
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_MONSTER && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_ROCKET) {
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
+			collision_list[i][0]->SetVelocity(0.0f);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetIsAlive(false);
+			collision_types.push_back(COLLISION_TYPES_MONSTER_ROCKET);
 
-			p_sleeping_monsters.push_back(p_collision_list[i][0]);
+			sleeping_monsters.push_back(collision_list[i][0]);
 			timer.GetMonsterSleepTimeBegin().push_back(global_clock.getElapsedTime());
 			timer.GetMonsterSleepIdleTime().push_back(sf::Time::Zero);
-		}else if (p_collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ROCKET && p_collision_list[i][1]->GetEntityType() == ENTITY_TYPES_MONSTER) {
-			p_collision_list[i][0]->SetNumLife(p_collision_list[i][0]->GetNumLife() - 1);
-			p_collision_list[i][0]->SetIsAlive(false);
-			//p_collision_list[i][1]->SetIsAlive(false);
-			p_collision_list[i][1]->SetNumLife(p_collision_list[i][1]->GetNumLife() - 1);
-			p_collision_list[i][1]->SetVelocity(0.0f);
-			p_collision_types->push_back(COLLISION_TYPES_MONSTER_ROCKET);
+		}else if (collision_list[i][0]->GetEntityType() == ENTITY_TYPES_ROCKET && collision_list[i][1]->GetEntityType() == ENTITY_TYPES_MONSTER) {
+			collision_list[i][0]->SetNumLife(collision_list[i][0]->GetNumLife() - 1);
+			collision_list[i][0]->SetIsAlive(false);
+			//collision_list[i][1]->SetIsAlive(false);
+			collision_list[i][1]->SetNumLife(collision_list[i][1]->GetNumLife() - 1);
+			collision_list[i][1]->SetVelocity(0.0f);
+			collision_types.push_back(COLLISION_TYPES_MONSTER_ROCKET);
 
-			p_sleeping_monsters.push_back(p_collision_list[i][1]);
+			sleeping_monsters.push_back(collision_list[i][1]);
 			timer.GetMonsterSleepTimeBegin().push_back(global_clock.getElapsedTime());
 			timer.GetMonsterSleepIdleTime().push_back(sf::Time::Zero);
 		}else {
@@ -489,20 +489,20 @@ void CControllerPlayingScreen::CollisionHandler(CGame& game, CConfigurationData&
 	}
 }
 
-void CControllerPlayingScreen::RocketFiringHandler(std::vector<std::shared_ptr<CEntity>>& p_rockets_on_orbits, std::vector<FP32>& p_rocket_firing_angles)
+void CControllerPlayingScreen::RocketFiringHandler(std::vector<std::shared_ptr<CEntity>>& rockets_on_orbits, std::vector<FP32>& rocket_firing_angles)
 {
 	FP32 angle_tolerance;
-	for (INT32S i = 0; i < p_rockets_on_orbits.size(); i++) {
-		angle_tolerance = p_rockets_on_orbits[i]->GetVelocity();
-		if (p_rockets_on_orbits[i]->GetIsAlive() && p_rockets_on_orbits[i]->GetAngle() >= p_rocket_firing_angles[i] && p_rockets_on_orbits[i]->GetAngle() < p_rocket_firing_angles[i] + angle_tolerance) {
-			p_rockets_on_orbits[i]->SetIsAlive(false);
-			p_rockets_on_orbits[i]->SetNumLife(0);
-			p_rockets_on_orbits.erase(p_rockets_on_orbits.begin() + i);
-			p_rocket_firing_angles.erase(p_rocket_firing_angles.begin() + i);
+	for (INT32S i = 0; i < rockets_on_orbits.size(); i++) {
+		angle_tolerance = rockets_on_orbits[i]->GetVelocity();
+		if (rockets_on_orbits[i]->GetIsAlive() && rockets_on_orbits[i]->GetAngle() >= rocket_firing_angles[i] && rockets_on_orbits[i]->GetAngle() < rocket_firing_angles[i] + angle_tolerance) {
+			rockets_on_orbits[i]->SetIsAlive(false);
+			rockets_on_orbits[i]->SetNumLife(0);
+			rockets_on_orbits.erase(rockets_on_orbits.begin() + i);
+			rocket_firing_angles.erase(rocket_firing_angles.begin() + i);
 			i--;
-		}else if (!p_rockets_on_orbits[i]->GetIsAlive()) {
-			p_rockets_on_orbits.erase(p_rockets_on_orbits.begin() + i);
-			p_rocket_firing_angles.erase(p_rocket_firing_angles.begin() + i);
+		}else if (!rockets_on_orbits[i]->GetIsAlive()) {
+			rockets_on_orbits.erase(rockets_on_orbits.begin() + i);
+			rocket_firing_angles.erase(rocket_firing_angles.begin() + i);
 			i--;
 		}else {
 
@@ -510,7 +510,7 @@ void CControllerPlayingScreen::RocketFiringHandler(std::vector<std::shared_ptr<C
 	}
 }
 
-void CControllerPlayingScreen::MonsterChaseOrbitron(std::vector<std::shared_ptr<CEntity>>& entity_list)
+void CControllerPlayingScreen::OrbitronChasingHandler(std::vector<std::shared_ptr<CEntity>>& entity_list)
 {
 	INT32S target_orbit = entity_list.front()->GetOrbit();
 	INT32S i, nearest_monster_index = 0;
