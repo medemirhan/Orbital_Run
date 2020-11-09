@@ -246,8 +246,7 @@ void CViewPlayingScreen::PrintScreen(CGame& game, sf::RenderWindow& window, cons
 	else if (game.GetFlagGamePaused()) {
 		window.draw(this->TxtGamePaused);
 		window.draw(this->TxtGamePausedOptions);
-	}
-	else {
+	}else {
 
 	}
 	window.display();

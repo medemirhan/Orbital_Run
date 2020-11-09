@@ -101,7 +101,7 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
     }
 }
 
-/* Returns non-alive entities' id's from the entity list */
+/* Deletes non-alive entities from the EntityList and returns their id's */
 std::vector<INT32S> CModel::UpdateEntityList()
 {
     std::vector<INT32S> idx;
