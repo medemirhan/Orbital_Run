@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<param name="OrbitronInitialVelocity" value="0.5f"/>
+	<param name="MonsterInitialVelocity" value="0.51f"/>
+	<param name="RocketOrbitronVelocityRatio" value="2.5f"/>
+	<param name="VelocityIncreaseAtLevelUp" value="0.03f"/>
+	<param name="MonsterOrbitChangeIntervalSec" value="1.5f"/>
+	<param name="MonsterSleepTimeSec" value="5.0f"/>
+	<param name="OrbitronInitialLife" value="3"/>
+	<param name="OrbitNumber" value="7"/>
+	<param name="MonsterNumber" value="10"/>
+	<param name="ConstantLifeNumber" value="3"/>
+	<param name="ConstantBombAdditionNumber" value="6"/>
+	<param name="RocketRightIntervalSec" value="10"/>
+	<param name="BombAdditionIntervalSec" value="15"/>
+	<param name="BombRemovalIntervalSec" value="20"/>
+	<param name="LittlelifeNumForLife" value="3"/>
+</root>
+

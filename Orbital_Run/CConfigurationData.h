@@ -36,6 +36,7 @@ public:
 	FP32 LifeVelocity;
 
 	CConfigurationData();
+	CConfigurationData(std::string file_name);
 	CConfigurationData(const CConfigurationData& config_data);
 	~CConfigurationData();
 	void XMLParser();

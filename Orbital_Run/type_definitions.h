@@ -50,6 +50,8 @@ typedef unsigned long long         INT64U;
 #define THREAD_SLEEP_TIME_MSEC                       10
 #define LEVEL_DISPLAY_PRECISION                      3
 #define MASK_ALPHA                                   150
+#define VDEFAULT_ENTITTY_VBOMB_RATIO                 4.0f
+#define VDEFAULT_ENTITTY_VLIFE_RATIO                 3.0f
 
 typedef enum {
 	ENTITY_TYPES_ORBITRON = 0,

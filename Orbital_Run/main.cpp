@@ -10,16 +10,16 @@ INT32S main(int argc, char** argv) {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "Orbital Run", sf::Style::Close);
 
 	CGame game;
-	CConfigurationData config_data;
-	if (config_data.GetConfigFileErrorStatus()) {
+	std::shared_ptr<CConfigurationData> p_config_data(new CConfigurationData);
+	if (p_config_data->GetConfigFileErrorStatus()) {
 		return STATES_EXIT;
 	}else {
 
 	}
 
 	while (game.GetIsRunning()) {
-		std::shared_ptr<CModel> p_model(new CModel(config_data));
-		game.OnStateHandler(window, config_data, *p_model);
+		std::shared_ptr<CModel> p_model(new CModel(*p_config_data));
+		game.OnStateHandler(window, *p_config_data, *p_model);
 	}
 
 	return 0;

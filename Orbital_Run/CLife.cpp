@@ -2,7 +2,7 @@
 
 CLife::CLife()
 {
-
+	this->EntityType = ENTITY_TYPES_LIFE;
 }
 
 CLife::CLife(E_ENTITY_TYPES entity_type, FP32 pos_x, FP32 pos_y, FP32 velocity, FP32 radius, FP32 angle, INT32S orbit, INT32S num_life, BOOLEAN is_alive)
