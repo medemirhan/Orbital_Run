@@ -13,7 +13,6 @@
 //#include "../Orbital_Run/CControllerPlayingScreen.h"
 #include "../Orbital_Run/CModel.h"
 
-
 #define EPSILON static_cast<FP32>(1e-10)
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -179,16 +178,41 @@ namespace UnitTest
 			CConfigurationData* p_config_data = new CConfigurationData(filename);
 			CModel* p_model(new CModel(*p_config_data));
 			std::vector<E_ENTITY_TYPES> entity_types{ ENTITY_TYPES_ORBITRON , ENTITY_TYPES_MONSTER , ENTITY_TYPES_ROCKET , ENTITY_TYPES_ROCKET_RIGHT , ENTITY_TYPES_BOMB , ENTITY_TYPES_LIFE };
-
-			for (int i = 0; i < entity_types.size(); i++) {
+			for (INT32S i = 0; i < entity_types.size(); i++) {
 				p_model->GenerateEntityOnRandomPoint(*p_config_data, entity_types[i]);
 			}
-
 			std::vector<std::shared_ptr<CEntity>> entity_list = p_model->GetEntityList();
-
-			for (int i = 0; i < entity_list.size(); i++) {
+			for (INT32S i = 0; i < entity_list.size(); i++) {
 				Assert::AreEqual(static_cast<INT32S>(entity_types[i]), static_cast<INT32S>(entity_list[i]->GetEntityType()));
 			}
+			delete p_config_data, p_model;
+		}
+
+		/* Tests UpdateEntityList() function of CModel */
+		TEST_METHOD(EntityListUpdateTest)
+		{
+			std::string filename = "config_unittest.xml";
+			CConfigurationData* p_config_data = new CConfigurationData(filename);
+			CModel* p_model(new CModel(*p_config_data));
+			std::vector<E_ENTITY_TYPES> entity_types{ ENTITY_TYPES_ORBITRON , ENTITY_TYPES_MONSTER , ENTITY_TYPES_ROCKET , ENTITY_TYPES_ROCKET_RIGHT , ENTITY_TYPES_BOMB , ENTITY_TYPES_LIFE };
+			std::vector<std::shared_ptr<CEntity>> p_entity_list;
+			for (INT32S i = 0; i < entity_types.size(); i++) {
+				p_model->GenerateEntityOnRandomPoint(*p_config_data, entity_types[i]);
+				p_entity_list.push_back(p_model->GetEntityList()[i]);
+			}
+
+			p_entity_list[0]->SetIsAlive(false);
+			p_entity_list[4]->SetIsAlive(false);
+			p_entity_list[5]->SetIsAlive(false);
+			p_model->SetEntityList(p_entity_list);
+			std::vector<INT32S> deleted_entity_idx = p_model->UpdateEntityList();
+
+			Assert::AreEqual(3, static_cast<INT32S>(deleted_entity_idx.size()));
+			Assert::AreEqual(3, static_cast<INT32S>(p_model->GetEntityList().size()));
+			Assert::AreEqual(0, deleted_entity_idx[0]);
+			Assert::AreEqual(4, deleted_entity_idx[1]);
+			Assert::AreEqual(5, deleted_entity_idx[2]);
+
 			delete p_config_data, p_model;
 		}
 	};

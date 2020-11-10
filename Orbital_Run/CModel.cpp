@@ -105,14 +105,16 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
 std::vector<INT32S> CModel::UpdateEntityList()
 {
     std::vector<INT32S> idx;
-    for (INT32S i = 0; i < this->EntityList.size(); i++) {
+    INT32S vec_size = this->EntityList.size();
+    for (INT32S i = vec_size - 1; i >= 0; i--) {
         if (!(this->EntityList[i]->GetIsAlive())) {
             this->EntityList.erase(this->EntityList.begin() + i);
             idx.push_back(i);
         }else {
-
+            
         }
     }
+    std::reverse(idx.begin(), idx.end());
     return idx;
 }
 
