@@ -36,7 +36,7 @@ void CStatePlayingScreen::OnStateHandler(CGame& game, sf::RenderWindow& window, 
 /* Generates CControllerPlayingScreen object on the entry of this state, and initializes flags of game */
 void CStatePlayingScreen::OnEntry(CGame& game)
 {
-	this->pController = DBG_NEW CControllerPlayingScreen;
+	this->pController = new CControllerPlayingScreen;
 	game.SetFlagGameOver(false);
 	game.SetFlagLostLife(false);
 	game.SetFlagGamePaused(false);

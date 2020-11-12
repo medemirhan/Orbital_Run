@@ -56,42 +56,42 @@ void CModel::GenerateEntityOnRandomPoint(CConfigurationData& config_data, E_ENTI
     switch (entity_type) {
     case ENTITY_TYPES_ORBITRON:
     {
-        std::shared_ptr<COrbitron> p_entity(DBG_NEW COrbitron);
+        std::shared_ptr<COrbitron> p_entity(new COrbitron);
         p_entity->Init(entity_type, WINDOW_CENTER_X + INNER_ORBIT_RADIUS + ORBITRON_INITIAL_ORBIT * DISTANCE_BTW_ORBITS, WINDOW_CENTER_Y, config_data.GetOrbitronVelocity(), ENTITY_DRAWING_RADIUS, ANGLE_MIN, ORBITRON_INITIAL_ORBIT, config_data.OrbitronInitialLife, true, ENTITY_INITIAL_LITTLELIFE, ENTITY_INITIAL_ROCKET_RIGHT);
         this->EntityList.push_back(p_entity);
         break;
     }
     case ENTITY_TYPES_ROCKET:
     {
-        std::shared_ptr<CRocket> p_entity(DBG_NEW CRocket);
+        std::shared_ptr<CRocket> p_entity(new CRocket);
         p_entity->Init(entity_type, random_point_x, random_point_y, config_data.GetOrbitronVelocity() * config_data.RocketOrbitronVelocityRatio, ENTITY_DRAWING_RADIUS, random_angle, random_orbit, 1, true);
         this->EntityList.push_back(p_entity);
         break;
     }
     case ENTITY_TYPES_MONSTER:
     {
-        std::shared_ptr<CMonster> p_entity(DBG_NEW CMonster);
+        std::shared_ptr<CMonster> p_entity(new CMonster);
         p_entity->Init(entity_type, random_point_x, random_point_y, config_data.GetMonsterVelocity(), ENTITY_DRAWING_RADIUS, random_angle, random_orbit, 1, true);
         this->EntityList.push_back(p_entity);
         break;
     }
     case ENTITY_TYPES_ROCKET_RIGHT:
     {
-        std::shared_ptr<CRocketRight> p_entity(DBG_NEW CRocketRight);
+        std::shared_ptr<CRocketRight> p_entity(new CRocketRight);
         p_entity->Init(entity_type, random_point_x, random_point_y, config_data.GetRocketrightVelocity(), ENTITY_DRAWING_RADIUS, random_angle, random_orbit, 1, true);
         this->EntityList.push_back(p_entity);
         break;
     }
     case ENTITY_TYPES_BOMB:
     {
-        std::shared_ptr<CBomb> p_entity(DBG_NEW CBomb);
+        std::shared_ptr<CBomb> p_entity(new CBomb);
         p_entity->Init(entity_type, random_point_x, random_point_y, config_data.GetBombVelocity(), ENTITY_DRAWING_RADIUS, random_angle, random_orbit, 1, true);
         this->EntityList.push_back(p_entity);
         break;
     }
     case ENTITY_TYPES_LIFE:
     {
-        std::shared_ptr<CLife> p_entity(DBG_NEW CLife);
+        std::shared_ptr<CLife> p_entity(new CLife);
         p_entity->Init(entity_type, random_point_x, random_point_y, config_data.GetLifeVelocity(), ENTITY_DRAWING_RADIUS, random_angle, random_orbit, 1, true);
         this->EntityList.push_back(p_entity);
         break;

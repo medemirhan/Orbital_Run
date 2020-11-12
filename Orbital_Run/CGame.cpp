@@ -4,9 +4,9 @@
 #include "CStateConfigMenu.h"
 #include "CStatePlayingScreen.h"
 
-CState* CGame::pMainMenuState = DBG_NEW CStateMainMenu;
-CState* CGame::pConfigMenuState = DBG_NEW CStateConfigMenu;
-CState* CGame::pPlayingState = DBG_NEW CStatePlayingScreen;
+CState* CGame::pMainMenuState = new CStateMainMenu;
+CState* CGame::pConfigMenuState = new CStateConfigMenu;
+CState* CGame::pPlayingState = new CStatePlayingScreen;
 
 CGame::CGame()
 {

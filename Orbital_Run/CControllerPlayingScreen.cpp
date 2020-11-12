@@ -310,7 +310,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 			break;
 		case sf::Keyboard::M:
 			if (game.GetFlagGamePaused() || game.GetFlagLostLife() || game.GetFlagGameOver()) {
-				CConfigurationData* p_default_config = DBG_NEW CConfigurationData;
+				CConfigurationData* p_default_config = new CConfigurationData;
 				config_data.SetOrbitNumber(p_default_config->GetOrbitNumber());
 				config_data.SetMonsterNumber(p_default_config->GetMonsterNumber());
 				config_data.SetOrbitronVelocity(p_default_config->GetOrbitronVelocity());
