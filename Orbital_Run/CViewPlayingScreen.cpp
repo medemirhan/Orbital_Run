@@ -142,7 +142,7 @@ void CViewPlayingScreen::SetSceneProperties()
 void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& config_data)
 {
 	for (INT32S i = 0; i < config_data.GetOrbitNumber(); i++) {
-		std::shared_ptr<sf::CircleShape> p_orbit(new sf::CircleShape);
+		std::shared_ptr<sf::CircleShape> p_orbit(DBG_NEW sf::CircleShape);
 		this->Orbits.push_back(*p_orbit);
 		this->Orbits[i].setRadius(INNER_ORBIT_RADIUS + i * DISTANCE_BTW_ORBITS);
 		this->Orbits[i].setFillColor(sf::Color::Transparent);
@@ -158,7 +158,7 @@ void CViewPlayingScreen::GenerateOrbitDrawings(const CConfigurationData& config_
 /* These drawings are printed to the screen when member function PrintScreen is called */
 void CViewPlayingScreen::GenerateEntityDrawings(const std::shared_ptr<CEntity> p_entity)
 {
-	std::shared_ptr<sf::Sprite> p_entity_drawing(new sf::Sprite);
+	std::shared_ptr<sf::Sprite> p_entity_drawing(DBG_NEW sf::Sprite);
 	this->EntityDrawings.push_back(*p_entity_drawing);
 	switch (p_entity->GetEntityType()) {
 	case ENTITY_TYPES_ORBITRON:

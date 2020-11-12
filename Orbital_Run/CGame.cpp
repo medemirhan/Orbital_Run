@@ -4,10 +4,9 @@
 #include "CStateConfigMenu.h"
 #include "CStatePlayingScreen.h"
 
-/*Static members must be defined and initialized outside of the class body */ 
-CState* CGame::pMainMenuState = new CStateMainMenu;
-CState* CGame::pConfigMenuState = new CStateConfigMenu;
-CState* CGame::pPlayingState = new CStatePlayingScreen;
+CState* CGame::pMainMenuState = DBG_NEW CStateMainMenu;
+CState* CGame::pConfigMenuState = DBG_NEW CStateConfigMenu;
+CState* CGame::pPlayingState = DBG_NEW CStatePlayingScreen;
 
 CGame::CGame()
 {

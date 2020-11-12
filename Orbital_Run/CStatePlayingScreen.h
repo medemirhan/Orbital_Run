@@ -6,7 +6,7 @@ class CGame;
 
 class CStatePlayingScreen : public CState {
 private:
-	CControllerPlayingScreen* pControllerPlayingScreen;
+	CControllerPlayingScreen* pController;
 public:
 	CStatePlayingScreen();
 	~CStatePlayingScreen();

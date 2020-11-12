@@ -13,7 +13,7 @@ CStatePlayingScreen::~CStatePlayingScreen()
 /* Invokes Playing Screen State's StateHandler. Depending on the return of the StateHandler, assigns current state */
 void CStatePlayingScreen::OnStateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	INT32S state_return = pControllerPlayingScreen->StateHandler(game, window, config_data, model);
+	INT32S state_return = this->pController->StateHandler(game, window, config_data, model);
 	switch (state_return) {
 	case STATES_EXIT:
 		game.SetIsRunning(false);
@@ -35,7 +35,7 @@ void CStatePlayingScreen::OnStateHandler(CGame& game, sf::RenderWindow& window, 
 /* Generates CControllerPlayingScreen object on the entry of this state, and initializes flags of game */
 void CStatePlayingScreen::OnEntry(CGame& game)
 {
-	pControllerPlayingScreen = new CControllerPlayingScreen;
+	this->pController = DBG_NEW CControllerPlayingScreen;
 	game.SetFlagGameOver(false);
 	game.SetFlagLostLife(false);
 	game.SetFlagGamePaused(false);
@@ -44,5 +44,5 @@ void CStatePlayingScreen::OnEntry(CGame& game)
 /* Deallocates memory on the exit of this state */
 void CStatePlayingScreen::OnExit()
 {
-	delete pControllerPlayingScreen;
+	delete this->pController;
 }

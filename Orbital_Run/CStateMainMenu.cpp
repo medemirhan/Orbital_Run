@@ -13,7 +13,7 @@ CStateMainMenu::~CStateMainMenu()
 /* Invokes Main Menu State's StateHandler. Depending on the return of the StateHandler, assigns current state */
 void CStateMainMenu::OnStateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	INT32S state_return = pControllerMainMenu->StateHandler(game, window, config_data, model);
+	INT32S state_return = this->pController->StateHandler(game, window, config_data, model);
 	switch (state_return) {
 	case STATES_EXIT:
 		game.SetIsRunning(false);
@@ -35,11 +35,11 @@ void CStateMainMenu::OnStateHandler(CGame& game, sf::RenderWindow& window, CConf
 /* Generates CControllerMainMenu object on the entry of this state */
 void CStateMainMenu::OnEntry(CGame& game)
 {
-	pControllerMainMenu = new CControllerMainMenu;
+	this->pController = DBG_NEW CControllerMainMenu;
 }
 
 /* Deallocates memory on the exit of this state */
 void CStateMainMenu::OnExit()
 {
-	delete pControllerMainMenu;
+	delete this->pController;
 }

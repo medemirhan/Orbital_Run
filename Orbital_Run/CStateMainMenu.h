@@ -6,7 +6,7 @@ class CGame;
 
 class CStateMainMenu : public CState {
 private:
-	CControllerMainMenu* pControllerMainMenu;
+	CControllerMainMenu* pController;
 public:
 	CStateMainMenu();
 	~CStateMainMenu();
