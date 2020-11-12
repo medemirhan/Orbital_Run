@@ -20,9 +20,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	delete this->pMainMenuState;
-	delete this->pConfigMenuState;
-	delete this->pPlayingState;
+
 }
 
 /* Delegates its behaviour to the pCurrentState's OnStateHandler method */

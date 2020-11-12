@@ -17,6 +17,7 @@ void CStateMainMenu::OnStateHandler(CGame& game, sf::RenderWindow& window, CConf
 	switch (state_return) {
 	case STATES_EXIT:
 		game.SetIsRunning(false);
+		game.GetState()->OnExit();
 		break;
 	case STATES_MAIN_MENU:
 		game.SetState(CGame::pMainMenuState);

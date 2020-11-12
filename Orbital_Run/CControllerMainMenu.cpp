@@ -14,7 +14,7 @@ CControllerMainMenu::~CControllerMainMenu()
 /* Returns an integer that indicates enum of State which will be assigned as current state. */
 INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	game.SetState(CGame::pMainMenuState);
+	//game.SetState(CGame::pMainMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
 	CViewMainMenu view;
@@ -82,5 +82,5 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& vi
 
 	}
 	
-	return STATES_MAIN_MENU; /* If above If statements doesn't change the state, return current state */
+	return STATES_MAIN_MENU; /* If above If statements don't change the state, return current state */
 }

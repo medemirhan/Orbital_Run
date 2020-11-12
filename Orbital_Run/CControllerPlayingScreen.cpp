@@ -14,7 +14,7 @@ CControllerPlayingScreen::~CControllerPlayingScreen()
 /* Returns an integer that indicates enum of State which will be assigned as current state. */
 INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model)
 {
-	game.SetState(CGame::pPlayingState);
+	//game.SetState(CGame::pPlayingState);
 	INT32S return_val = 2;
 	BOOLEAN change_screen = false;
 	sf::Clock global_clock;
@@ -337,7 +337,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 
 	}
 
-	return STATES_PLAYING_SCREEN; /* If above If statements doesn't change the state, return current state */
+	return STATES_PLAYING_SCREEN; /* If above If statements don't change the state, return current state */
 }
 
 /* Checks Model's EntityList to see whether any entity pair is collided and returns a 2D vector that stores collision list */
