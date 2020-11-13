@@ -2,12 +2,12 @@
 
 CControllerConfigMenu::CControllerConfigMenu()
 {
-	pView = new CViewConfigMenu;
+
 }
 
 CControllerConfigMenu::~CControllerConfigMenu()
 {
-	delete pView;
+
 }
 
 /* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
@@ -19,7 +19,7 @@ INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window
 	//std::mutex mutex;
 	//CViewConfigMenu view;
 	window.setActive(true);
-	this->pView->SetSceneProperties();
+	this->View.SetSceneProperties();
 
 	sf::Clock flash_display_clock;
 	while (window.isOpen()) {
@@ -32,9 +32,9 @@ INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window
 
 			}
 		}
-		this->pView->UpdateTextColors();
+		this->View.UpdateTextColors();
 
-		this->pView->PrintScreen(window, flash_display_clock); /* Invoke View to print current scene */
+		this->View.PrintScreen(window, flash_display_clock); /* Invoke View to print current scene */
 
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewConfigMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(flash_display_clock), std::ref(mutex));
@@ -57,31 +57,31 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CConfigurationD
 		case sf::Keyboard::Escape:
 			return STATES_MAIN_MENU;
 		case sf::Keyboard::Up:
-			if (this->pView->GetCurrentSelection() > 0 && !this->pView->GetWaitingEntry()) {
-				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() - 1);
+			if (this->View.GetCurrentSelection() > 0 && !this->View.GetWaitingEntry()) {
+				this->View.SetCurrentSelection(this->View.GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (this->pView->GetCurrentSelection() < 5 && !this->pView->GetWaitingEntry()) {
-				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() + 1);
+			if (this->View.GetCurrentSelection() < 5 && !this->View.GetWaitingEntry()) {
+				this->View.SetCurrentSelection(this->View.GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (this->pView->GetCurrentSelection() == 4 && !this->pView->GetWaitingEntry()) {
+			if (this->View.GetCurrentSelection() == 4 && !this->View.GetWaitingEntry()) {
 				config_data.SetOrbitNumber(model.GetNumOrbits());
 				config_data.SetMonsterNumber(model.GetNumMonsters());
 				config_data.SetOrbitronVelocity(model.GetVOrbitron());
 				config_data.SetMonsterVelocity(model.GetVMonster());
 				return STATES_PLAYING_SCREEN;
-			}else if (this->pView->GetCurrentSelection() == 5 && !this->pView->GetWaitingEntry()) {
+			}else if (this->View.GetCurrentSelection() == 5 && !this->View.GetWaitingEntry()) {
 				return STATES_MAIN_MENU;
 			}else {
-				this->pView->SetWaitingEntry(!this->pView->GetWaitingEntry());
-				this->pView->SetPlayerInput("");
+				this->View.SetWaitingEntry(!this->View.GetWaitingEntry());
+				this->View.SetPlayerInput("");
 			}
 			break;
 		default:
@@ -90,13 +90,13 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CConfigurationD
 	}else {
 
 	}
-	if (event.type == sf::Event::TextEntered && this->pView->GetWaitingEntry()) {
+	if (event.type == sf::Event::TextEntered && this->View.GetWaitingEntry()) {
 		if ((event.text.unicode > 47 && event.text.unicode < 58) || event.text.unicode == 46) {
-			this->pView->SetPlayerInput(this->pView->GetPlayerInput() + event.text.unicode);
-			switch (this->pView->GetCurrentSelection()) {
+			this->View.SetPlayerInput(this->View.GetPlayerInput() + event.text.unicode);
+			switch (this->View.GetCurrentSelection()) {
 			case 0:
-				this->pView->TxtNumOrbits.setString(this->pView->GetPlayerInput());
-				model.SetNumOrbits(std::stoi(std::string(this->pView->GetPlayerInput())));
+				this->View.TxtNumOrbits.setString(this->View.GetPlayerInput());
+				model.SetNumOrbits(std::stoi(std::string(this->View.GetPlayerInput())));
 				if (model.GetNumOrbits() < LOWER_LIMIT_ORBIT_NUM || model.GetNumOrbits() > UPPER_LIMIT_ORBIT_NUM) {
 					model.SetNumOrbits(config_data.GetOrbitNumber());
 				}else {
@@ -104,8 +104,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CConfigurationD
 				}
 				break;
 			case 1:
-				this->pView->TxtNumMonsters.setString(this->pView->GetPlayerInput());
-				model.SetNumMonsters(std::stoi(std::string(this->pView->GetPlayerInput())));
+				this->View.TxtNumMonsters.setString(this->View.GetPlayerInput());
+				model.SetNumMonsters(std::stoi(std::string(this->View.GetPlayerInput())));
 				if (model.GetNumMonsters() < LOWER_LIMIT_MONSTER_NUM || model.GetNumMonsters() > UPPER_LIMIT_MONSTER_NUM) {
 					model.SetNumMonsters(config_data.GetMonsterNumber());
 				}else {
@@ -113,8 +113,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CConfigurationD
 				}
 				break;
 			case 2:
-				this->pView->TxtVOrbitron.setString(this->pView->GetPlayerInput());
-				model.SetVOrbitron(std::stof(std::string(this->pView->GetPlayerInput())));
+				this->View.TxtVOrbitron.setString(this->View.GetPlayerInput());
+				model.SetVOrbitron(std::stof(std::string(this->View.GetPlayerInput())));
 				if (model.GetVOrbitron() < LOWER_LIMIT_ORBITRON_VEL || model.GetVOrbitron() > UPPER_LIMIT_ORBITRON_VEL) {
 					model.SetVOrbitron(config_data.GetOrbitronVelocity());
 				}else {
@@ -122,8 +122,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CConfigurationD
 				}
 				break;
 			case 3:
-				this->pView->TxtVMonster.setString(this->pView->GetPlayerInput());
-				model.SetVMonster(std::stof(std::string(this->pView->GetPlayerInput())));
+				this->View.TxtVMonster.setString(this->View.GetPlayerInput());
+				model.SetVMonster(std::stof(std::string(this->View.GetPlayerInput())));
 				if (model.GetVMonster() <LOWER_LIMIT_MONSTER_VEL || model.GetVMonster() > UPPER_LIMIT_MONSTER_VEL) {
 					model.SetVMonster(config_data.GetMonsterVelocity());
 				}else {

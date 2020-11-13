@@ -7,7 +7,7 @@
 
 class CControllerPlayingScreen : public CController {
 private:
-	CViewPlayingScreen* pView;
+	CViewPlayingScreen View;
 public:
 	CControllerPlayingScreen();
 	~CControllerPlayingScreen();

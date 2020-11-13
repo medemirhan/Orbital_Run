@@ -5,7 +5,7 @@
 
 class CControllerConfigMenu : public CController {
 private:
-	CViewConfigMenu* pView;
+	CViewConfigMenu View;
 public:
 	CControllerConfigMenu();
 	~CControllerConfigMenu();

@@ -2,12 +2,12 @@
 
 CControllerMainMenu::CControllerMainMenu()
 {
-	pView = new CViewMainMenu;
+
 }
 
 CControllerMainMenu::~CControllerMainMenu()
 {
-	delete pView;
+
 }
 
 /* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
@@ -19,7 +19,7 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 	//std::mutex mutex;
 	//CViewMainMenu view;
 	window.setActive(true);
-	this->pView->SetSceneProperties();
+	this->View.SetSceneProperties();
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -31,9 +31,9 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 
 			}
 		}
-		this->pView->UpdateTextColors();
+		this->View.UpdateTextColors();
 		
-		this->pView->PrintScreen(window); /* Invoke View to print current scene */
+		this->View.PrintScreen(window); /* Invoke View to print current scene */
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(mutex));
 		//thread_print_screen.join();
@@ -53,23 +53,23 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event)
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
-			if (this->pView->GetCurrentSelection() > 0) {
-				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() - 1);
+			if (this->View.GetCurrentSelection() > 0) {
+				this->View.SetCurrentSelection(this->View.GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (this->pView->GetCurrentSelection() < 2) {
-				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() + 1);
+			if (this->View.GetCurrentSelection() < 2) {
+				this->View.SetCurrentSelection(this->View.GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (this->pView->GetCurrentSelection() == 0) {
+			if (this->View.GetCurrentSelection() == 0) {
 				return STATES_PLAYING_SCREEN;
-			}else if (this->pView->GetCurrentSelection() == 1) {
+			}else if (this->View.GetCurrentSelection() == 1) {
 				return STATES_CONFIG_MENU;
 			}else {
 				return STATES_EXIT;

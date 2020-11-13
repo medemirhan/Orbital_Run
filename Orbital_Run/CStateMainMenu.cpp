@@ -36,7 +36,7 @@ void CStateMainMenu::OnStateHandler(CGame& game, sf::RenderWindow& window, CConf
 /* Generates CControllerMainMenu object on the entry of this state */
 void CStateMainMenu::OnEntry(CGame& game)
 {
-	this->pController = new CControllerMainMenu;
+	this->pController = DBG_NEW CControllerMainMenu;
 }
 
 /* Deallocates memory on the exit of this state */

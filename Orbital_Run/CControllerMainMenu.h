@@ -5,7 +5,7 @@
 
 class CControllerMainMenu : public CController {
 private:
-	CViewMainMenu* pView;
+	CViewMainMenu View;
 public:
 	CControllerMainMenu();
 	~CControllerMainMenu();

@@ -2,12 +2,12 @@
 
 CControllerPlayingScreen::CControllerPlayingScreen()
 {
-	pView = new CViewPlayingScreen;
+
 }
 
 CControllerPlayingScreen::~CControllerPlayingScreen()
 {
-	delete pView;
+
 }
 
 /* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
@@ -31,8 +31,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 	//CViewPlayingScreen view;
 	window.setActive(true);
-	this->pView->SetSceneProperties();
-	this->pView->GenerateOrbitDrawings(updated_config_data); /* Invoke View to draw orbits */
+	this->View.SetSceneProperties();
+	this->View.GenerateOrbitDrawings(updated_config_data); /* Invoke View to draw orbits */
 	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ORBITRON); /* Invoke Model to generate Orbitron */
 
 	for (INT32S i = 0; i < num_monsters; i++) {
@@ -55,7 +55,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 	}
 
 	for (INT32S i = 0; i < model.EntityList.size(); i++) {
-		this->pView->GenerateEntityDrawings(model.EntityList[i]); /* Invoke View to generate drawings depending on the Entity List stored by Model */
+		this->View.GenerateEntityDrawings(model.EntityList[i]); /* Invoke View to generate drawings depending on the Entity List stored by Model */
 	}
 	
 	while (window.isOpen()) {
@@ -102,8 +102,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 			if (num_active_life < updated_config_data.GetConstantLifeNumber()) { /* Lifes on the screen is kept constant always */
 				for (INT32S i = 0; i < updated_config_data.GetConstantLifeNumber() - num_active_life; i++) {
-					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE); /* Invoke model to generate new life if it is below predefined constant number */
-					this->pView->GenerateEntityDrawings(model.EntityList.back());
+					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE); /* Invoke model to generate DBG_NEW life if it is below predefined constant number */
+					this->View.GenerateEntityDrawings(model.EntityList.back());
 				}
 				num_active_life = updated_config_data.GetConstantLifeNumber();
 			}
@@ -113,8 +113,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 
 			timer.SetElapsedTimeRocketright(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
 			if (timer.GetElapsedTimeRocketright().asSeconds() > updated_config_data.GetRocketRightIntervalSec()) {
-				model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT); /* Invoke model to generate new rocket right at a predefined period */
-				this->pView->GenerateEntityDrawings(model.EntityList.back());
+				model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT); /* Invoke model to generate DBG_NEW rocket right at a predefined period */
+				this->View.GenerateEntityDrawings(model.EntityList.back());
 				timer.SetElapsedTimeRocketrightCache(sf::Time::Zero);
 				clock_rocketright.restart();
 			}
@@ -125,8 +125,8 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 			timer.SetElapsedTimeBombAddition(timer.GetElapsedTimeBombAdditionCache() + clock_bomb_addition.getElapsedTime());
 			if (timer.GetElapsedTimeBombAddition().asSeconds() > updated_config_data.GetBombAdditionIntervalSec()) {
 				for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) {
-					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB); /* Invoke model to generate new bombs at a predefined period */
-					this->pView->GenerateEntityDrawings(model.EntityList.back());
+					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB); /* Invoke model to generate DBG_NEW bombs at a predefined period */
+					this->View.GenerateEntityDrawings(model.EntityList.back());
 				}
 				timer.SetElapsedTimeBombAdditionCache(sf::Time::Zero);
 				clock_bomb_addition.restart();
@@ -144,7 +144,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 						//bombanýn biri remove edilmeden önce orbitronla çarpýþýp yokolduysa, bu bombanýn yerine henüz removal
 						//süresi gelmemiþ bir bomba remove edilmiþ oluyor. kontrol et!
 						model.EntityList.erase(model.EntityList.begin() + i); /* Invoke model to remove bombs at a predefined period */
-						this->pView->EntityDrawings.erase(this->pView->EntityDrawings.begin() + i);
+						this->View.EntityDrawings.erase(this->View.EntityDrawings.begin() + i);
 						i--;
 						bomb_removed++;
 					}
@@ -201,10 +201,10 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 		}
 
 		std::vector<INT32S> idx = model.UpdateEntityList(); /* Invoke Model to remove entities which is not alive as a result of above operations */
-		this->pView->UpdateEntityDrawings(idx); /* Invoke View to stay up to date with the Model's EntityList */
+		this->View.UpdateEntityDrawings(idx); /* Invoke View to stay up to date with the Model's EntityList */
 		for (INT32S i = 0; i < model.EntityList.size(); i++) {
-			this->pView->EntityDrawings[i].setPosition(model.EntityList[i]->GetPositionX(), model.EntityList[i]->GetPositionY());
-			this->pView->EntityDrawings[i].setOrigin(this->pView->EntityDrawings[i].getLocalBounds().width / 2.0f, this->pView->EntityDrawings[i].getLocalBounds().height / 2.0f);
+			this->View.EntityDrawings[i].setPosition(model.EntityList[i]->GetPositionX(), model.EntityList[i]->GetPositionY());
+			this->View.EntityDrawings[i].setOrigin(this->View.EntityDrawings[i].getLocalBounds().width / 2.0f, this->View.EntityDrawings[i].getLocalBounds().height / 2.0f);
 		}
 
 		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front())); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
@@ -212,9 +212,9 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 		INT32S indicator_num_littlelife = p_orbitron->GetNumLittleLife();
 		INT32S indicator_num_rocketright = p_orbitron->GetNumRocketRight();
 
-		this->pView->UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
+		this->View.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		this->pView->PrintScreen(game, window, model.GetEntityList(), num_orbits); /* Invoke View to print current scene */
+		this->View.PrintScreen(game, window, model.GetEntityList(), num_orbits); /* Invoke View to print current scene */
 
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(window), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
@@ -270,7 +270,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 				model.EntityList.back()->SetOrbit(p_orbitron->GetOrbit());
 				model.EntityList.back()->SetAngle(p_orbitron->GetAngle());
 				p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() - 1);
-				this->pView->GenerateEntityDrawings(model.EntityList.back());
+				this->View.GenerateEntityDrawings(model.EntityList.back());
 				model.RocketsOnOrbits.push_back(model.EntityList.back());
 				model.RocketFiringAngles.push_back(p_orbitron->GetAngle());
 			}else {
@@ -310,7 +310,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 			break;
 		case sf::Keyboard::M:
 			if (game.GetFlagGamePaused() || game.GetFlagLostLife() || game.GetFlagGameOver()) {
-				CConfigurationData* p_default_config = new CConfigurationData;
+				CConfigurationData* p_default_config = DBG_NEW CConfigurationData;
 				config_data.SetOrbitNumber(p_default_config->GetOrbitNumber());
 				config_data.SetMonsterNumber(p_default_config->GetMonsterNumber());
 				config_data.SetOrbitronVelocity(p_default_config->GetOrbitronVelocity());
