@@ -49,7 +49,7 @@ namespace UnitTest
 		}
 
 		/* Tests RotateEntity() function of CEntity */
-		TEST_METHOD(RotateEntityTest)
+		TEST_METHOD(RotateEntityTest) // bunlarý fonksiyon haline getirip limitlerdeki inputlar ile çaðýrabilirsin.
 		{
 			CBomb* p_bomb = new CBomb(ENTITY_TYPES_BOMB, 0.0f, 0.0f, 5.0f, 10.0f, 1.0f, 0, 1, true);
 			FP32 x_pivot = 0.0f, y_pivot = 0.0f;
