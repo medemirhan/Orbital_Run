@@ -2,12 +2,12 @@
 
 CControllerMainMenu::CControllerMainMenu()
 {
-
+	pView = new CViewMainMenu;
 }
 
 CControllerMainMenu::~CControllerMainMenu()
 {
-
+	delete pView;
 }
 
 /* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
@@ -17,23 +17,23 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 	//game.SetState(CGame::pMainMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
-	CViewMainMenu view;
+	//CViewMainMenu view;
 	window.setActive(true);
-	view.SetSceneProperties();
+	this->pView->SetSceneProperties();
 
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
-			return_val = this->UserInputHandler(event, view);
+			return_val = this->UserInputHandler(event);
 			if (return_val != STATES_MAIN_MENU) { /* If return differs from main menu, change the State */
 				return return_val;
 			}else {
 
 			}
 		}
-		view.UpdateTextColors();
+		this->pView->UpdateTextColors();
 		
-		view.PrintScreen(window); /* Invoke View to print current scene */
+		this->pView->PrintScreen(window); /* Invoke View to print current scene */
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(mutex));
 		//thread_print_screen.join();
@@ -42,7 +42,7 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 }
 
 /* Takes Event as argument and performs necessary actions depending on the user button press */
-INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& view)
+INT32S CControllerMainMenu::UserInputHandler(sf::Event& event)
 {
 	if (event.type == sf::Event::Closed) {
 		return STATES_EXIT;
@@ -53,23 +53,23 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& vi
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
-			if (view.GetCurrentSelection() > 0) {
-				view.SetCurrentSelection(view.GetCurrentSelection() - 1);
+			if (this->pView->GetCurrentSelection() > 0) {
+				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (view.GetCurrentSelection() < 2) {
-				view.SetCurrentSelection(view.GetCurrentSelection() + 1);
+			if (this->pView->GetCurrentSelection() < 2) {
+				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (view.GetCurrentSelection() == 0) {
+			if (this->pView->GetCurrentSelection() == 0) {
 				return STATES_PLAYING_SCREEN;
-			}else if (view.GetCurrentSelection() == 1) {
+			}else if (this->pView->GetCurrentSelection() == 1) {
 				return STATES_CONFIG_MENU;
 			}else {
 				return STATES_EXIT;

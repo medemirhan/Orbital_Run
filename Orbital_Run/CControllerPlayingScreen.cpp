@@ -2,12 +2,12 @@
 
 CControllerPlayingScreen::CControllerPlayingScreen()
 {
-
+	pView = new CViewPlayingScreen;
 }
 
 CControllerPlayingScreen::~CControllerPlayingScreen()
 {
-
+	delete pView;
 }
 
 /* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
@@ -29,10 +29,10 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 	std::vector<std::vector<std::shared_ptr<CEntity>>> collision_list;
 	std::vector<E_COLLISION_TYPES> collision_types;
 
-	CViewPlayingScreen view;
+	//CViewPlayingScreen view;
 	window.setActive(true);
-	view.SetSceneProperties();
-	view.GenerateOrbitDrawings(updated_config_data); /* Invoke View to draw orbits */
+	this->pView->SetSceneProperties();
+	this->pView->GenerateOrbitDrawings(updated_config_data); /* Invoke View to draw orbits */
 	model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ORBITRON); /* Invoke Model to generate Orbitron */
 
 	for (INT32S i = 0; i < num_monsters; i++) {
@@ -55,13 +55,13 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 	}
 
 	for (INT32S i = 0; i < model.EntityList.size(); i++) {
-		view.GenerateEntityDrawings(model.EntityList[i]); /* Invoke View to generate drawings depending on the Entity List stored by Model */
+		this->pView->GenerateEntityDrawings(model.EntityList[i]); /* Invoke View to generate drawings depending on the Entity List stored by Model */
 	}
 	
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
-			return_val = this->UserInputHandler(game, event, view, config_data, model, timer, change_screen, global_clock, interrupt_clock, clock_rocketright, clock_bomb_addition, clock_bomb_removal, clock_monster_orbit_change, num_orbits);
+			return_val = this->UserInputHandler(game, event, config_data, model, timer, change_screen, global_clock, interrupt_clock, clock_rocketright, clock_bomb_addition, clock_bomb_removal, clock_monster_orbit_change, num_orbits);
 			if (change_screen) {   /* change_screen might be updated in the UserInputHandler function */
 				return return_val; /* If so, change the State */
 			}else {
@@ -103,7 +103,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 			if (num_active_life < updated_config_data.GetConstantLifeNumber()) { /* Lifes on the screen is kept constant always */
 				for (INT32S i = 0; i < updated_config_data.GetConstantLifeNumber() - num_active_life; i++) {
 					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_LIFE); /* Invoke model to generate new life if it is below predefined constant number */
-					view.GenerateEntityDrawings(model.EntityList.back());
+					this->pView->GenerateEntityDrawings(model.EntityList.back());
 				}
 				num_active_life = updated_config_data.GetConstantLifeNumber();
 			}
@@ -114,7 +114,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 			timer.SetElapsedTimeRocketright(timer.GetElapsedTimeRocketrightCache() + clock_rocketright.getElapsedTime());
 			if (timer.GetElapsedTimeRocketright().asSeconds() > updated_config_data.GetRocketRightIntervalSec()) {
 				model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_ROCKET_RIGHT); /* Invoke model to generate new rocket right at a predefined period */
-				view.GenerateEntityDrawings(model.EntityList.back());
+				this->pView->GenerateEntityDrawings(model.EntityList.back());
 				timer.SetElapsedTimeRocketrightCache(sf::Time::Zero);
 				clock_rocketright.restart();
 			}
@@ -126,7 +126,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 			if (timer.GetElapsedTimeBombAddition().asSeconds() > updated_config_data.GetBombAdditionIntervalSec()) {
 				for (INT32S i = 0; i < updated_config_data.GetConstantBombAdditionNumber(); i++) {
 					model.GenerateEntityOnRandomPoint(updated_config_data, ENTITY_TYPES_BOMB); /* Invoke model to generate new bombs at a predefined period */
-					view.GenerateEntityDrawings(model.EntityList.back());
+					this->pView->GenerateEntityDrawings(model.EntityList.back());
 				}
 				timer.SetElapsedTimeBombAdditionCache(sf::Time::Zero);
 				clock_bomb_addition.restart();
@@ -144,7 +144,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 						//bombanýn biri remove edilmeden önce orbitronla çarpýþýp yokolduysa, bu bombanýn yerine henüz removal
 						//süresi gelmemiþ bir bomba remove edilmiþ oluyor. kontrol et!
 						model.EntityList.erase(model.EntityList.begin() + i); /* Invoke model to remove bombs at a predefined period */
-						view.EntityDrawings.erase(view.EntityDrawings.begin() + i);
+						this->pView->EntityDrawings.erase(this->pView->EntityDrawings.begin() + i);
 						i--;
 						bomb_removed++;
 					}
@@ -201,10 +201,10 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 		}
 
 		std::vector<INT32S> idx = model.UpdateEntityList(); /* Invoke Model to remove entities which is not alive as a result of above operations */
-		view.UpdateEntityDrawings(idx); /* Invoke View to stay up to date with the Model's EntityList */
+		this->pView->UpdateEntityDrawings(idx); /* Invoke View to stay up to date with the Model's EntityList */
 		for (INT32S i = 0; i < model.EntityList.size(); i++) {
-			view.EntityDrawings[i].setPosition(model.EntityList[i]->GetPositionX(), model.EntityList[i]->GetPositionY());
-			view.EntityDrawings[i].setOrigin(view.EntityDrawings[i].getLocalBounds().width / 2.0f, view.EntityDrawings[i].getLocalBounds().height / 2.0f);
+			this->pView->EntityDrawings[i].setPosition(model.EntityList[i]->GetPositionX(), model.EntityList[i]->GetPositionY());
+			this->pView->EntityDrawings[i].setOrigin(this->pView->EntityDrawings[i].getLocalBounds().width / 2.0f, this->pView->EntityDrawings[i].getLocalBounds().height / 2.0f);
 		}
 
 		std::shared_ptr<COrbitron> p_orbitron = std::dynamic_pointer_cast<COrbitron>(std::shared_ptr<CEntity>(model.EntityList.front())); /* Casting is applied in order to access derived class (such as COrbitron, CMonster etc.) pointers which are holded in a container (EntityList) of base class pointers (CEntity) */
@@ -212,9 +212,9 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 		INT32S indicator_num_littlelife = p_orbitron->GetNumLittleLife();
 		INT32S indicator_num_rocketright = p_orbitron->GetNumRocketRight();
 
-		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
+		this->pView->UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
-		view.PrintScreen(game, window, model.GetEntityList(), num_orbits); /* Invoke View to print current scene */
+		this->pView->PrintScreen(game, window, model.GetEntityList(), num_orbits); /* Invoke View to print current scene */
 
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewPlayingScreen::PrintScreen, std::ref(view), std::ref(window), std::ref(model.EntityList), std::ref(model.GameState), num_orbits, std::ref(mutex));
@@ -226,7 +226,7 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 }
 
 /* Takes Event as argument and performs necessary actions depending on the user button press */
-INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event, CViewPlayingScreen& view, CConfigurationData& config_data, CModel& model, CTimer& timer, BOOLEAN& change_screen, sf::Clock& global_clock, sf::Clock& interrupt_clock, sf::Clock& clock_rocketright, sf::Clock& clock_bomb_addition, sf::Clock& clock_bomb_removal, sf::Clock& clock_monster_orbit_change, INT32S& num_orbits)
+INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event, CConfigurationData& config_data, CModel& model, CTimer& timer, BOOLEAN& change_screen, sf::Clock& global_clock, sf::Clock& interrupt_clock, sf::Clock& clock_rocketright, sf::Clock& clock_bomb_addition, sf::Clock& clock_bomb_removal, sf::Clock& clock_monster_orbit_change, INT32S& num_orbits)
 {
 	if (event.type == sf::Event::Closed) {
 		change_screen = true;
@@ -270,7 +270,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 				model.EntityList.back()->SetOrbit(p_orbitron->GetOrbit());
 				model.EntityList.back()->SetAngle(p_orbitron->GetAngle());
 				p_orbitron->SetNumRocketRight(p_orbitron->GetNumRocketRight() - 1);
-				view.GenerateEntityDrawings(model.EntityList.back());
+				this->pView->GenerateEntityDrawings(model.EntityList.back());
 				model.RocketsOnOrbits.push_back(model.EntityList.back());
 				model.RocketFiringAngles.push_back(p_orbitron->GetAngle());
 			}else {

@@ -2,12 +2,12 @@
 
 CControllerConfigMenu::CControllerConfigMenu()
 {
-
+	pView = new CViewConfigMenu;
 }
 
 CControllerConfigMenu::~CControllerConfigMenu()
 {
-
+	delete pView;
 }
 
 /* Controls the current state operations. Invokes UserInputHandler if a key pressed. Invokes CView to update view if needed. */
@@ -17,24 +17,24 @@ INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window
 	//game.SetState(CGame::pConfigMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
-	CViewConfigMenu view;
+	//CViewConfigMenu view;
 	window.setActive(true);
-	view.SetSceneProperties();
+	this->pView->SetSceneProperties();
 
 	sf::Clock flash_display_clock;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
-			return_val = this->UserInputHandler(event, view, config_data, model);
+			return_val = this->UserInputHandler(event, config_data, model);
 			if (return_val != STATES_CONFIG_MENU) { /* If return differs from config menu, change the State */
 				return return_val;
 			}else {
 
 			}
 		}
-		view.UpdateTextColors();
+		this->pView->UpdateTextColors();
 
-		view.PrintScreen(window, flash_display_clock); /* Invoke View to print current scene */
+		this->pView->PrintScreen(window, flash_display_clock); /* Invoke View to print current scene */
 
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewConfigMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(flash_display_clock), std::ref(mutex));
@@ -45,7 +45,7 @@ INT32S CControllerConfigMenu::StateHandler(CGame& game, sf::RenderWindow& window
 }
 
 /* Takes Event as argument and performs necessary actions depending on the user button press */
-INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu& view, CConfigurationData& config_data, CModel& model)
+INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CConfigurationData& config_data, CModel& model)
 {
 	if (event.type == sf::Event::Closed) {
 		return STATES_EXIT;
@@ -57,31 +57,31 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 		case sf::Keyboard::Escape:
 			return STATES_MAIN_MENU;
 		case sf::Keyboard::Up:
-			if (view.GetCurrentSelection() > 0 && !view.GetWaitingEntry()) {
-				view.SetCurrentSelection(view.GetCurrentSelection() - 1);
+			if (this->pView->GetCurrentSelection() > 0 && !this->pView->GetWaitingEntry()) {
+				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (view.GetCurrentSelection() < 5 && !view.GetWaitingEntry()) {
-				view.SetCurrentSelection(view.GetCurrentSelection() + 1);
+			if (this->pView->GetCurrentSelection() < 5 && !this->pView->GetWaitingEntry()) {
+				this->pView->SetCurrentSelection(this->pView->GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (view.GetCurrentSelection() == 4 && !view.GetWaitingEntry()) {
+			if (this->pView->GetCurrentSelection() == 4 && !this->pView->GetWaitingEntry()) {
 				config_data.SetOrbitNumber(model.GetNumOrbits());
 				config_data.SetMonsterNumber(model.GetNumMonsters());
 				config_data.SetOrbitronVelocity(model.GetVOrbitron());
 				config_data.SetMonsterVelocity(model.GetVMonster());
 				return STATES_PLAYING_SCREEN;
-			}else if (view.GetCurrentSelection() == 5 && !view.GetWaitingEntry()) {
+			}else if (this->pView->GetCurrentSelection() == 5 && !this->pView->GetWaitingEntry()) {
 				return STATES_MAIN_MENU;
 			}else {
-				view.SetWaitingEntry(!view.GetWaitingEntry());
-				view.SetPlayerInput("");
+				this->pView->SetWaitingEntry(!this->pView->GetWaitingEntry());
+				this->pView->SetPlayerInput("");
 			}
 			break;
 		default:
@@ -90,13 +90,13 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 	}else {
 
 	}
-	if (event.type == sf::Event::TextEntered && view.GetWaitingEntry()) {
+	if (event.type == sf::Event::TextEntered && this->pView->GetWaitingEntry()) {
 		if ((event.text.unicode > 47 && event.text.unicode < 58) || event.text.unicode == 46) {
-			view.SetPlayerInput(view.GetPlayerInput() + event.text.unicode);
-			switch (view.GetCurrentSelection()) {
+			this->pView->SetPlayerInput(this->pView->GetPlayerInput() + event.text.unicode);
+			switch (this->pView->GetCurrentSelection()) {
 			case 0:
-				view.TxtNumOrbits.setString(view.GetPlayerInput());
-				model.SetNumOrbits(std::stoi(std::string(view.GetPlayerInput())));
+				this->pView->TxtNumOrbits.setString(this->pView->GetPlayerInput());
+				model.SetNumOrbits(std::stoi(std::string(this->pView->GetPlayerInput())));
 				if (model.GetNumOrbits() < LOWER_LIMIT_ORBIT_NUM || model.GetNumOrbits() > UPPER_LIMIT_ORBIT_NUM) {
 					model.SetNumOrbits(config_data.GetOrbitNumber());
 				}else {
@@ -104,8 +104,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				}
 				break;
 			case 1:
-				view.TxtNumMonsters.setString(view.GetPlayerInput());
-				model.SetNumMonsters(std::stoi(std::string(view.GetPlayerInput())));
+				this->pView->TxtNumMonsters.setString(this->pView->GetPlayerInput());
+				model.SetNumMonsters(std::stoi(std::string(this->pView->GetPlayerInput())));
 				if (model.GetNumMonsters() < LOWER_LIMIT_MONSTER_NUM || model.GetNumMonsters() > UPPER_LIMIT_MONSTER_NUM) {
 					model.SetNumMonsters(config_data.GetMonsterNumber());
 				}else {
@@ -113,8 +113,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				}
 				break;
 			case 2:
-				view.TxtVOrbitron.setString(view.GetPlayerInput());
-				model.SetVOrbitron(std::stof(std::string(view.GetPlayerInput())));
+				this->pView->TxtVOrbitron.setString(this->pView->GetPlayerInput());
+				model.SetVOrbitron(std::stof(std::string(this->pView->GetPlayerInput())));
 				if (model.GetVOrbitron() < LOWER_LIMIT_ORBITRON_VEL || model.GetVOrbitron() > UPPER_LIMIT_ORBITRON_VEL) {
 					model.SetVOrbitron(config_data.GetOrbitronVelocity());
 				}else {
@@ -122,8 +122,8 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				}
 				break;
 			case 3:
-				view.TxtVMonster.setString(view.GetPlayerInput());
-				model.SetVMonster(std::stof(std::string(view.GetPlayerInput())));
+				this->pView->TxtVMonster.setString(this->pView->GetPlayerInput());
+				model.SetVMonster(std::stof(std::string(this->pView->GetPlayerInput())));
 				if (model.GetVMonster() <LOWER_LIMIT_MONSTER_VEL || model.GetVMonster() > UPPER_LIMIT_MONSTER_VEL) {
 					model.SetVMonster(config_data.GetMonsterVelocity());
 				}else {
