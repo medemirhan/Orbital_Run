@@ -5,11 +5,11 @@
 
 class CControllerMainMenu : public CController {
 private:
-	CViewMainMenu View;
+
 public:
 	CControllerMainMenu();
 	~CControllerMainMenu();
 	INT32S StateHandler(CGame& game, sf::RenderWindow& window, CConfigurationData& config_data, CModel& model) override;
-	INT32S UserInputHandler(sf::Event& event);
+	INT32S UserInputHandler(sf::Event& event, CViewMainMenu& view);
 };
 

@@ -4,9 +4,9 @@
 #include "CStateConfigMenu.h"
 #include "CStatePlayingScreen.h"
 
-CState* CGame::pMainMenuState = DBG_NEW CStateMainMenu;
-CState* CGame::pConfigMenuState = DBG_NEW CStateConfigMenu;
-CState* CGame::pPlayingState = DBG_NEW CStatePlayingScreen;
+CState* CGame::pMainMenuState = new CStateMainMenu;
+CState* CGame::pConfigMenuState = new CStateConfigMenu;
+CState* CGame::pPlayingState = new CStatePlayingScreen;
 
 CGame::CGame()
 {
@@ -43,7 +43,7 @@ void CGame::SetState(CState* p_state)
 {
 	this->pCurrentState->OnExit(); /* leave current state and delegate execute exit action to pCurrentState's OnExit method */
 	this->pCurrentState = p_state; /* set current state */
-	this->pCurrentState->OnEntry(*this); /* enter DBG_NEW state and delegate entry action to pCurrentState's OnEntry method */
+	this->pCurrentState->OnEntry(*this); /* enter new state and delegate entry action to pCurrentState's OnEntry method */
 }
 
 BOOLEAN CGame::GetIsRunning()

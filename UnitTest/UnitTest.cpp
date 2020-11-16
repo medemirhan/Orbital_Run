@@ -35,7 +35,7 @@ namespace UnitTest
 			INT32S orbit = 0.0f;
 			INT32S num_life = 1;
 			BOOLEAN is_alive = true;
-			CBomb* p_bomb = DBG_NEW CBomb(entity_type, x_pos, y_pos, velocity, radius, angle, orbit, num_life, is_alive);
+			CBomb* p_bomb = new CBomb(entity_type, x_pos, y_pos, velocity, radius, angle, orbit, num_life, is_alive);
 			Assert::AreEqual(static_cast<INT32S>(entity_type), static_cast<INT32S>(p_bomb->GetEntityType()));
 			Assert::AreEqual(x_pos, p_bomb->GetPositionX(), EPSILON);
 			Assert::AreEqual(y_pos, p_bomb->GetPositionY(), EPSILON);
@@ -49,9 +49,9 @@ namespace UnitTest
 		}
 
 		/* Tests RotateEntity() function of CEntity */
-		TEST_METHOD(RotateEntityTest) // bunlarý fonksiyon haline getirip limitlerdeki inputlar ile çaðýrabilirsin.
+		TEST_METHOD(RotateEntityTest)
 		{
-			CBomb* p_bomb = DBG_NEW CBomb(ENTITY_TYPES_BOMB, 0.0f, 0.0f, 5.0f, 10.0f, 1.0f, 0, 1, true);
+			CBomb* p_bomb = new CBomb(ENTITY_TYPES_BOMB, 0.0f, 0.0f, 5.0f, 10.0f, 1.0f, 0, 1, true);
 			FP32 x_pivot = 0.0f, y_pivot = 0.0f;
 			FP32 expected_angle = 6.0f;
 			p_bomb->RotateEntity(x_pivot, y_pivot);
@@ -67,7 +67,7 @@ namespace UnitTest
 		/* Tests ChangeOrbit() function of COrbitron */
 		TEST_METHOD(ChangeOrbitTest)
 		{
-			COrbitron* p_orbitron = DBG_NEW COrbitron;
+			COrbitron* p_orbitron = new COrbitron;
 			INT32S orbit = 5;
 			p_orbitron->SetOrbit(orbit);
 			FP32 direction = -1.0f;
@@ -92,13 +92,13 @@ namespace UnitTest
 			std::string filename2 = "config_corrupted.xml";
 			std::wstring error = (L"ConfigFileErrorStatus is FALSE. It was expected to be TRUE.");
 
-			CConfigurationData* p_config_data1 = DBG_NEW CConfigurationData(filename1);
+			CConfigurationData* p_config_data1 = new CConfigurationData(filename1);
 			if (!p_config_data1->GetConfigFileErrorStatus()) {
 				Assert::Fail(error.c_str());
 			}else {
 
 			}
-			CConfigurationData* p_config_data2 = DBG_NEW CConfigurationData(filename2);
+			CConfigurationData* p_config_data2 = new CConfigurationData(filename2);
 			if (!p_config_data2->GetConfigFileErrorStatus()) {
 				Assert::Fail(error.c_str());
 			}
@@ -112,7 +112,7 @@ namespace UnitTest
 		TEST_METHOD(DataParsingTest)
 		{
 			std::string filename = "config_unittest.xml";
-			CConfigurationData* p_config_data = DBG_NEW CConfigurationData(filename);
+			CConfigurationData* p_config_data = new CConfigurationData(filename);
 
 			Assert::AreEqual(filename, p_config_data->GetFilename());
 			Assert::AreEqual((BOOLEAN)false, p_config_data->GetConfigFileErrorStatus());
@@ -148,7 +148,7 @@ namespace UnitTest
 		/* Tests default constructor of CModel */
 		TEST_METHOD(ConstructorTest1)
 		{
-			CModel* p_model = DBG_NEW CModel;
+			CModel* p_model = new CModel;
 			Assert::AreEqual(0.0f, p_model->GetGameLevel(), EPSILON);
 			Assert::AreEqual(0, p_model->GetNumOrbits());
 			Assert::AreEqual(0, p_model->GetNumMonsters());
@@ -161,8 +161,8 @@ namespace UnitTest
 		TEST_METHOD(ConstructorTest2)
 		{
 			std::string filename = "config_unittest.xml";
-			CConfigurationData* p_config_data = DBG_NEW CConfigurationData(filename);
-			CModel* p_model = DBG_NEW CModel(*p_config_data);
+			CConfigurationData* p_config_data = new CConfigurationData(filename);
+			CModel* p_model = new CModel(*p_config_data);
 			Assert::AreEqual(0.0f, p_model->GetGameLevel(), EPSILON);
 			Assert::AreEqual(p_config_data->GetOrbitNumber(), p_model->GetNumOrbits());
 			Assert::AreEqual(p_config_data->GetMonsterNumber(), p_model->GetNumMonsters());
@@ -175,8 +175,8 @@ namespace UnitTest
 		TEST_METHOD(EntityGenerationTest)
 		{
 			std::string filename = "config_unittest.xml";
-			CConfigurationData* p_config_data = DBG_NEW CConfigurationData(filename);
-			CModel* p_model = DBG_NEW CModel(*p_config_data);
+			CConfigurationData* p_config_data = new CConfigurationData(filename);
+			CModel* p_model = new CModel(*p_config_data);
 			std::vector<E_ENTITY_TYPES> entity_types{ ENTITY_TYPES_ORBITRON , ENTITY_TYPES_MONSTER , ENTITY_TYPES_ROCKET , ENTITY_TYPES_ROCKET_RIGHT , ENTITY_TYPES_BOMB , ENTITY_TYPES_LIFE };
 			for (INT32S i = 0; i < entity_types.size(); i++) {
 				p_model->GenerateEntityOnRandomPoint(*p_config_data, entity_types[i]);
@@ -192,8 +192,8 @@ namespace UnitTest
 		TEST_METHOD(EntityListUpdateTest)
 		{
 			std::string filename = "config_unittest.xml";
-			CConfigurationData* p_config_data = DBG_NEW CConfigurationData(filename);
-			CModel* p_model = DBG_NEW CModel(*p_config_data);
+			CConfigurationData* p_config_data = new CConfigurationData(filename);
+			CModel* p_model = new CModel(*p_config_data);
 			std::vector<E_ENTITY_TYPES> entity_types{ ENTITY_TYPES_ORBITRON , ENTITY_TYPES_MONSTER , ENTITY_TYPES_ROCKET , ENTITY_TYPES_ROCKET_RIGHT , ENTITY_TYPES_BOMB , ENTITY_TYPES_LIFE };
 			std::vector<std::shared_ptr<CEntity>> p_entity_list;
 			for (INT32S i = 0; i < entity_types.size(); i++) {

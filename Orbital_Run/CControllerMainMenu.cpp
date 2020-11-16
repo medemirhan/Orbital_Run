@@ -17,23 +17,23 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 	//game.SetState(CGame::pMainMenuState);
 	INT32S return_val = 1;
 	//std::mutex mutex;
-	//CViewMainMenu view;
+	CViewMainMenu view;
 	window.setActive(true);
-	this->View.SetSceneProperties();
+	view.SetSceneProperties();
 
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
-			return_val = this->UserInputHandler(event);
+			return_val = this->UserInputHandler(event, view);
 			if (return_val != STATES_MAIN_MENU) { /* If return differs from main menu, change the State */
 				return return_val;
 			}else {
 
 			}
 		}
-		this->View.UpdateTextColors();
+		view.UpdateTextColors();
 		
-		this->View.PrintScreen(window); /* Invoke View to print current scene */
+		view.PrintScreen(window); /* Invoke View to print current scene */
 		//window.setActive(false);
 		//std::thread thread_print_screen(&CViewMainMenu::PrintScreen, std::ref(view), std::ref(window), std::ref(mutex));
 		//thread_print_screen.join();
@@ -42,7 +42,7 @@ INT32S CControllerMainMenu::StateHandler(CGame& game, sf::RenderWindow& window, 
 }
 
 /* Takes Event as argument and performs necessary actions depending on the user button press */
-INT32S CControllerMainMenu::UserInputHandler(sf::Event& event)
+INT32S CControllerMainMenu::UserInputHandler(sf::Event& event, CViewMainMenu& view)
 {
 	if (event.type == sf::Event::Closed) {
 		return STATES_EXIT;
@@ -53,23 +53,23 @@ INT32S CControllerMainMenu::UserInputHandler(sf::Event& event)
 	if (event.type == sf::Event::KeyPressed) {
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
-			if (this->View.GetCurrentSelection() > 0) {
-				this->View.SetCurrentSelection(this->View.GetCurrentSelection() - 1);
+			if (view.GetCurrentSelection() > 0) {
+				view.SetCurrentSelection(view.GetCurrentSelection() - 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Down:
-			if (this->View.GetCurrentSelection() < 2) {
-				this->View.SetCurrentSelection(this->View.GetCurrentSelection() + 1);
+			if (view.GetCurrentSelection() < 2) {
+				view.SetCurrentSelection(view.GetCurrentSelection() + 1);
 			}else {
 
 			}
 			break;
 		case sf::Keyboard::Return:
-			if (this->View.GetCurrentSelection() == 0) {
+			if (view.GetCurrentSelection() == 0) {
 				return STATES_PLAYING_SCREEN;
-			}else if (this->View.GetCurrentSelection() == 1) {
+			}else if (view.GetCurrentSelection() == 1) {
 				return STATES_CONFIG_MENU;
 			}else {
 				return STATES_EXIT;
