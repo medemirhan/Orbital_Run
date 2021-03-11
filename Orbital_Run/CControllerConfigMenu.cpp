@@ -114,7 +114,7 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				break;
 			case 2:
 				view.TxtVOrbitron.setString(view.GetPlayerInput());
-				model.SetVOrbitron(std::stof(std::string(view.GetPlayerInput())));
+				model.SetVOrbitron((std::stof(std::string(view.GetPlayerInput()))) * VELOCITY_TRANSFORM_COEFF);
 				if (model.GetVOrbitron() < LOWER_LIMIT_ORBITRON_VEL || model.GetVOrbitron() > UPPER_LIMIT_ORBITRON_VEL) {
 					model.SetVOrbitron(config_data.GetOrbitronVelocity());
 				}else {
@@ -123,7 +123,7 @@ INT32S CControllerConfigMenu::UserInputHandler(sf::Event& event, CViewConfigMenu
 				break;
 			case 3:
 				view.TxtVMonster.setString(view.GetPlayerInput());
-				model.SetVMonster(std::stof(std::string(view.GetPlayerInput())));
+				model.SetVMonster((std::stof(std::string(view.GetPlayerInput()))) * VELOCITY_TRANSFORM_COEFF);
 				if (model.GetVMonster() <LOWER_LIMIT_MONSTER_VEL || model.GetVMonster() > UPPER_LIMIT_MONSTER_VEL) {
 					model.SetVMonster(config_data.GetMonsterVelocity());
 				}else {

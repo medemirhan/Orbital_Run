@@ -14,6 +14,8 @@ typedef long double                FP64;
 typedef long long                  INT64S;
 typedef unsigned long long         INT64U;
 
+#define TEST_MODE_ENABLED                            0
+#define VELOCITY_TRANSFORM_COEFF                     0.0120333333f
 #define WINDOW_WIDTH                                 1200
 #define WINDOW_HEIGHT                                900
 #define WINDOW_CENTER_X                              WINDOW_WIDTH / 2.0f
@@ -41,17 +43,37 @@ typedef unsigned long long         INT64U;
 #define DEFAULT_ROCKETRIGHT_VELOCITY                 0.0f
 #define LOWER_LIMIT_ORBIT_NUM                        2
 #define LOWER_LIMIT_MONSTER_NUM                      1
-#define LOWER_LIMIT_ORBITRON_VEL                     0.1f
-#define LOWER_LIMIT_MONSTER_VEL                      0.1f
+#define LOWER_LIMIT_ORBITRON_VEL                     0.083333333f
+#define LOWER_LIMIT_MONSTER_VEL                      0.083333333f
 #define UPPER_LIMIT_ORBIT_NUM                        7
 #define UPPER_LIMIT_MONSTER_NUM                      30
-#define UPPER_LIMIT_ORBITRON_VEL                     3.0f
-#define UPPER_LIMIT_MONSTER_VEL                      3.0f
+#define UPPER_LIMIT_ORBITRON_VEL                     2.0f
+#define UPPER_LIMIT_MONSTER_VEL                      2.0f
 #define THREAD_SLEEP_TIME_MSEC                       10
 #define LEVEL_DISPLAY_PRECISION                      3
 #define MASK_ALPHA                                   150
 #define VDEFAULT_ENTITTY_VBOMB_RATIO                 4.0f
 #define VDEFAULT_ENTITTY_VLIFE_RATIO                 3.0f
+
+#if TEST_MODE_ENABLED
+extern FP32 angle_orbitron;
+extern FP32 angle_orbitron_prev_time;
+extern FP32 angle_monster;
+extern FP32 angle_monster_prev_time;
+extern FP32 angle_rocket;
+extern FP32 angle_rocket_prev_time;
+extern FP32 angle_littlelife;
+extern FP32 angle_littlelife_prev_time;
+extern FP32 angle_bomb;
+extern FP32 angle_bomb_prev_time;
+extern FP32 game_clck;
+extern FP32 game_clck_prev;
+extern FP32 vel_orbitron;
+extern FP32 vel_monster;
+extern FP32 vel_rocket;
+extern FP32 vel_littlelife;
+extern FP32 vel_bomb;
+#endif
 
 typedef enum {
 	ENTITY_TYPES_ORBITRON = 0,

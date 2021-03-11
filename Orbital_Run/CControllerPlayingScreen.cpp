@@ -1,4 +1,5 @@
 #include "CControllerPlayingScreen.h"
+#include "velocity_calculations.h"
 
 CControllerPlayingScreen::CControllerPlayingScreen()
 {
@@ -212,6 +213,18 @@ INT32S CControllerPlayingScreen::StateHandler(CGame& game, sf::RenderWindow& win
 		INT32S indicator_num_littlelife = p_orbitron->GetNumLittleLife();
 		INT32S indicator_num_rocketright = p_orbitron->GetNumRocketRight();
 
+#if TEST_MODE_ENABLED
+		GetEntityAngles(&model);
+		FP32 calculation_period = 1;
+		FP32 tolerance = 0.2;
+		if (fmod(game_clck, calculation_period) > 0 && fmod(game_clck, calculation_period) < tolerance) {
+			CalculateEntityVelocities();
+		}
+		else {
+
+		}
+#endif
+
 		view.UpdateIndicatorsView(model.GetGameLevel(), indicator_num_life, indicator_num_littlelife, indicator_num_rocketright);
 
 		view.PrintScreen(game, window, model.GetEntityList(), num_orbits); /* Invoke View to print current scene */
@@ -266,6 +279,7 @@ INT32S CControllerPlayingScreen::UserInputHandler(CGame& game, sf::Event& event,
 		case sf::Keyboard::Space: /* Fire rocket if below condition is met */
 			if (p_orbitron->GetNumRocketRight() > 0 && !game.GetFlagGameOver() && !game.GetFlagLostLife() && !game.GetFlagGamePaused()) {
 				model.GenerateEntityOnRandomPoint(config_data, ENTITY_TYPES_ROCKET);
+				model.EntityList.back()->SetVelocity(p_orbitron->GetVelocity() * config_data.RocketOrbitronVelocityRatio);
 				model.EntityList.back()->SetPosition(p_orbitron->GetPositionX(), p_orbitron->GetPositionY());
 				model.EntityList.back()->SetOrbit(p_orbitron->GetOrbit());
 				model.EntityList.back()->SetAngle(p_orbitron->GetAngle());

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
 	<param name="OrbitronInitialVelocity" value="30.0f"/>
-	<param name="MonsterInitialVelocity" value="30.5f"/>
+	<param name="MonsterInitialVelocity" value="30.0f"/>
 	<param name="RocketOrbitronVelocityRatio" value="2.5f"/>
 	<param name="VelocityIncreaseAtLevelUp" value="1.8f"/>
 	<param name="MonsterOrbitChangeIntervalSec" value="1.5f"/>

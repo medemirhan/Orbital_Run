@@ -1,6 +1,11 @@
 #include "CConfigurationData.h"
 using namespace rapidxml;
 
+#define DEFAULT_ORBIT_NUMBER         7
+#define DEFAULT_MONSTER_NUMBER       10
+#define DEFAULT_ORBITRON_VELOCITY    0.50f
+#define DEFAULT_MONSTER_VELOCITY     0.508333333f
+
 CConfigurationData::CConfigurationData()
 {
 	this->Filename = "config.xml";
@@ -80,13 +85,25 @@ void CConfigurationData::XMLParser()
 			xml_node<>* p_node = root_node->first_node();
 
 			if (!strcmp("OrbitronInitialVelocity", p_node->first_attribute()->value())) {
-				this->OrbitronInitialVelocity = std::stof(p_node->last_attribute()->value());
+				this->OrbitronInitialVelocity = (std::stof(p_node->last_attribute()->value())) * VELOCITY_TRANSFORM_COEFF;
+				if (this->OrbitronInitialVelocity < LOWER_LIMIT_ORBITRON_VEL || this->OrbitronInitialVelocity > UPPER_LIMIT_ORBITRON_VEL) {
+					this->OrbitronInitialVelocity = DEFAULT_ORBITRON_VELOCITY;
+				}
+				else {
+
+				}
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error(error_corrupted_file);
 			}
 			if (!strcmp("MonsterInitialVelocity", p_node->first_attribute()->value())) {
-				this->MonsterInitialVelocity = std::stof(p_node->last_attribute()->value());
+				this->MonsterInitialVelocity = (std::stof(p_node->last_attribute()->value())) * VELOCITY_TRANSFORM_COEFF;
+				if (this->MonsterInitialVelocity < LOWER_LIMIT_MONSTER_VEL || this->MonsterInitialVelocity > UPPER_LIMIT_MONSTER_VEL) {
+					this->MonsterInitialVelocity = DEFAULT_MONSTER_VELOCITY;
+				}
+				else {
+
+				}
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error(error_corrupted_file);
@@ -98,7 +115,7 @@ void CConfigurationData::XMLParser()
 				throw std::runtime_error(error_corrupted_file);
 			}
 			if (!strcmp("VelocityIncreaseAtLevelUp", p_node->first_attribute()->value())) {
-				this->VelocityIncreaseAtLevelUp = std::stof(p_node->last_attribute()->value());
+				this->VelocityIncreaseAtLevelUp = (std::stof(p_node->last_attribute()->value())) * VELOCITY_TRANSFORM_COEFF;
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error(error_corrupted_file);
@@ -123,12 +140,24 @@ void CConfigurationData::XMLParser()
 			}
 			if (!strcmp("OrbitNumber", p_node->first_attribute()->value())) {
 				this->OrbitNumber = std::stof(p_node->last_attribute()->value());
+				if (this->OrbitNumber < LOWER_LIMIT_ORBIT_NUM || this->OrbitNumber > UPPER_LIMIT_ORBIT_NUM) {
+					this->OrbitNumber = DEFAULT_ORBIT_NUMBER;
+				}
+				else {
+
+				}
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error(error_corrupted_file);
 			}
 			if (!strcmp("MonsterNumber", p_node->first_attribute()->value())) {
 				this->MonsterNumber = std::stof(p_node->last_attribute()->value());
+				if (this->MonsterNumber < LOWER_LIMIT_MONSTER_NUM || this->MonsterNumber > UPPER_LIMIT_MONSTER_NUM) {
+					this->MonsterNumber = DEFAULT_MONSTER_NUMBER;
+				}
+				else {
+
+				}
 				p_node = p_node->next_sibling();
 			}else {
 				throw std::runtime_error(error_corrupted_file);

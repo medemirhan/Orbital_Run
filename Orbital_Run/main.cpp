@@ -4,8 +4,28 @@
 #include "CModel.h"
 #include "type_definitions.h"
 
-INT32S main(int argc, char** argv) {
-	
+#if TEST_MODE_ENABLED
+FP32 angle_orbitron = 0;
+FP32 angle_orbitron_prev_time = 0;
+FP32 angle_monster = 0;
+FP32 angle_monster_prev_time = 0;
+FP32 angle_rocket = 0;
+FP32 angle_rocket_prev_time = 0;
+FP32 angle_littlelife = 0;
+FP32 angle_littlelife_prev_time = 0;
+FP32 angle_bomb = 0;
+FP32 angle_bomb_prev_time = 0;
+FP32 game_clck = 0;
+FP32 game_clck_prev = 0;
+FP32 vel_orbitron = 0;
+FP32 vel_monster = 0;
+FP32 vel_rocket = 0;
+FP32 vel_littlelife = 0;
+FP32 vel_bomb = 0;
+#endif
+
+INT32S main(int argc, char** argv)
+{
 	srand(time(nullptr));
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "Orbital Run", sf::Style::Close);
 

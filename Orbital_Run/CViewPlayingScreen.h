@@ -31,6 +31,15 @@ private:
 	sf::Sprite BackgroundSprite, LevelIcon, LifeIcon, LittlelifeIcon, RocketRightIcon;
 	sf::Font Font, TextFont, WarningFont;
 	sf::Texture Texture, LevelIconTexture, LifeIconTexture, LittlelifeIconTexture, RocketRightIconTexture;
+#if TEST_MODE_ENABLED
+	sf::Font font_test;
+	BOOLEAN clock_started;
+	sf::Text txt_angle_orbitron, txt_angle_monster, txt_angle_littlelife, txt_angle_rocket;
+	sf::Text txt_vel_orbitron, txt_vel_monster, txt_vel_littlelife, txt_vel_rocket, txt_vel_bomb;
+	sf::Text txt_game_timer;
+	FP32 game_timer;
+	sf::Clock game_clock;
+#endif
 public:
 	CViewPlayingScreen();
 	~CViewPlayingScreen();

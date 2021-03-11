@@ -2,7 +2,11 @@
 
 CViewPlayingScreen::CViewPlayingScreen()
 {
-
+#if TEST_MODE_ENABLED
+	game_clock.restart();
+	clock_started = true;
+	game_timer = 0;
+#endif
 }
 
 CViewPlayingScreen::~CViewPlayingScreen()
@@ -13,7 +17,6 @@ CViewPlayingScreen::~CViewPlayingScreen()
 /* Sets scene properties such as textures, fonts, texts etc. */
 void CViewPlayingScreen::SetSceneProperties()
 {
-	
 	this->TextFont.loadFromFile("SlopeOpera.ttf");
 	this->WarningFont.loadFromFile("ghostclan.ttf");
 	
@@ -79,6 +82,51 @@ void CViewPlayingScreen::SetSceneProperties()
 	this->TxtRocketRight.setFont(this->TextFont);
 	this->TxtRocketRight.setCharacterSize(20);
 	this->TxtRocketRight.setPosition(75.0f, 170.0f);
+
+#if TEST_MODE_ENABLED
+	int size = 15;
+	this->font_test.loadFromFile("consola.ttf");
+	this->txt_angle_orbitron.setFillColor(sf::Color::Green);
+	this->txt_angle_orbitron.setFont(font_test);
+	this->txt_angle_orbitron.setCharacterSize(size);
+	this->txt_angle_orbitron.setPosition(25.0f, 680.0f);
+	this->txt_angle_monster.setFillColor(sf::Color::Green);
+	this->txt_angle_monster.setFont(font_test);
+	this->txt_angle_monster.setCharacterSize(size);
+	this->txt_angle_monster.setPosition(25.0f, 700.0f);
+	this->txt_angle_rocket.setFillColor(sf::Color::Green);
+	this->txt_angle_rocket.setFont(font_test);
+	this->txt_angle_rocket.setCharacterSize(size);
+	this->txt_angle_rocket.setPosition(25.0f, 720.0f);
+	this->txt_angle_littlelife.setFillColor(sf::Color::Green);
+	this->txt_angle_littlelife.setFont(font_test);
+	this->txt_angle_littlelife.setCharacterSize(size);
+	this->txt_angle_littlelife.setPosition(25.0f, 740.0f);
+	this->txt_game_timer.setFillColor(sf::Color::Green);
+	this->txt_game_timer.setFont(font_test);
+	this->txt_game_timer.setCharacterSize(size);
+	this->txt_game_timer.setPosition(25.0f, 760.0f);
+	this->txt_vel_orbitron.setFillColor(sf::Color::Green);
+	this->txt_vel_orbitron.setFont(font_test);
+	this->txt_vel_orbitron.setCharacterSize(size);
+	this->txt_vel_orbitron.setPosition(25.0f, 795.0f);
+	this->txt_vel_monster.setFillColor(sf::Color::Green);
+	this->txt_vel_monster.setFont(font_test);
+	this->txt_vel_monster.setCharacterSize(size);
+	this->txt_vel_monster.setPosition(25.0f, 815.0f);
+	this->txt_vel_rocket.setFillColor(sf::Color::Green);
+	this->txt_vel_rocket.setFont(font_test);
+	this->txt_vel_rocket.setCharacterSize(size);
+	this->txt_vel_rocket.setPosition(25.0f, 835.0f);
+	this->txt_vel_littlelife.setFillColor(sf::Color::Green);
+	this->txt_vel_littlelife.setFont(font_test);
+	this->txt_vel_littlelife.setCharacterSize(size);
+	this->txt_vel_littlelife.setPosition(25.0f, 855.0f);
+	this->txt_vel_bomb.setFillColor(sf::Color::Green);
+	this->txt_vel_bomb.setFont(font_test);
+	this->txt_vel_bomb.setCharacterSize(size);
+	this->txt_vel_bomb.setPosition(25.0f, 875.0f);
+#endif
 
 	this->TxtLostLife.setFillColor(sf::Color::Green);
 	this->TxtLostLife.setFont(this->WarningFont);
@@ -235,6 +283,29 @@ void CViewPlayingScreen::PrintScreen(CGame& game, sf::RenderWindow& window, cons
 	window.draw(this->TxtLittlelife);
 	window.draw(this->TxtRocketRight);
 
+#if TEST_MODE_ENABLED
+	if (clock_started) {
+		clock_started = false;
+		game_clock.restart();
+	}
+	if (!game.GetFlagGamePaused() && !game.GetFlagLostLife() && !game.GetFlagGameOver()) {
+		this->game_timer = this->game_timer + game_clock.getElapsedTime().asSeconds();
+		game_clck = this->game_timer;
+	}
+	game_clock.restart();
+
+	window.draw(this->txt_angle_orbitron);
+	window.draw(this->txt_angle_monster);
+	window.draw(this->txt_angle_rocket);
+	window.draw(this->txt_angle_littlelife);
+	window.draw(this->txt_game_timer);
+	window.draw(this->txt_vel_orbitron);
+	window.draw(this->txt_vel_monster);
+	window.draw(this->txt_vel_rocket);
+	window.draw(this->txt_vel_littlelife);
+	window.draw(this->txt_vel_bomb);
+#endif
+
 	if (game.GetFlagLostLife()) {
 		window.draw(this->TxtLostLife);
 		window.draw(this->TxtLostLifeOptions);
@@ -273,6 +344,19 @@ void CViewPlayingScreen::UpdateIndicatorsView(FP32 game_level, INT32S indicator_
 	sf::FloatRect txt_score_rect = this->TxtScore.getLocalBounds();
 	this->TxtScore.setOrigin(txt_score_rect.left + txt_score_rect.width / 2.0f, txt_score_rect.top + txt_score_rect.height / 2.0f);
 	this->TxtScore.setPosition(sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f - 220.0f));
+
+#if TEST_MODE_ENABLED
+	this->txt_angle_orbitron.setString("orb_angle         : " + std::to_string(angle_orbitron));
+	this->txt_angle_monster.setString("mon_angle         : " + std::to_string(angle_monster));
+	this->txt_angle_rocket.setString("roc_angle         : " + std::to_string(angle_rocket));
+	this->txt_angle_littlelife.setString("lif_angle         : " + std::to_string(angle_littlelife));
+	this->txt_game_timer.setString("clock             : " + std::to_string(this->game_timer));
+	this->txt_vel_orbitron.setString("orb_vel (deg/s)   : " + std::to_string(vel_orbitron));
+	this->txt_vel_monster.setString("mon_vel (deg/s)   : " + std::to_string(vel_monster));
+	this->txt_vel_rocket.setString("roc_vel (deg/s)   : " + std::to_string(vel_rocket));
+	this->txt_vel_littlelife.setString("lif_vel (deg/s)   : " + std::to_string(vel_littlelife));
+	this->txt_vel_bomb.setString("bom_vel (deg/s)   : " + std::to_string(vel_bomb));
+#endif
 }
 
 /* Erases elements at the given idx positions of member variable EntityDrawings */

@@ -40,6 +40,7 @@
     <ClCompile Include="CViewMainMenu.cpp" />
     <ClCompile Include="CViewPlayingScreen.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="velocity_calculations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBomb.h" />
@@ -66,6 +67,7 @@
     <ClInclude Include="CViewMainMenu.h" />
     <ClInclude Include="CViewPlayingScreen.h" />
     <ClInclude Include="type_definitions.h" />
+    <ClInclude Include="velocity_calculations.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
