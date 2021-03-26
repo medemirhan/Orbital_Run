@@ -28,49 +28,49 @@ void CViewConfigMenu::SetSceneProperties()
 
 	this->Text0.setFont(this->Font);
 	this->Text0.setCharacterSize(30);
-	this->Text0.setString("            Number of Orbits");
+	this->Text0.setString("            Number of Orbits   (" + std::to_string(INT32S(LOWER_LIMIT_ORBIT_NUM)) + " - " + std::to_string(INT32S(UPPER_LIMIT_ORBIT_NUM)) + ")");
 	this->Text0.setPosition({ 300.f, 220.f });
 	this->TxtNumOrbits.setFont(this->Font);
 	this->TxtNumOrbits.setCharacterSize(30);
 	this->TxtNumOrbits.setString("");
-	this->TxtNumOrbits.setPosition({ 750.f, 220.f });
+	this->TxtNumOrbits.setPosition({ 900.f, 220.f });
 
 	this->Text1.setFont(this->Font);
 	this->Text1.setCharacterSize(30);
-	this->Text1.setString("   Number of Monsters");
+	this->Text1.setString("   Number of Monsters   (" + std::to_string(INT32S(LOWER_LIMIT_MONSTER_NUM)) + " - " + std::to_string(INT32S(UPPER_LIMIT_MONSTER_NUM)) + ")");
 	this->Text1.setPosition({ 300.f, 290.f });
 	this->TxtNumMonsters.setFont(this->Font);
 	this->TxtNumMonsters.setCharacterSize(30);
 	this->TxtNumMonsters.setString("");
-	this->TxtNumMonsters.setPosition({ 750.f, 290.f });
+	this->TxtNumMonsters.setPosition({ 900.f, 290.f });
 
 	this->Text2.setFont(this->Font);
 	this->Text2.setCharacterSize(30);
-	this->Text2.setString("                Orbitron Speed");
+	this->Text2.setString("                Orbitron Speed   (" + std::to_string(INT32S(LOWER_LIMIT_ORBITRON_VEL / VELOCITY_TRANSFORM_COEFF)) + " - " + std::to_string(INT32S(UPPER_LIMIT_ORBITRON_VEL / VELOCITY_TRANSFORM_COEFF)) + ")");
 	this->Text2.setPosition({ 300.f, 360.f });
 	this->TxtVOrbitron.setFont(this->Font);
 	this->TxtVOrbitron.setCharacterSize(30);
 	this->TxtVOrbitron.setString("");
-	this->TxtVOrbitron.setPosition({ 750.f, 360.f });
+	this->TxtVOrbitron.setPosition({ 900.f, 360.f });
 
 	this->Text3.setFont(this->Font);
 	this->Text3.setCharacterSize(30);
-	this->Text3.setString("                Monster Speed");
+	this->Text3.setString("                Monster Speed   (" + std::to_string(INT32S(LOWER_LIMIT_MONSTER_VEL / VELOCITY_TRANSFORM_COEFF)) + " - " + std::to_string(INT32S(UPPER_LIMIT_MONSTER_VEL / VELOCITY_TRANSFORM_COEFF)) + ")");
 	this->Text3.setPosition({ 300.f, 430.f });
 	this->TxtVMonster.setFont(this->Font);
 	this->TxtVMonster.setCharacterSize(30);
 	this->TxtVMonster.setString("");
-	this->TxtVMonster.setPosition({ 750.f, 430.f });
+	this->TxtVMonster.setPosition({ 900.f, 430.f });
 
 	this->Text4.setFont(this->Font);
 	this->Text4.setCharacterSize(30);
 	this->Text4.setString("                         START GAME");
-	this->Text4.setPosition({ 300.f, 550.f });
+	this->Text4.setPosition({ 300.f, 590.f });
 
 	this->Text5.setFont(this->Font);
 	this->Text5.setCharacterSize(30);
 	this->Text5.setString("                             MAIN MENU");
-	this->Text5.setPosition({ 300.f, 620.f });
+	this->Text5.setPosition({ 300.f, 660.f });
 }
 
 /* Prints current scene */

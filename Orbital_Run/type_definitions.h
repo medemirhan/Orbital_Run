@@ -43,12 +43,12 @@ typedef unsigned long long         INT64U;
 #define DEFAULT_ROCKETRIGHT_VELOCITY                 0.0f
 #define LOWER_LIMIT_ORBIT_NUM                        2
 #define LOWER_LIMIT_MONSTER_NUM                      1
-#define LOWER_LIMIT_ORBITRON_VEL                     0.083333333f
-#define LOWER_LIMIT_MONSTER_VEL                      0.083333333f
+#define LOWER_LIMIT_ORBITRON_VEL                     0.0601666663f
+#define LOWER_LIMIT_MONSTER_VEL                      0.0601666663f
 #define UPPER_LIMIT_ORBIT_NUM                        7
-#define UPPER_LIMIT_MONSTER_NUM                      30
-#define UPPER_LIMIT_ORBITRON_VEL                     2.0f
-#define UPPER_LIMIT_MONSTER_VEL                      2.0f
+#define UPPER_LIMIT_MONSTER_NUM                      20
+#define UPPER_LIMIT_ORBITRON_VEL                     2.40666668f
+#define UPPER_LIMIT_MONSTER_VEL                      2.40666668f
 #define THREAD_SLEEP_TIME_MSEC                       10
 #define LEVEL_DISPLAY_PRECISION                      3
 #define MASK_ALPHA                                   150
