@@ -1,6 +1,6 @@
 # Orbital Run
 
-Orbital Run game written in C++ by using SFML library.
+Orbital Run game written in C++.
 
 Screenshots:
 
